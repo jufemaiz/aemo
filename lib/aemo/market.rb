@@ -19,9 +19,9 @@ module AEMO
       values
     end
   
-    #########
-    protected
-    #########
+    # ######### #
+      protected
+    # ######### #
 
     def self.parse_response(response)
       values = []

@@ -1,7 +1,12 @@
 module AEMO
   module Market
     class Interval
-      INTERVALS = { :trading => 'Trading', :dispatch => 'Dispatch' }
+      INTERVALS = {
+        :trading => 'Trading',
+        :dispatch => 'Dispatch'
+      }
+      
+      attr_accessor :datetime, :region, :total_demand, :rrp, :period_type
       
       # @param datetime [Time] 
       # @param options [Hash] Hash of optional data values
@@ -18,7 +23,7 @@ module AEMO
       
       # All AEMO Data operates in Australian Eastern Standard Time
       # All AEMO Data aggregates to the trailing edge of the period (this makes it difficult to do daily aggregations :( )
-      # @param trailing_edge [boolean] selection of either the trailing edge of the period or the rising edge of the period for the date time
+      # @param trailing_edge [Boolean] selection of either the trailing edge of the period or the rising edge of the period for the date time
       # @return [Time] a time object of the trailing edge of the interval
       def datetime(trailing_edge = true)
         t = @datetime
@@ -32,26 +37,6 @@ module AEMO
           end
         end
         t
-      end
-      
-      # @return [String] the AEMO region name (essentially the state's name suffixed with the number 1)
-      def region
-        @region
-      end
-      
-      # @return [Float] the price per megawatt hour for the interval period
-      def rrp
-        @rrp
-      end
-
-      # @return [String|nil] the type of interval (specifically for )
-      def period_type
-        @period_type
-      end
-      
-      # @return [Float] the total demand, in MW, for the period
-      def total_demand
-        @total_demand
       end
       
       # @return [Time] the time of the 

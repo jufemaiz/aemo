@@ -8,6 +8,8 @@ module AEMO
       'TAS' => 'Tasmania',
       'VIC' => 'Victoria'
     }
+    
+    attr_accessor :region
 
     def initialize(region)
       if is_valid_region?(region)
