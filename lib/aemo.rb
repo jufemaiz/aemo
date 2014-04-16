@@ -1,7 +1,9 @@
 require 'httparty'
 
 require 'aemo/market.rb'
-require 'aemo/nem12.rb'
+require 'aemo/market/interval.rb'
+require 'aemo/region.rb'
+# require 'aemo/nem12.rb'
 
-class AEMO
+module AEMO
 end

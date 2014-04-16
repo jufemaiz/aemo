@@ -4,7 +4,7 @@ require 'httparty/version'
 
 Gem::Specification.new do |s|
   s.name        = 'aemo'
-  s.version     = AEMO::VERSION
+  s.version     = '0.0.0'
   s.platform    = Gem::Platform::RUBY
   s.date        = '2014-04-11'
   s.summary     = 'AEMO Gem'
@@ -19,10 +19,9 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'json',      '~> 1.8'
   s.add_dependency 'multi_xml', '>= 0.5.2'
-  s.add_dependency 'csv',       '>= 0.5.2'
 
-  s.files         = `git ls-files`.split('\n')
-  s.test_files    = `git ls-files -- {test,spec,features}/*`.split('\n')
-  s.executables   = `git ls-files -- bin/*`.split('\n').map{ |f| File.basename(f) }
+  s.files         = `git ls-files`.split("\n")
+  s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
+  s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ['lib']
 end
