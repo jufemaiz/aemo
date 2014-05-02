@@ -275,7 +275,7 @@ module AEMO
       @nmi = csv[1]
 
       # Push onto the stack
-      @data_details.push({
+      @data_details << {
         :record_indicator => csv[0].to_i,
         :nmi => csv[1],
         :nmi_configuration => csv[2],
@@ -286,7 +286,7 @@ module AEMO
         :uom => csv[7].upcase,
         :interval_length => csv[8].to_i,
         :next_scheduled_read_date => csv[9],
-        })
+      }
     end
     
     # @param line [String] A single line in string format
@@ -382,7 +382,9 @@ module AEMO
       file_contents.each do |line|
         case line[0..2].to_i
         when 200
-          nem12s << AEMO::NEM12.new('')
+          if nem12.nil? || line[4..13] != nem12.nmi
+            nem12s << AEMO::NEM12.new('')
+          end
           nem12 = nem12s.last
           nem12.parse_nem12_200(line)
         when 300
@@ -395,7 +397,7 @@ module AEMO
           @nem12_900 = nem12.parse_nem12_900(line)
         end
       end
-      nem12
+      nem12s
     end
 
     
