@@ -196,7 +196,7 @@ module AEMO
     }
     
     @nmi              = nil
-    @data_details     = nil
+    @data_details     = []
     @interval_data    = []
     @interval_events  = []
     
@@ -206,7 +206,7 @@ module AEMO
     # Initialize a NEM12 file
     def initialize(nmi,options={})
       @nmi              = nmi
-      @data_details     = nil
+      @data_details     = []
       @interval_data    = []
       @interval_events  = []
       options.keys.each do |key|
@@ -274,7 +274,8 @@ module AEMO
       
       @nmi = csv[1]
 
-      @data_details = {
+      # Push onto the stack
+      @data_details.push({
         :record_indicator => csv[0].to_i,
         :nmi => csv[1],
         :nmi_configuration => csv[2],
@@ -285,7 +286,7 @@ module AEMO
         :uom => csv[7].upcase,
         :interval_length => csv[8].to_i,
         :next_scheduled_read_date => csv[9],
-      }
+        })
     end
     
     # @param line [String] A single line in string format
@@ -293,8 +294,8 @@ module AEMO
     def parse_nem12_300(line)
       csv = line.parse_csv
 
-      raise TypeError, 'Expected NMI Data Details to exist with IntervalLength specified' if @data_details.nil? || @data_details[:interval_length].nil?
-      number_of_intervals = 1440 / @data_details[:interval_length]
+      raise TypeError, 'Expected NMI Data Details to exist with IntervalLength specified' if @data_details.last.nil? || @data_details.last[:interval_length].nil?
+      number_of_intervals = 1440 / @data_details.last[:interval_length]
       intervals_offset = number_of_intervals + 2
       
       raise ArgumentError, 'RecordIndicator is not 300'     if csv[0] != '300'
@@ -321,10 +322,10 @@ module AEMO
       end
       
       base_datetime = Time.parse("#{csv[1]}000000+1000")
-      base_interval = { :datetime => Time.parse("#{csv[1]}000000+1000"), :value => nil, :flag => nil}
+      base_interval = { :data_details => @data_details.last, :datetime => Time.parse("#{csv[1]}000000+1000"), :value => nil, :flag => nil}
       (2..(number_of_intervals+1)).each do |i|
         interval = base_interval.dup
-        interval[:datetime] += (i-1) * @data_details[:interval_length] * 60
+        interval[:datetime] += (i-1) * interval[:data_details][:interval_length] * 60
         interval[:value] = csv[i].to_f
         @interval_data << interval
       end
@@ -360,7 +361,7 @@ module AEMO
     # @return [Array] array of a NEM12 file a given Meter + Data Stream for easy reading
     def to_a
       headers = ['nmi','suffix','units','datetime','value']
-      values = @interval_data.map{|d| [@nmi,@data_details[:nmi_suffix].upcase,@data_details[:uom],d[:datetime].strftime("%Y%m%d%H%M%S+%Z"),d[:value]]}
+      values = @interval_data.map{|d| [d[:data_details][:nmi],d[:data_details][:nmi_suffix].upcase,d[:data_details][:uom],d[:datetime].strftime("%Y%m%d%H%M%S+%Z"),d[:value]]}
       ([headers] + values)
     end
     
