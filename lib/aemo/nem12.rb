@@ -237,7 +237,9 @@ module AEMO
 
       raise ArgumentError, 'RecordIndicator is not 100'     if csv[0] != '100'
       raise ArgumentError, 'VersionHeader is not NEM12'     if csv[1] != 'NEM12'
-      raise ArgumentError, 'DateTime is not valid'          if csv[2].match(/\d{12}/).nil?  || csv[2] != Time.parse("#{csv[2]}00").strftime('%Y%m%d%H%M')
+      if options[:strict]
+        raise ArgumentError, 'DateTime is not valid'          if csv[2].match(/\d{12}/).nil?  || csv[2] != Time.parse("#{csv[2]}00").strftime('%Y%m%d%H%M')
+      end
       raise ArgumentError, 'FromParticispant is not valid'  if csv[3].match(/.{1,10}/).nil?
       raise ArgumentError, 'ToParticispant is not valid'    if csv[4].match(/.{1,10}/).nil?
 
@@ -316,12 +318,13 @@ module AEMO
       if !csv[intervals_offset + 1].nil? && csv[intervals_offset + 1].to_i == 0
         raise ArgumentError, 'ReasonDescription is not valid'                   unless csv[intervals_offset + 2].class == String && csv[intervals_offset + 2].length > 0
       end
-      raise ArgumentError, 'UpdateDateTime is not valid'   if csv[intervals_offset + 3].match(/\d{14}/).nil? || csv[intervals_offset + 3] != Time.parse("#{csv[intervals_offset + 3]}").strftime('%Y%m%d%H%M%S')
-      unless csv[intervals_offset + 4].nil?
-        raise ArgumentError, 'MSATSLoadDateTime is not valid'   if csv[intervals_offset + 4].match(/\d{14}/).nil? || csv[intervals_offset + 4] != Time.parse("#{csv[intervals_offset + 4]}").strftime('%Y%m%d%H%M%S')
+      if options[:strict]
+        raise ArgumentError, 'UpdateDateTime is not valid'   if csv[intervals_offset + 3].match(/\d{14}/).nil? || csv[intervals_offset + 3] != Time.parse("#{csv[intervals_offset + 3]}").strftime('%Y%m%d%H%M%S')
+        unless csv[intervals_offset + 4].nil?
+          raise ArgumentError, 'MSATSLoadDateTime is not valid'   if csv[intervals_offset + 4].match(/\d{14}/).nil? || csv[intervals_offset + 4] != Time.parse("#{csv[intervals_offset + 4]}").strftime('%Y%m%d%H%M%S')
+        end
       end
       
-      base_datetime = Time.parse("#{csv[1]}000000+1000")
       base_interval = { :data_details => @data_details.last, :datetime => Time.parse("#{csv[1]}000000+1000"), :value => nil, :flag => nil}
       (2..(number_of_intervals+1)).each do |i|
         interval = base_interval.dup
