@@ -232,7 +232,7 @@ module AEMO
     # Parses the header record
     # @param line [String] A single line in string format
     # @return [Hash] the line parsed into a hash of information
-    def self.parse_nem12_100(line)
+    def self.parse_nem12_100(line,options={})
       csv = line.parse_csv
 
       raise ArgumentError, 'RecordIndicator is not 100'     if csv[0] != '100'
@@ -253,7 +253,7 @@ module AEMO
     # Parses the NMI Data Details
     # @param line [String] A single line in string format
     # @return [Hash] the line parsed into a hash of information
-    def parse_nem12_200(line)
+    def parse_nem12_200(line,options={})
       csv = line.parse_csv
 
       raise ArgumentError, 'RecordIndicator is not 200'     if csv[0] != '200'
@@ -291,7 +291,7 @@ module AEMO
     
     # @param line [String] A single line in string format
     # @return [Hash] the line parsed into a hash of information
-    def parse_nem12_300(line)
+    def parse_nem12_300(line,options={})
       csv = line.parse_csv
 
       raise TypeError, 'Expected NMI Data Details to exist with IntervalLength specified' if @data_details.last.nil? || @data_details.last[:interval_length].nil?
@@ -333,17 +333,17 @@ module AEMO
     
     # @param line [String] A single line in string format
     # @return [Hash] the line parsed into a hash of information
-    def parse_nem12_400(line)
+    def parse_nem12_400(line,options={})
     end
     
     # @param line [String] A single line in string format
     # @return [Hash] the line parsed into a hash of information
-    def parse_nem12_500(line)
+    def parse_nem12_500(line,options={})
     end
     
     # @param line [String] A single line in string format
     # @return [Hash] the line parsed into a hash of information
-    def parse_nem12_900(line)
+    def parse_nem12_900(line,options={})
     end
     
     # @param nmi [String] a NMI that is to be checked for validity
@@ -354,8 +354,8 @@ module AEMO
     
     # @param path_to_file [String] the path to a file
     # @return [] NEM12 object 
-    def self.parse_nem12_file(path_to_file)
-      parse_nem12(File.read(path_to_file))
+    def self.parse_nem12_file(path_to_file, strict = false)
+      parse_nem12(File.read(path_to_file),strict)
     end
         
     # @return [Array] array of a NEM12 file a given Meter + Data Stream for easy reading
@@ -372,12 +372,12 @@ module AEMO
     
     # @param contents [String] the path to a file
     # @return [Array[AEMO::NEM12]] An array of NEM12 objects
-    def self.parse_nem12(contents)
+    def self.parse_nem12(contents, strict=false)
       file_contents = contents.gsub(/\r/,"\n").gsub(/\n\n/,"\n").split("\n").delete_if{|line| line.empty? }
       raise ArgumentError, 'First row should be have a RecordIndicator of 100 and be of type Header Record' unless file_contents.first.parse_csv[0] == '100'
       
       nem12s = []
-      nem12_100 = AEMO::NEM12.parse_nem12_100(file_contents.first)
+      nem12_100 = AEMO::NEM12.parse_nem12_100(file_contents.first,:strict => strict)
       nem12 = nil
       file_contents.each do |line|
         case line[0..2].to_i
@@ -386,15 +386,15 @@ module AEMO
             nem12s << AEMO::NEM12.new('')
           end
           nem12 = nem12s.last
-          nem12.parse_nem12_200(line)
+          nem12.parse_nem12_200(line,:strict => strict)
         when 300
-          nem12.parse_nem12_300(line)
+          nem12.parse_nem12_300(line,:strict => strict)
         # when 400
         #   nem12s.last.interval_events << nem12.parse_nem12_400(line)
         # when 500
         #   nem12s.last.b2b_details = nem12.parse_nem12_500(line)
         when 900
-          @nem12_900 = nem12.parse_nem12_900(line)
+          @nem12_900 = nem12.parse_nem12_900(line,:strict => strict)
         end
       end
       nem12s
