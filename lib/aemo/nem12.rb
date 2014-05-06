@@ -363,14 +363,14 @@ module AEMO
         
     # @return [Array] array of a NEM12 file a given Meter + Data Stream for easy reading
     def to_a
-      values = @interval_data.map{|d| [d[:data_details][:nmi],d[:data_details][:nmi_suffix].upcase,d[:data_details][:uom],d[:datetime].strftime("%Y%m%d%H%M%S+%z"),d[:value]]}
+      values = @interval_data.map{|d| [d[:data_details][:nmi],d[:data_details][:nmi_suffix].upcase,d[:data_details][:uom],d[:datetime],d[:value]]}
       values
     end
     
     # @return [Array] CSV of a NEM12 file a given Meter + Data Stream for easy reading
     def to_csv
       headers = ['nmi','suffix','units','datetime','value']
-      ([headers]+self.to_a).map{|row| row.join(',')}.join("\n")
+      ([headers]+self.to_a.map{|row| row[3]=row[3].strftime("%Y%m%d%H%M%S+%z"); row}).map{|row| row.join(',')}.join("\n")
     end
     
     # @param contents [String] the path to a file
