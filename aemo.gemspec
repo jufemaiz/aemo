@@ -4,9 +4,9 @@ require 'httparty/version'
 
 Gem::Specification.new do |s|
   s.name        = 'aemo'
-  s.version     = '0.0.0'
+  s.version     = '0.1.0'
   s.platform    = Gem::Platform::RUBY
-  s.date        = '2014-04-11'
+  s.date        = '2014-08-19'
   s.summary     = 'AEMO Gem'
   s.description = 'Gem providing functionality for the Australian Energy Market Operator data'
   s.authors     = ['Joel Courtney']

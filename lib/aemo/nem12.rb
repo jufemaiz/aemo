@@ -1,3 +1,4 @@
+require 'csv'
 require 'time'
 module AEMO
   class NEM12
@@ -59,7 +60,38 @@ module AEMO
       'V'     => 'Variable Data',
     }
     
-    METHOD_FLAGS = Hash[*((11..19).map{|i| [i,i]} + (51..58).map{|i| [i,i]} + (61..68).map{|i| [i,i]} + (71..75).map{|i| [i,i]}).flatten.map{|i| i.to_s}]
+    METHOD_FLAGS = {
+      "11" => { type: ["SUB"], installation_type: [1,2,3,4], short_descriptor: "Check", description: "" },
+      "12" => { type: ["SUB"], installation_type: [1,2,3,4], short_descriptor: "Calculated", description: "" },
+      "13" => { type: ["SUB"], installation_type: [1,2,3,4], short_descriptor: "SCADA", description: "" },
+      "14" => { type: ["SUB"], installation_type: [1,2,3,4], short_descriptor: "Like Day", description: "" },
+      "15" => { type: ["SUB"], installation_type: [1,2,3,4], short_descriptor: "Average Like Day", description: "" },
+      "16" => { type: ["SUB"], installation_type: [1,2,3,4], short_descriptor: "Agreed", description: "" },
+      "17" => { type: ["SUB"], installation_type: [1,2,3,4], short_descriptor: "Linear", description: "" },
+      "18" => { type: ["SUB"], installation_type: [1,2,3,4], short_descriptor: "Alternate", description: "" },
+      "19" => { type: ["SUB"], installation_type: [1,2,3,4], short_descriptor: "Zero", description: "" },
+      "51" => { type: ["EST","SUB"], installation_type: 5, short_descriptor: "Previous Year", description: "" },
+      "52" => { type: ["EST","SUB"], installation_type: 5, short_descriptor: "Previous Read", description: "" },
+      "53" => { type: ["SUB"], installation_type: 5, short_descriptor: "Revision", description: "" },
+      "54" => { type: ["SUB"], installation_type: 5, short_descriptor: "Linear", description: "" },
+      "55" => { type: ["SUB"], installation_type: 5, short_descriptor: "Agreed", description: "" },
+      "56" => { type: ["EST","SUB"], installation_type: 5, short_descriptor: "Prior to First Read – Agreed", description: "" },
+      "57" => { type: ["EST","SUB"], installation_type: 5, short_descriptor: "Customer Class", description: "" },
+      "58" => { type: ["EST","SUB"], installation_type: 5, short_descriptor: "Zero", description: "" },
+      "61" => { type: ["EST","SUB"], installation_type: 6, short_descriptor: "Previous Year", description: "" },
+      "62" => { type: ["EST","SUB"], installation_type: 6, short_descriptor: "Previous Read", description: "" },
+      "63" => { type: ["EST","SUB"], installation_type: 6, short_descriptor: "Customer Class", description: "" },
+      "64" => { type: ["SUB"], installation_type: 6, short_descriptor: "Agreed", description: "" },
+      "65" => { type: ["EST"], installation_type: 6, short_descriptor: "ADL", description: "" },
+      "66" => { type: ["SUB"], installation_type: 6, short_descriptor: "Revision", description: "" },
+      "67" => { type: ["SUB"], installation_type: 6, short_descriptor: "Customer Read", description: "" },
+      "68" => { type: ["EST","SUB"], installation_type: 6, short_descriptor: "Zero", description: "" },
+      "71" => { type: ["SUB"], installation_type: 7, short_descriptor: "Recalculation", description: "" },
+      "72" => { type: ["SUB"], installation_type: 7, short_descriptor: "Revised Table", description: "" },
+      "73" => { type: ["SUB"], installation_type: 7, short_descriptor: "Revised Algorithm", description: "" },
+      "74" => { type: ["SUB"], installation_type: 7, short_descriptor: "Agreed", description: "" },
+      "75" => { type: ["EST"], installation_type: 7, short_descriptor: "Existing Table", description: "" }
+    }
     
     REASON_CODES = {
       0 => 'Free Text Description',
@@ -289,7 +321,7 @@ module AEMO
     end
     
     # @param line [String] A single line in string format
-    # @return [Hash] the line parsed into a hash of information
+    # @return [Array of hashes] the line parsed into a hash of information
     def parse_nem12_300(line)
       csv = line.parse_csv
 
@@ -322,17 +354,58 @@ module AEMO
       
       base_datetime = Time.parse("#{csv[1]}000000+1000")
       base_interval = { :datetime => Time.parse("#{csv[1]}000000+1000"), :value => nil, :flag => nil}
+      intervals = []
       (2..(number_of_intervals+1)).each do |i|
         interval = base_interval.dup
         interval[:datetime] += (i-1) * @data_details[:interval_length] * 60
         interval[:value] = csv[i].to_f
-        @interval_data << interval
+        intervals << interval
       end
+      @interval_data += intervals
+      intervals
     end
     
     # @param line [String] A single line in string format
     # @return [Hash] the line parsed into a hash of information
     def parse_nem12_400(line)
+      csv = line.parse_csv
+      raise ArgumentError, 'RecordIndicator is not 400'     if csv[0] != '400'
+      raise ArgumentError, 'StartInterval is not valid'     if csv[1].match(/^\d+$/).nil?
+      raise ArgumentError, 'EndInterval is not valid'       if csv[2].match(/^\d+$/).nil?
+      raise ArgumentError, 'QualityMethod is not valid'     if csv[3].match(/^[AEFNSV]\d{2}$/).nil?
+      # raise ArgumentError, 'ReasonCode is not valid'        if (csv[4].nil? && csv[3].match(/^ANE/)) || csv[4].match(/^\d{3}?$/) || csv[3].match(/^ANE/)
+#      raise ArgumentError, 'ReasonDescription is not valid' if (csv[4].nil? && csv[3].match(/^ANE/)) || ( csv[5].match(/^$/) && csv[4].match(/^0$/) )
+      
+      interval_events = []
+      
+      # Only need to update flags for EFSV
+      unless %w(A N).include?csv[3]
+        number_of_intervals = 1440 / @data_details[:interval_length]
+        interval_start_point = @interval_data.length - number_of_intervals
+      
+        # For each of these
+        base_interval_event = { datetime: nil, quality_method: csv[3], reason_code: csv[4], reason_description: csv[5] }
+
+        # Interval Numbers are 1-indexed
+        ((csv[1].to_i)..(csv[2].to_i)).each do |i|
+          interval_event = base_interval_event.dup
+          interval_event[:datetime] = @interval_data[interval_start_point + (i-1)][:datetime]
+          interval_events << interval_event
+          
+          case csv[3][0]
+          when 'E'
+            method_flag = csv[3].match(/(\d+)/)[1]
+            @interval_data[interval_start_point + (i-1)][:flag] = "Estimate - #{METHOD_FLAGS[method_flag][:short_descriptor]}"
+          when 'F'
+            @interval_data[interval_start_point + (i-1)][:flag] = nil
+          when 'S'
+            method_flag = csv[3].match(/(\d+)/)[1]
+            @interval_data[interval_start_point + (i-1)][:flag] = "Substite - #{METHOD_FLAGS[method_flag][:short_descriptor]}"
+          end
+        end
+        @interval_events += interval_events
+      end
+      interval_events
     end
     
     # @param line [String] A single line in string format
@@ -382,21 +455,20 @@ module AEMO
         case line[0..2].to_i
         when 200
           nem12s << AEMO::NEM12.new('')
-          nem12 = nem12s.last
-          nem12.parse_nem12_200(line)
+          nem12s.last.parse_nem12_200(line)
         when 300
-          nem12.parse_nem12_300(line)
-        # when 400
-        #   nem12s.last.interval_events << nem12.parse_nem12_400(line)
+          nem12s.last.parse_nem12_300(line)
+        when 400
+          nem12s.last.parse_nem12_400(line)
         # when 500
-        #   nem12s.last.b2b_details = nem12.parse_nem12_500(line)
-        when 900
-          @nem12_900 = nem12.parse_nem12_900(line)
+        #   nem12s.last.parse_nem12_500(line)
+        # when 900
+        #   nem12s.last.parse_nem12_900(line)
         end
       end
-      nem12
+      # Return the array of NEM12 groups
+      nem12s
     end
-
     
   end
 end
