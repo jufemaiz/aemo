@@ -1,6 +1,5 @@
 # -*- encoding: utf-8 -*-
 $:.push File.expand_path('../lib', __FILE__)
-require 'httparty/version'
 
 Gem::Specification.new do |s|
   s.name        = 'aemo'
@@ -18,7 +17,8 @@ Gem::Specification.new do |s|
   s.required_ruby_version     = '>= 1.9.3'
 
   s.add_dependency 'json',      '~> 1.8'
-  s.add_dependency 'multi_xml', '>= 0.5.2'
+  s.add_runtime_dependency 'multi_xml', '~> 0.5',   '>= 0.5.2'
+  s.add_runtime_dependency 'httparty',   '~> 0.13',  '>= 0.13.1'
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")

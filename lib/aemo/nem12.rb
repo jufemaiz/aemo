@@ -200,35 +200,35 @@ module AEMO
       # Averaged Data Streams
       'A' => { :stream => 'Average', :description => 'Import', :units => 'kWh' },
       'D' => { :stream => 'Average', :description => 'Export', :units => 'kWh' },
-      'J' => { :stream => 'Average', :description => 'Import', :units => 'kVAr' },
-      'P' => { :stream => 'Average', :description => 'Export', :units => 'kVAr' },
+      'J' => { :stream => 'Average', :description => 'Import', :units => 'kVArh' },
+      'P' => { :stream => 'Average', :description => 'Export', :units => 'kVArh' },
       'S' => { :stream => 'Average', :description => '',       :units => 'kVAh' },
       # Master Data Streams
       'B' => { :stream => 'Master',  :description => 'Import', :units => 'kWh' },
       'E' => { :stream => 'Master',  :description => 'Export', :units => 'kWh' },
-      'K' => { :stream => 'Master',  :description => 'Import', :units => 'kVAr' },
-      'Q' => { :stream => 'Master',  :description => 'Export', :units => 'kVAr' },
+      'K' => { :stream => 'Master',  :description => 'Import', :units => 'kVArh' },
+      'Q' => { :stream => 'Master',  :description => 'Export', :units => 'kVArh' },
       'T' => { :stream => 'Master',  :description => '',       :units => 'kVAh' },
       'G' => { :stream => 'Master',  :description => 'Power Factor',       :units => 'PF' },
       'H' => { :stream => 'Master',  :description => 'Q Metering',         :units => 'Qh' },
-      'M' => { :stream => 'Master',  :description => 'Par Metering Path',  :units => '' },
+      'M' => { :stream => 'Master',  :description => 'Par Metering',  :units => 'parh' },
       'V' => { :stream => 'Master',  :description => 'Volts or V2h or Amps or A2h',  :units => '' },
       # Check Meter Streams
       'C' => { :stream => 'Check',  :description => 'Import', :units => 'kWh' },
       'F' => { :stream => 'Check',  :description => 'Export', :units => 'kWh' },
-      'L' => { :stream => 'Check',  :description => 'Import', :units => 'kVAr' },
-      'R' => { :stream => 'Check',  :description => 'Export', :units => 'kVAr' },
+      'L' => { :stream => 'Check',  :description => 'Import', :units => 'kVArh' },
+      'R' => { :stream => 'Check',  :description => 'Export', :units => 'kVArh' },
       'U' => { :stream => 'Check',  :description => '',       :units => 'kVAh' },
       'Y' => { :stream => 'Check',  :description => 'Q Metering',         :units => 'Qh' },
       'W' => { :stream => 'Check',  :description => 'Par Metering Path',  :units => '' },
       'Z' => { :stream => 'Check',  :description => 'Volts or V2h or Amps or A2h',  :units => '' },
       # Net Meter Streams
       'D' => { :stream => 'Net',    :description => 'Net', :units => 'kWh' },
-      'J' => { :stream => 'Net',    :description => 'Net', :units => 'kVAr' },
+      'J' => { :stream => 'Net',    :description => 'Net', :units => 'kVArh' },
     }
     
     @nmi              = nil
-    @data_details     = nil
+    @data_details     = []
     @interval_data    = []
     @interval_events  = []
     
@@ -238,7 +238,7 @@ module AEMO
     # Initialize a NEM12 file
     def initialize(nmi,options={})
       @nmi              = nmi
-      @data_details     = nil
+      @data_details     = []
       @interval_data    = []
       @interval_events  = []
       options.keys.each do |key|
@@ -264,12 +264,14 @@ module AEMO
     # Parses the header record
     # @param line [String] A single line in string format
     # @return [Hash] the line parsed into a hash of information
-    def self.parse_nem12_100(line)
+    def self.parse_nem12_100(line,options={})
       csv = line.parse_csv
 
       raise ArgumentError, 'RecordIndicator is not 100'     if csv[0] != '100'
       raise ArgumentError, 'VersionHeader is not NEM12'     if csv[1] != 'NEM12'
-      raise ArgumentError, 'DateTime is not valid'          if csv[2].match(/\d{12}/).nil?  || csv[2] != Time.parse("#{csv[2]}00").strftime('%Y%m%d%H%M')
+      if options[:strict]
+        raise ArgumentError, 'DateTime is not valid'          if csv[2].match(/\d{12}/).nil?  || csv[2] != Time.parse("#{csv[2]}00").strftime('%Y%m%d%H%M')
+      end
       raise ArgumentError, 'FromParticispant is not valid'  if csv[3].match(/.{1,10}/).nil?
       raise ArgumentError, 'ToParticispant is not valid'    if csv[4].match(/.{1,10}/).nil?
 
@@ -285,7 +287,7 @@ module AEMO
     # Parses the NMI Data Details
     # @param line [String] A single line in string format
     # @return [Hash] the line parsed into a hash of information
-    def parse_nem12_200(line)
+    def parse_nem12_200(line,options={})
       csv = line.parse_csv
 
       raise ArgumentError, 'RecordIndicator is not 200'     if csv[0] != '200'
@@ -295,10 +297,12 @@ module AEMO
         raise ArgumentError, 'RegisterID is not valid'        if csv[3].match(/.{1,10}/).nil?
       end
       raise ArgumentError, 'NMISuffix is not valid'         if csv[4].match(/[A-HJ-NP-Z][1-9A-HJ-NP-Z]/).nil?
-      unless csv[5].nil?
+      if !csv[5].nil? && !csv[5].empty? && !csv[5].match(/^\s*$/)
         raise ArgumentError, 'MDMDataStreamIdentifier is not valid' if csv[5].match(/[A-Z0-9]{2}/).nil?
       end
-      raise ArgumentError, 'MeterSerialNumber is not valid' if csv[6].match(/[A-Z0-9]{2}/).nil?
+      if !csv[6].nil? && !csv[6].empty? && !csv[6].match(/^\s*$/)
+        raise ArgumentError, 'MeterSerialNumber is not valid' if csv[6].match(/[A-Z0-9]{2}/).nil?
+      end
       raise ArgumentError, 'UOM is not valid'               if csv[7].upcase.match(/[A-Z0-9]{2}/).nil?
       raise ArgumentError, 'UOM is not valid'               unless UOM.keys.map{|k| k.upcase}.include?(csv[7].upcase)
       raise ArgumentError, 'IntervalLength is not valid'    unless %w(1 5 10 15 30).include?(csv[8])
@@ -306,7 +310,8 @@ module AEMO
       
       @nmi = csv[1]
 
-      @data_details = {
+      # Push onto the stack
+      @data_details << {
         :record_indicator => csv[0].to_i,
         :nmi => csv[1],
         :nmi_configuration => csv[2],
@@ -322,11 +327,11 @@ module AEMO
     
     # @param line [String] A single line in string format
     # @return [Array of hashes] the line parsed into a hash of information
-    def parse_nem12_300(line)
+    def parse_nem12_300(line,options={})
       csv = line.parse_csv
 
-      raise TypeError, 'Expected NMI Data Details to exist with IntervalLength specified' if @data_details.nil? || @data_details[:interval_length].nil?
-      number_of_intervals = 1440 / @data_details[:interval_length]
+      raise TypeError, 'Expected NMI Data Details to exist with IntervalLength specified' if @data_details.last.nil? || @data_details.last[:interval_length].nil?
+      number_of_intervals = 1440 / @data_details.last[:interval_length]
       intervals_offset = number_of_intervals + 2
       
       raise ArgumentError, 'RecordIndicator is not 300'     if csv[0] != '300'
@@ -347,17 +352,18 @@ module AEMO
       if !csv[intervals_offset + 1].nil? && csv[intervals_offset + 1].to_i == 0
         raise ArgumentError, 'ReasonDescription is not valid'                   unless csv[intervals_offset + 2].class == String && csv[intervals_offset + 2].length > 0
       end
-      raise ArgumentError, 'UpdateDateTime is not valid'   if csv[intervals_offset + 3].match(/\d{14}/).nil? || csv[intervals_offset + 3] != Time.parse("#{csv[intervals_offset + 3]}").strftime('%Y%m%d%H%M%S')
-      unless csv[intervals_offset + 4].nil?
-        raise ArgumentError, 'MSATSLoadDateTime is not valid'   if csv[intervals_offset + 4].match(/\d{14}/).nil? || csv[intervals_offset + 4] != Time.parse("#{csv[intervals_offset + 4]}").strftime('%Y%m%d%H%M%S')
+      if options[:strict]
+        raise ArgumentError, 'UpdateDateTime is not valid'   if csv[intervals_offset + 3].match(/\d{14}/).nil? || csv[intervals_offset + 3] != Time.parse("#{csv[intervals_offset + 3]}").strftime('%Y%m%d%H%M%S')
+        unless csv[intervals_offset + 4].nil?
+          raise ArgumentError, 'MSATSLoadDateTime is not valid'   if csv[intervals_offset + 4].match(/\d{14}/).nil? || csv[intervals_offset + 4] != Time.parse("#{csv[intervals_offset + 4]}").strftime('%Y%m%d%H%M%S')
+        end
       end
       
-      base_datetime = Time.parse("#{csv[1]}000000+1000")
-      base_interval = { :datetime => Time.parse("#{csv[1]}000000+1000"), :value => nil, :flag => nil}
+      base_interval = { :data_details => @data_details.last, :datetime => Time.parse("#{csv[1]}000000+1000"), :value => nil, :flag => nil}
       intervals = []
       (2..(number_of_intervals+1)).each do |i|
         interval = base_interval.dup
-        interval[:datetime] += (i-1) * @data_details[:interval_length] * 60
+        interval[:datetime] += (i-1) * interval[:data_details][:interval_length] * 60
         interval[:value] = csv[i].to_f
         intervals << interval
       end
@@ -374,13 +380,13 @@ module AEMO
       raise ArgumentError, 'EndInterval is not valid'       if csv[2].match(/^\d+$/).nil?
       raise ArgumentError, 'QualityMethod is not valid'     if csv[3].match(/^[AEFNSV]\d{2}$/).nil?
       # raise ArgumentError, 'ReasonCode is not valid'        if (csv[4].nil? && csv[3].match(/^ANE/)) || csv[4].match(/^\d{3}?$/) || csv[3].match(/^ANE/)
-#      raise ArgumentError, 'ReasonDescription is not valid' if (csv[4].nil? && csv[3].match(/^ANE/)) || ( csv[5].match(/^$/) && csv[4].match(/^0$/) )
+      # raise ArgumentError, 'ReasonDescription is not valid' if (csv[4].nil? && csv[3].match(/^ANE/)) || ( csv[5].match(/^$/) && csv[4].match(/^0$/) )
       
       interval_events = []
       
       # Only need to update flags for EFSV
       unless %w(A N).include?csv[3]
-        number_of_intervals = 1440 / @data_details[:interval_length]
+        number_of_intervals = 1440 / @data_details.last[:interval_length]
         interval_start_point = @interval_data.length - number_of_intervals
       
         # For each of these
@@ -410,12 +416,12 @@ module AEMO
     
     # @param line [String] A single line in string format
     # @return [Hash] the line parsed into a hash of information
-    def parse_nem12_500(line)
+    def parse_nem12_500(line,options={})
     end
     
     # @param line [String] A single line in string format
     # @return [Hash] the line parsed into a hash of information
-    def parse_nem12_900(line)
+    def parse_nem12_900(line,options={})
     end
     
     # @param nmi [String] a NMI that is to be checked for validity
@@ -426,30 +432,30 @@ module AEMO
     
     # @param path_to_file [String] the path to a file
     # @return [] NEM12 object 
-    def self.parse_nem12_file(path_to_file)
-      parse_nem12(File.read(path_to_file))
+    def self.parse_nem12_file(path_to_file, strict = false)
+      parse_nem12(File.read(path_to_file),strict)
     end
         
     # @return [Array] array of a NEM12 file a given Meter + Data Stream for easy reading
     def to_a
-      headers = ['nmi','suffix','units','datetime','value']
-      values = @interval_data.map{|d| [@nmi,@data_details[:nmi_suffix].upcase,@data_details[:uom],d[:datetime].strftime("%Y%m%d%H%M%S+%Z"),d[:value]]}
-      ([headers] + values)
+      values = @interval_data.map{|d| [d[:data_details][:nmi],d[:data_details][:nmi_suffix].upcase,d[:data_details][:uom],d[:datetime],d[:value]]}
+      values
     end
     
     # @return [Array] CSV of a NEM12 file a given Meter + Data Stream for easy reading
     def to_csv
-      self.to_a.map{|row| row.join(',')}.join("\n")
+      headers = ['nmi','suffix','units','datetime','value']
+      ([headers]+self.to_a.map{|row| row[3]=row[3].strftime("%Y%m%d%H%M%S%z"); row}).map{|row| row.join(',')}.join("\n")
     end
     
     # @param contents [String] the path to a file
     # @return [Array[AEMO::NEM12]] An array of NEM12 objects
-    def self.parse_nem12(contents)
+    def self.parse_nem12(contents, strict=false)
       file_contents = contents.gsub(/\r/,"\n").gsub(/\n\n/,"\n").split("\n").delete_if{|line| line.empty? }
       raise ArgumentError, 'First row should be have a RecordIndicator of 100 and be of type Header Record' unless file_contents.first.parse_csv[0] == '100'
       
       nem12s = []
-      nem12_100 = AEMO::NEM12.parse_nem12_100(file_contents.first)
+      nem12_100 = AEMO::NEM12.parse_nem12_100(file_contents.first,:strict => strict)
       nem12 = nil
       file_contents.each do |line|
         case line[0..2].to_i
