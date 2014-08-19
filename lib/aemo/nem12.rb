@@ -224,7 +224,7 @@ module AEMO
       'Z' => { :stream => 'Check',  :description => 'Volts or V2h or Amps or A2h',  :units => '' },
       # Net Meter Streams
       'D' => { :stream => 'Net',    :description => 'Net', :units => 'kWh' },
-      'J' => { :stream => 'Net',    :description => 'Net', :units => 'kVArh' },
+      'J' => { :stream => 'Net',    :description => 'Net', :units => 'kVArh' }
     }
     
     @nmi              = nil
@@ -378,7 +378,7 @@ module AEMO
       raise ArgumentError, 'RecordIndicator is not 400'     if csv[0] != '400'
       raise ArgumentError, 'StartInterval is not valid'     if csv[1].match(/^\d+$/).nil?
       raise ArgumentError, 'EndInterval is not valid'       if csv[2].match(/^\d+$/).nil?
-      raise ArgumentError, 'QualityMethod is not valid'     if csv[3].match(/^[AEFNSV]\d{2}$/).nil?
+      raise ArgumentError, 'QualityMethod is not valid'     if csv[3].match(/^([AN]|([AEFNSV]\d{2}))$/).nil?
       # raise ArgumentError, 'ReasonCode is not valid'        if (csv[4].nil? && csv[3].match(/^ANE/)) || csv[4].match(/^\d{3}?$/) || csv[3].match(/^ANE/)
       # raise ArgumentError, 'ReasonDescription is not valid' if (csv[4].nil? && csv[3].match(/^ANE/)) || ( csv[5].match(/^$/) && csv[4].match(/^0$/) )
       
@@ -398,15 +398,22 @@ module AEMO
           interval_event[:datetime] = @interval_data[interval_start_point + (i-1)][:datetime]
           interval_events << interval_event
           
+          method_flag = nil
+          unless (quality_method = interval_event[:quality_method].match(/(\d+)/)[1]).nil?
+            method_flag = METHOD_FLAGS[quality_method][:short_descriptor]
+          end
+          reason_code = nil
+          unless (reason_code = interval_event[:reason_code]).nil?
+            reason_code = REASON_CODES[reason_code.to_i]
+          end
+          
           case csv[3][0]
           when 'E'
-            method_flag = csv[3].match(/(\d+)/)[1]
-            @interval_data[interval_start_point + (i-1)][:flag] = "Estimate - #{METHOD_FLAGS[method_flag][:short_descriptor]}"
+            @interval_data[interval_start_point + (i-1)][:flag] = ['Estimate',method_flag,reason_code].compact.join(' - ')
           when 'F'
             @interval_data[interval_start_point + (i-1)][:flag] = nil
           when 'S'
-            method_flag = csv[3].match(/(\d+)/)[1]
-            @interval_data[interval_start_point + (i-1)][:flag] = "Substite - #{METHOD_FLAGS[method_flag][:short_descriptor]}"
+            @interval_data[interval_start_point + (i-1)][:flag] = ['Substitute',method_flag,reason_code].compact.join(' - ')
           end
         end
         @interval_events += interval_events
