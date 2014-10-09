@@ -1,7 +1,9 @@
-require File.expand_path(File.join(File.dirname(__FILE__), '..', 'spec_helper'))
+require "spec_helper"
 require 'json'
 
 describe AEMO::NEM12 do
+  let(:json) { JSON.parse(fixture("nmi_checksum.json").read) }
+
   describe '::RECORD_INDICATORS' do
     it "should be a hash" do
       expect(AEMO::NEM12::RECORD_INDICATORS.class).to eq(Hash)
@@ -10,7 +12,7 @@ describe AEMO::NEM12 do
   
   describe '.valid_nmi?' do
     it 'should validate nmi' do
-      JSON.parse(File.read(File.expand_path(File.join(File.dirname(__FILE__), '..', 'fixtures','nmi_checksum.json')))).each do |nmi|
+      json.each do |nmi|
         expect(AEMO::NEM12.valid_nmi?(nmi['nmi'])).to eq(true)
       end
     end
@@ -18,7 +20,7 @@ describe AEMO::NEM12 do
   
   describe '#nmi_checksum' do
     it 'should return nmi checksum' do
-      JSON.parse(File.read(File.expand_path(File.join(File.dirname(__FILE__), '..', 'fixtures','nmi_checksum.json')))).each do |nmi|
+      json.each do |nmi|
         nem12 = AEMO::NEM12.new(nmi['nmi'])
         expect(nem12.nmi_checksum).to eq(nmi['checksum'])
       end
@@ -29,7 +31,7 @@ describe AEMO::NEM12 do
   end
   
   describe '.parse_nem12_file' do
-    it 'should parse a file' do
+    xit 'should parse a file' do
       Dir.entries(File.join(File.dirname(__FILE__),'..','fixtures','NEM12')).reject{|f| %w(. .. .DS_Store).include?(f)}.each do |file|
         puts file
         nem12 = AEMO::NEM12.parse_nem12_file(File.join(File.dirname(__FILE__),'..','fixtures','NEM12',file))

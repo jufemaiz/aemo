@@ -1,9 +1,10 @@
-require 'httparty'
+require "httparty"
 
-require 'aemo/market.rb'
-require 'aemo/market/interval.rb'
-require 'aemo/region.rb'
-require 'aemo/nem12.rb'
+require "aemo/market"
+require "aemo/market/interval"
+require "aemo/region"
+require "aemo/nem12"
+require "aemo/version"
 
 module AEMO
 end

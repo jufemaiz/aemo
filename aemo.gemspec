@@ -21,7 +21,14 @@ Gem::Specification.new do |s|
   s.required_ruby_version = ">= 1.9.3"
 
   s.add_dependency "json", "~> 1.8"
+  s.add_dependency "multi_xml", "~> 0.5", ">= 0.5.2"
+  s.add_dependency "httparty", "~> 0.13", ">= 0.13.1"
 
-  s.add_runtime_dependency "multi_xml", "~> 0.5", ">= 0.5.2"
-  s.add_runtime_dependency "httparty", "~> 0.13", ">= 0.13.1"
+  s.add_development_dependency "bundler", "~> 1.3"
+  s.add_development_dependency "rspec"
+  s.add_development_dependency "simplecov"
+  s.add_development_dependency "coveralls"
+  s.add_development_dependency "awesome_print"
+  s.add_development_dependency "pry"
+  s.add_development_dependency "pry-nav"
 end
