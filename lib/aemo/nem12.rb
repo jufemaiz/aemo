@@ -51,6 +51,32 @@ module AEMO
       'pf'    => { :name => 'Power Factor', :multiplier => 1 }
     }
     
+    UOM_NON_SPEC_MAPPING = {
+      'MWH'   => 'MWh',
+      'KWH'   => 'kWh',
+      'WH'    => 'Wh',
+      'MW'    => 'MW',
+      'KW'    => 'kW',
+      'W'     => 'W',
+      'MVARH' => 'MVArh',
+      'KVARH' => 'kVArh',
+      'VARH'  => 'VArh',
+      'MVAR'  => 'MVAr',
+      'KVAR'  => 'kVAr',
+      'VAR'   => 'VAr',
+      'MVAH'  => 'MVAh',
+      'KVAH'  => 'kVAh',
+      'VAH'   => 'VAh',
+      'MVA'   => 'MVA',
+      'KVA'   => 'kVA',
+      'VA'    => 'VA',
+      'KV'    => 'kV',
+      'V'     => 'V',
+      'KA'    => 'kA',
+      'A'     => 'A',
+      'PF'    => 'pf'
+    }
+    
     QUALITY_FLAGS = {
       'A'     => 'Actual Data',
       'E'     => 'Forward Estimated Data',
@@ -360,6 +386,7 @@ module AEMO
       end
       
       base_interval = { :data_details => @data_details.last, :datetime => Time.parse("#{csv[1]}000000+1000"), :value => nil, :flag => nil}
+
       intervals = []
       (2..(number_of_intervals+1)).each do |i|
         interval = base_interval.dup
@@ -445,7 +472,12 @@ module AEMO
         
     # @return [Array] array of a NEM12 file a given Meter + Data Stream for easy reading
     def to_a
-      values = @interval_data.map{|d| [d[:data_details][:nmi],d[:data_details][:nmi_suffix].upcase,d[:data_details][:uom],d[:datetime],d[:value],d[:flag]]}
+      values = @interval_data.map do |d|
+        uom = UOM[UOM_NON_SPEC_MAPPING[d[:data_details][:uom].upcase]]
+        multiplier = uom.nil? ? 1 : uom[:multiplier]/(1e3)
+        
+        [d[:data_details][:nmi],d[:data_details][:nmi_suffix].upcase,d[:data_details][:uom],d[:datetime],d[:value]*multiplier,d[:flag]]
+      end
       values
     end
     
