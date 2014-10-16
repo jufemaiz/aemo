@@ -474,9 +474,8 @@ module AEMO
     def to_a
       values = @interval_data.map do |d|
         uom = UOM[UOM_NON_SPEC_MAPPING[d[:data_details][:uom].upcase]]
-        multiplier = uom.nil? ? 1 : uom[:multiplier]/(1e3)
         
-        [d[:data_details][:nmi],d[:data_details][:nmi_suffix].upcase,d[:data_details][:uom],d[:datetime],d[:value]*multiplier,d[:flag]]
+        [d[:data_details][:nmi],d[:data_details][:nmi_suffix].upcase,d[:data_details][:uom],d[:datetime],d[:value],d[:flag]]
       end
       values
     end
