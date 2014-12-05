@@ -344,7 +344,6 @@ module AEMO
       }
     ]
     
-    
     attr_accessor :region
 
     def initialize(nmi)
