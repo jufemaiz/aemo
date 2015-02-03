@@ -3,16 +3,15 @@ $:.push File.expand_path('../lib', __FILE__)
 
 Gem::Specification.new do |s|
   s.name        = 'aemo'
-  s.version     = '0.1.1'
+  s.version     = '0.1.2'
   s.platform    = Gem::Platform::RUBY
   s.date        = '2014-08-19'
   s.summary     = 'AEMO Gem'
   s.description = 'Gem providing functionality for the Australian Energy Market Operator data'
   s.authors     = ['Joel Courtney']
   s.email       = ['jcourtney@cozero.com.au']
-  s.homepage    =
-    'https://bitbucket.org/jufemaiz/aemo-gem'
-  s.license       = 'MIT'
+  s.homepage    = 'https://github.com/jufemaiz/aemo'
+  s.license     = 'MIT'
   
   s.required_ruby_version     = '>= 1.9.3'
 
