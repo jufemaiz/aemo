@@ -1,0 +1,4 @@
+# Ignore Stuff
+
+# Don't include gems in the repository
+*.gem
