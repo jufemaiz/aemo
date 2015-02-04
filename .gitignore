@@ -2,3 +2,5 @@
 
 # Don't include gems in the repository
 *.gem
+# Or documentation
+.yardoc/

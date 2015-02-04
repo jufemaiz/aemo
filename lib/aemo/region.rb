@@ -1,12 +1,16 @@
 module AEMO
   class Region
+    
+    # Regions under juristiction
     REGIONS = {
       'ACT' => 'Australian Capital Territory',
       'NSW' => 'New South Wales',
       'QLD' => 'Queensland',
       'SA'  => 'South Australia',
       'TAS' => 'Tasmania',
-      'VIC' => 'Victoria'
+      'VIC' => 'Victoria',
+      'NT'  => 'Northern Territory',
+      'WA'  => 'Western Australia'
     }
     
     attr_accessor :region
