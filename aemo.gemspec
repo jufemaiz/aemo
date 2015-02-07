@@ -3,9 +3,9 @@ $:.push File.expand_path('../lib', __FILE__)
 
 Gem::Specification.new do |s|
   s.name        = 'aemo'
-  s.version     = '0.1.2'
+  s.version     = '0.1.3'
   s.platform    = Gem::Platform::RUBY
-  s.date        = '2014-08-19'
+  s.date        = '2015-02-07'
   s.summary     = 'AEMO Gem'
   s.description = 'Gem providing functionality for the Australian Energy Market Operator data'
   s.authors     = ['Joel Courtney']

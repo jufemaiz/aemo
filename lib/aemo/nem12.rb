@@ -359,7 +359,21 @@ module AEMO
         end
       end
       
-      base_interval = { :data_details => @data_details.last, :datetime => Time.parse("#{csv[1]}000000+1000"), :value => nil, :flag => nil}
+      # Deal with flags if necessary
+      flag = nil
+      # Based on QualityMethod and ReasonCode
+      if csv[intervals_offset + 0].length == 3 || !csv[intervals_offset + 1].nil?
+        flag ||= { quality_flag: nil, method_flag: nil, reason_code: nil }
+        if csv[intervals_offset + 0].length == 3
+          flag[:quality_flag] = csv[intervals_offset + 0][0]
+          flag[:method_flag] = csv[intervals_offset + 0][1,2]
+        end
+        unless csv[intervals_offset + 1].nil?
+          flag[:reason_code] = csv[intervals_offset + 1]
+        end
+      end
+      
+      base_interval = { :data_details => @data_details.last, :datetime => Time.parse("#{csv[1]}000000+1000"), :value => nil, :flag => flag}
       intervals = []
       (2..(number_of_intervals+1)).each do |i|
         interval = base_interval.dup
