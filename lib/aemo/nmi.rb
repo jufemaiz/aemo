@@ -1,4 +1,5 @@
 require 'csv'
+require 'json'
 require 'time'
 module AEMO
   # AEMO::NMI acts as an object to simplify access to data and information about a NMI and provide verification of the NMI value
@@ -384,11 +385,21 @@ module AEMO
         ]
       }
     }
+    # Transmission Node Identifier Codes are loaded from a json file
+    #  Obtained from http://www.nemweb.com.au/
+    #  
+    #  See /lib/data for further data manipulation required
+    TNI_CODES = JSON.parse(File.read(File.join(File.dirname(__FILE__),'..','data','aemo-tni.json')))
+    # Distribution Loss Factor Codes are loaded from a json file
+    #  Obtained from MSATS, matching to DNSP from file http://www.aemo.com.au/Electricity/Market-Operations/Loss-Factors-and-Regional-Boundaries/~/media/Files/Other/loss%20factors/DLF_FINAL_V2_2014_2015.ashx
+    #  Last accessed 2015-02-06
+    #  See /lib/data for further data manipulation required
+    DLF_CODES = JSON.parse(File.read(File.join(File.dirname(__FILE__),'..','data','aemo-dlf.json')))
     
+    # [String] National Meter Identifier
     @nmi              = nil
     
     attr_accessor :nmi
-    # attr_reader   :data_details, :interval_data, :interval_events
     
     # Initialize a NEM12 file
     #
@@ -398,7 +409,7 @@ module AEMO
     def initialize(nmi,options={})
       raise ArgumentError.new("NMI is not a string") unless nmi.is_a?(String)
       raise ArgumentError.new("NMI is not 10 characters") unless nmi.length == 10
-      raise ArgumentError.new("NMI is not constructed with valid characters") unless AEMO::NMI.nmi_valid?(nmi)
+      raise ArgumentError.new("NMI is not constructed with valid characters") unless AEMO::NMI.valid_nmi?(nmi)
       
       @nmi              = nmi
     end
@@ -407,7 +418,7 @@ module AEMO
     #
     # @return [Boolean] whether or not the nmi is valid
     def valid_nmi?
-      AEMO::NMI.nmi_valid?(@nmi)
+      AEMO::NMI.valid_nmi?(@nmi)
     end
   
     # Find the Network of NMI
@@ -447,7 +458,7 @@ module AEMO
     # @param nmi [String] the nmi to be checked
     # @return [Boolean] whether or not the nmi is valid
     def self.valid_nmi?(nmi)
-      (nmi.length == 10) && nmi.match(/^([A-HJ-MP-Z\d]{10})/)
+      ((nmi.length == 10) && !nmi.match(/^([A-HJ-NP-Z\d]{10})/).nil?)
     end
 
     # A function to calculate the checksum value for a given National Meter Identifier
@@ -456,8 +467,8 @@ module AEMO
     # @param checksum_value [Integer] the checksum value to check against the current National Meter Identifier's checksum value
     # @return [Boolean] whether or not the checksum is valid
     def self.valid_checksum?(nmi,checksum_value)
-      nmi = new AEMO::NMI(nmi)
-      nmi.checksum_valid?(checksum_value)
+      nmi = AEMO::NMI.new(nmi)
+      nmi.valid_checksum?(checksum_value)
     end
   
     # Find the Network for a given NMI
@@ -467,7 +478,7 @@ module AEMO
     def self.network(nmi)
       network = nil
       AEMO::NMI::NMI_ALLOCATIONS.each_pair do |identifier, details|
-        detail[:includes].each do |pattern|
+        details[:includes].each do |pattern|
           if nmi.match(pattern)
             network = { identifier => details }
             break

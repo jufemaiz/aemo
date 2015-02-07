@@ -31,7 +31,6 @@ describe AEMO::NEM12 do
   describe '.parse_nem12_file' do
     it 'should parse a file' do
       Dir.entries(File.join(File.dirname(__FILE__),'..','fixtures','NEM12')).reject{|f| %w(. .. .DS_Store).include?(f)}.each do |file|
-        puts file
         nem12 = AEMO::NEM12.parse_nem12_file(File.join(File.dirname(__FILE__),'..','fixtures','NEM12',file))
       end
     end

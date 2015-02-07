@@ -6,15 +6,24 @@ require 'csv'
 @files = Dir.entries(@path).reject{|f| %w(. ..).include?(f)}
 
 @mlf_data = {}
+@dlf_data = {}
 
 # Let's get the CSV Data first
-CSV.open(File.join(@path,"TNI-MLF-Codes.csv"), headers: true, converters: :numeric).each do |row|
+
+# TNI to MLF
+CSV.open(File.join(@path,"tni-mlf-codes.csv"), headers: true, converters: :numeric).each do |row|
   @mlf_data[row["TNI"]] ||= { location: row['Location'], voltage: row['Voltage'], loss_factors: [] }
   @mlf_data[row["TNI"]][:loss_factors] << { start: Date.parse('2014-07-01'), finish: Date.parse('2015-06-30'), value: row['FY15']}
   @mlf_data[row["TNI"]][:loss_factors] << { start: Date.parse('2013-07-01'), finish: Date.parse('2014-06-30'), value: row['FY14']}
 end
 
-# Let's do TNI First
+# TNI to MLF
+CSV.open(File.join(@path,"aemo-dlf-dnsp.csv"), headers: true, converters: :numeric).each do |row|
+  @dlf_data[row["dlf_code"]] ||= row['nsp_code']
+end
+
+
+# Now to create the DLF and TNI output JSON files for use
 @files.select{|x| ['aemo-tni.xml','aemo-dlf.xml'].include?(x) }.each do |file|
   output_file = file.gsub('.xml','.json')
   output_data = {}
@@ -32,6 +41,8 @@ end
     end
     if file.match(/tni/)
       output_data_instance[:mlf_data] = @mlf_data[code]
+    elsif file.match(/dlf/)
+      output_data_instance[:nsp_code] = @dlf_data[code]
     end
     output_data[code] << output_data_instance
   end
