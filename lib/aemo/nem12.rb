@@ -51,6 +51,32 @@ module AEMO
       'pf'    => { :name => 'Power Factor', :multiplier => 1 }
     }
     
+    UOM_NON_SPEC_MAPPING = {
+      'MWH'   => 'MWh',
+      'KWH'   => 'kWh',
+      'WH'    => 'Wh',
+      'MW'    => 'MW',
+      'KW'    => 'kW',
+      'W'     => 'W',
+      'MVARH' => 'MVArh',
+      'KVARH' => 'kVArh',
+      'VARH'  => 'VArh',
+      'MVAR'  => 'MVAr',
+      'KVAR'  => 'kVAr',
+      'VAR'   => 'VAr',
+      'MVAH'  => 'MVAh',
+      'KVAH'  => 'kVAh',
+      'VAH'   => 'VAh',
+      'MVA'   => 'MVA',
+      'KVA'   => 'kVA',
+      'VA'    => 'VA',
+      'KV'    => 'kV',
+      'V'     => 'V',
+      'KA'    => 'kA',
+      'A'     => 'A',
+      'PF'    => 'pf'
+    }
+    
     QUALITY_FLAGS = {
       'A'     => 'Actual Data',
       'E'     => 'Forward Estimated Data',
@@ -373,7 +399,8 @@ module AEMO
         end
       end
       
-      base_interval = { :data_details => @data_details.last, :datetime => Time.parse("#{csv[1]}000000+1000"), :value => nil, :flag => flag}
+      base_interval = { data_details: @data_details.last, datetime: Time.parse("#{csv[1]}000000+1000"), value: nil, flag: flag}
+
       intervals = []
       (2..(number_of_intervals+1)).each do |i|
         interval = base_interval.dup
@@ -445,9 +472,24 @@ module AEMO
     def parse_nem12_900(line,options={})
     end
     
+    # Turns the flag to a string
+    #
+    # @param [Hash] the object of a flag
+    # @return [String] a hyphenated string for the flag
+    def flag_to_s(flag)
+      flag_to_s = []
+      unless flag.nil?
+        flag_to_s << QUALITY_FLAGS[flag[:quality_flag]]
+        flag_to_s << METHOD_FLAGS[flag[:method_flag]]
+        flag_to_s << REASON_CODES[flag[:reason_code]]
+      end
+      flag_to_s.join(" - ")
+    end
+
     # @return [Array] array of a NEM12 file a given Meter + Data Stream for easy reading
     def to_a
       values = @interval_data.map do |d|
+        uom = UOM[UOM_NON_SPEC_MAPPING[d[:data_details][:uom].upcase]]
         [ d[:data_details][:nmi],
           d[:data_details][:nmi_suffix].upcase,
           d[:data_details][:uom],
@@ -458,21 +500,9 @@ module AEMO
       values
     end
     
-    # Turns the flag to a string
-    def flag_to_s(flag)
-      flag_to_s = []
-      unless flag.nil?
-        flag_to_s << QUALITY_FLAGS[flag[:quality_flag]]
-        flag_to_s << METHOD_FLAGS[flag[:method_flag]]
-        flag_to_s << REASON_CODES[flag[:reason_code]]
-      end
-      flag_to_s.join(" - ")
-    end
-    
-    
     # @return [Array] CSV of a NEM12 file a given Meter + Data Stream for easy reading
     def to_csv
-      headers = ['nmi','suffix','units','datetime','value']
+      headers = ['nmi','suffix','units','datetime','value','flags']
       ([headers]+self.to_a.map{|row| row[3]=row[3].strftime("%Y%m%d%H%M%S%z"); row}).map{|row| row.join(',')}.join("\n")
     end
     

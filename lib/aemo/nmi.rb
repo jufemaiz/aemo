@@ -4,7 +4,17 @@ require 'time'
 module AEMO
   # AEMO::NMI acts as an object to simplify access to data and information about a NMI and provide verification of the NMI value
   class NMI
-    
+    # Operational Regions for the NMI
+    REGIONS = {
+      'ACT' => 'Australian Capital Territory',
+      'NSW' => 'New South Wales',
+      'QLD' => 'Queensland',
+      'SA'  => 'South Australia',
+      'TAS' => 'Tasmania',
+      'VIC' => 'Victoria',
+      'WA'  => 'Western Australia',
+      'NT'  => 'Northern Territory'
+    }
     # NMI_ALLOCATIONS as per AEMO Documentation at http://aemo.com.au/Electricity/Policies-and-Procedures/Retail-and-Metering/~/media/Files/Other/Retail%20and%20Metering/NMI_Allocation_List_v7_June_2012.ashx
     #   Last accessed 2015-02-04
     NMI_ALLOCATIONS = {
@@ -399,7 +409,7 @@ module AEMO
     # [String] National Meter Identifier
     @nmi              = nil
     
-    attr_accessor :nmi
+    attr_accessor :nmi, :region
     
     # Initialize a NEM12 file
     #
@@ -488,6 +498,14 @@ module AEMO
       network
     end
 
+  end
+  
+  # ######### #
+    protected
+  # ######### #
+
+  def is_valid_region?(region)
+    REGIONS.keys.include?(region)
   end
 
 end
