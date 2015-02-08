@@ -445,6 +445,37 @@ module AEMO
     def parse_nem12_900(line,options={})
     end
     
+    # @return [Array] array of a NEM12 file a given Meter + Data Stream for easy reading
+    def to_a
+      values = @interval_data.map do |d|
+        [ d[:data_details][:nmi],
+          d[:data_details][:nmi_suffix].upcase,
+          d[:data_details][:uom],
+          d[:datetime],
+          d[:value],
+          flag_to_s(d[:flag])]
+      end
+      values
+    end
+    
+    # Turns the flag to a string
+    def flag_to_s(flag)
+      flag_to_s = []
+      unless flag.nil?
+        flag_to_s << QUALITY_FLAGS[flag[:quality_flag]]
+        flag_to_s << METHOD_FLAGS[flag[:method_flag]]
+        flag_to_s << REASON_CODES[flag[:reason_code]]
+      end
+      flag_to_s.join(" - ")
+    end
+    
+    
+    # @return [Array] CSV of a NEM12 file a given Meter + Data Stream for easy reading
+    def to_csv
+      headers = ['nmi','suffix','units','datetime','value']
+      ([headers]+self.to_a.map{|row| row[3]=row[3].strftime("%Y%m%d%H%M%S%z"); row}).map{|row| row.join(',')}.join("\n")
+    end
+    
     # @param nmi [String] a NMI that is to be checked for validity
     # @return [Boolean] determines if the NMI is valid
     def self.valid_nmi?(nmi)
@@ -457,18 +488,6 @@ module AEMO
       parse_nem12(File.read(path_to_file),strict)
     end
         
-    # @return [Array] array of a NEM12 file a given Meter + Data Stream for easy reading
-    def to_a
-      values = @interval_data.map{|d| [d[:data_details][:nmi],d[:data_details][:nmi_suffix].upcase,d[:data_details][:uom],d[:datetime],d[:value],d[:flag]]}
-      values
-    end
-    
-    # @return [Array] CSV of a NEM12 file a given Meter + Data Stream for easy reading
-    def to_csv
-      headers = ['nmi','suffix','units','datetime','value']
-      ([headers]+self.to_a.map{|row| row[3]=row[3].strftime("%Y%m%d%H%M%S%z"); row}).map{|row| row.join(',')}.join("\n")
-    end
-    
     # @param contents [String] the path to a file
     # @return [Array[AEMO::NEM12]] An array of NEM12 objects
     def self.parse_nem12(contents, strict=false)
