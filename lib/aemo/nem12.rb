@@ -480,7 +480,7 @@ module AEMO
       flag_to_s = []
       unless flag.nil?
         flag_to_s << QUALITY_FLAGS[flag[:quality_flag]]
-        flag_to_s << METHOD_FLAGS[flag[:method_flag]]
+        flag_to_s << METHOD_FLAGS[flag[:method_flag]][:short_descriptor]
         flag_to_s << REASON_CODES[flag[:reason_code]]
       end
       flag_to_s.join(" - ")
