@@ -407,9 +407,20 @@ module AEMO
     DLF_CODES = JSON.parse(File.read(File.join(File.dirname(__FILE__),'..','data','aemo-dlf.json')))
     
     # [String] National Meter Identifier
-    @nmi              = nil
+    @nmi                          = nil
+    @msats_detail                 = nil
+    @tni                          = nil
+    @dlf                          = nil
+    @customer_classification_code = nil
+    @customer_threshold_code      = nil
+    @jurisdiction_code            = nil
+    @classification_code          = nil
+    @status                       = nil
+    @address                      = nil
+    @meters                       = {}
+    @roles                        = {}
     
-    attr_accessor :nmi, :region
+    attr_accessor :nmi, :msats_detail, :tni, :dlf
     
     # Initialize a NEM12 file
     #
@@ -462,6 +473,55 @@ module AEMO
       checksum = (10 - (summation % 10)) % 10
       checksum
     end
+    
+    # 
+    #
+    # @return [Hash] MSATS NMI Detail data
+    def raw_msats_nmi_detail
+      raise ArgumentError, 'MSATS has no authentication credentials' unless ::MSATS.can_authenticate?
+      
+      ::MSATS.nmi_detail(@nmi)
+    end
+    
+    #
+    #
+    # @return [self] returns self
+    def update_from_msats
+      # Update local cache
+      @msats_detail = raw_msats_nmi_detail
+      # Set the details
+      @tni                          = self.msats_nmi_detail['MasterData']['TransmissionNodeIdentifier']
+      @dlf                          = self.msats_nmi_detail['MasterData']['DistributionLossFactorCode']
+      @customer_classification_code = self.msats_nmi_detail['MasterData']['CustomerClassificationCode']
+      @customer_threshold_code      = self.msats_nmi_detail['MasterData']['CustomerThresholdCode']
+      @jurisdiction_code            = self.msats_nmi_detail['MasterData']['JurisdictionCode']
+      @classification_code          = self.msats_nmi_detail['MasterData']['NMIClassificationCode']
+      @status                       = self.msats_nmi_detail['MasterData']['Status']
+      @address                      = self.msats_nmi_detail['MasterData']['Address']
+      # Meters
+      @msats_detail['MeterRegister']['Meter'].select{|x| !x['Status'].nil? }.each do |meter|
+        @meters[meter['SerialNumber']] = OpenStruct.new(status: meter['Status'], installation_type_code: meter['InstallationTypeCode'], next_scheduled_read_date: meter['NextScheduledReadDate'], registers: [])
+      end
+      @msats_detail['MeterRegister']['Meter'].select{|x| x['Status'].nil? }.each do |registers|
+        register = OpenStruct.new(
+          controlled_load: (registers['RegisterConfiguration']['Register']['ControlledLoad'] == 'Y'),
+          dial_format: registers['RegisterConfiguration']['Register']['DialFormat'],
+          multiplier: registers['RegisterConfiguration']['Register']['Multiplier'],
+          network_tariff_code: registers['RegisterConfiguration']['Register']['NetworkTariffCode'],
+          register_id: registers['RegisterConfiguration']['Register']['RegisterID'],
+          status: registers['RegisterConfiguration']['Register']['Status'],
+          time_of_day: registers['RegisterConfiguration']['Register']['TimeOfDay'],
+          unit_of_measurement: registers['RegisterConfiguration']['Register']['UnitOfMeasurement']
+        )
+        @meters[registers['SerialNumber']].registers << register
+      end
+      # Roles
+      @msats_detail['RoleAssignments']['RoleAssignment'].each do |role|
+        @roles[role['Role']] = role['Party']
+      end
+
+      self
+    end
   
     # A function to validate the NMI provided
     #
@@ -498,14 +558,14 @@ module AEMO
       network
     end
 
+    # ######### #
+      protected
+    # ######### #
+
+    def is_valid_region?(region)
+      REGIONS.keys.include?(region)
+    end
+
   end
   
-  # ######### #
-    protected
-  # ######### #
-
-  def is_valid_region?(region)
-    REGIONS.keys.include?(region)
-  end
-
 end
