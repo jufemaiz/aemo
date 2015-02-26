@@ -1,6 +1,7 @@
 require 'csv'
 require 'json'
 require 'time'
+require 'ostruct'
 module AEMO
   # AEMO::NMI acts as an object to simplify access to data and information about a NMI and provide verification of the NMI value
   class NMI
@@ -417,10 +418,11 @@ module AEMO
     @classification_code          = nil
     @status                       = nil
     @address                      = nil
-    @meters                       = {}
-    @roles                        = {}
+    @meters                       = nil
+    @roles                        = nil
+    @data_streams                 = nil
     
-    attr_accessor :nmi, :msats_detail, :tni, :dlf
+    attr_accessor :nmi, :msats_detail, :tni, :dlf, :customer_classification_code, :customer_threshold_code, :jurisdiction_code, :classification_code, :status, :address, :meters, :roles, :data_streams
     
     # Initialize a NEM12 file
     #
@@ -433,6 +435,9 @@ module AEMO
       raise ArgumentError.new("NMI is not constructed with valid characters") unless AEMO::NMI.valid_nmi?(nmi)
       
       @nmi              = nmi
+      @meters           = []
+      @roles            = {}
+      @data_streams     = []
     end
 
     # A function to validate the instance's nmi value
@@ -474,53 +479,113 @@ module AEMO
       checksum
     end
     
-    # 
+    # Provided MSATS is configured, gets the MSATS data for the NMI
     #
     # @return [Hash] MSATS NMI Detail data
     def raw_msats_nmi_detail
-      raise ArgumentError, 'MSATS has no authentication credentials' unless ::MSATS.can_authenticate?
+      raise ArgumentError, 'MSATS has no authentication credentials' unless AEMO::MSATS.can_authenticate?
       
-      ::MSATS.nmi_detail(@nmi)
+      AEMO::MSATS.nmi_detail(@nmi)
     end
     
-    #
+    # Provided MSATS is configured, uses the raw MSATS data to augment NMI information
     #
     # @return [self] returns self
-    def update_from_msats
+    def update_from_msats!
       # Update local cache
       @msats_detail = raw_msats_nmi_detail
       # Set the details
-      @tni                          = self.msats_nmi_detail['MasterData']['TransmissionNodeIdentifier']
-      @dlf                          = self.msats_nmi_detail['MasterData']['DistributionLossFactorCode']
-      @customer_classification_code = self.msats_nmi_detail['MasterData']['CustomerClassificationCode']
-      @customer_threshold_code      = self.msats_nmi_detail['MasterData']['CustomerThresholdCode']
-      @jurisdiction_code            = self.msats_nmi_detail['MasterData']['JurisdictionCode']
-      @classification_code          = self.msats_nmi_detail['MasterData']['NMIClassificationCode']
-      @status                       = self.msats_nmi_detail['MasterData']['Status']
-      @address                      = self.msats_nmi_detail['MasterData']['Address']
+      @tni                          = @msats_detail['MasterData']['TransmissionNodeIdentifier']
+      @dlf                          = @msats_detail['MasterData']['DistributionLossFactorCode']
+      @customer_classification_code = @msats_detail['MasterData']['CustomerClassificationCode']
+      @customer_threshold_code      = @msats_detail['MasterData']['CustomerThresholdCode']
+      @jurisdiction_code            = @msats_detail['MasterData']['JurisdictionCode']
+      @classification_code          = @msats_detail['MasterData']['NMIClassificationCode']
+      @status                       = @msats_detail['MasterData']['Status']
+      @address                      = @msats_detail['MasterData']['Address']
+      @meters                       ||= []
+      @roles                        ||= {}
+      @data_streams                 ||= []
       # Meters
-      @msats_detail['MeterRegister']['Meter'].select{|x| !x['Status'].nil? }.each do |meter|
-        @meters[meter['SerialNumber']] = OpenStruct.new(status: meter['Status'], installation_type_code: meter['InstallationTypeCode'], next_scheduled_read_date: meter['NextScheduledReadDate'], registers: [])
-      end
-      @msats_detail['MeterRegister']['Meter'].select{|x| x['Status'].nil? }.each do |registers|
-        register = OpenStruct.new(
-          controlled_load: (registers['RegisterConfiguration']['Register']['ControlledLoad'] == 'Y'),
-          dial_format: registers['RegisterConfiguration']['Register']['DialFormat'],
-          multiplier: registers['RegisterConfiguration']['Register']['Multiplier'],
-          network_tariff_code: registers['RegisterConfiguration']['Register']['NetworkTariffCode'],
-          register_id: registers['RegisterConfiguration']['Register']['RegisterID'],
-          status: registers['RegisterConfiguration']['Register']['Status'],
-          time_of_day: registers['RegisterConfiguration']['Register']['TimeOfDay'],
-          unit_of_measurement: registers['RegisterConfiguration']['Register']['UnitOfMeasurement']
-        )
-        @meters[registers['SerialNumber']].registers << register
+      unless @msats_detail['MeterRegister'].nil?
+        meters = @msats_detail['MeterRegister']['Meter']
+        meters = [meters] if meters.is_a?(Hash)
+        meters.select{|x| !x['Status'].nil? }.each do |meter|
+          @meters << OpenStruct.new(
+            status: meter['Status'],
+            installation_type_code: meter['InstallationTypeCode'],
+            next_scheduled_read_date: meter['NextScheduledReadDate'],
+            read_type_code: meter['ReadTypeCode'],
+            registers: [],
+            serial_number: meter['SerialNumber']
+          )
+        end
+        meters.select{|x| x['Status'].nil? }.each do |registers|
+          m = @meters.find{|x| x.serial_number == registers['SerialNumber']}
+          m.registers << register = OpenStruct.new(
+            controlled_load: (registers['RegisterConfiguration']['Register']['ControlledLoad'] == 'Y'),
+            dial_format: registers['RegisterConfiguration']['Register']['DialFormat'],
+            multiplier: registers['RegisterConfiguration']['Register']['Multiplier'],
+            network_tariff_code: registers['RegisterConfiguration']['Register']['NetworkTariffCode'],
+            register_id: registers['RegisterConfiguration']['Register']['RegisterID'],
+            status: registers['RegisterConfiguration']['Register']['Status'],
+            time_of_day: registers['RegisterConfiguration']['Register']['TimeOfDay'],
+            unit_of_measure: registers['RegisterConfiguration']['Register']['UnitOfMeasure']
+          )
+        end
       end
       # Roles
-      @msats_detail['RoleAssignments']['RoleAssignment'].each do |role|
-        @roles[role['Role']] = role['Party']
+      unless @msats_detail['RoleAssignments'].nil?
+        role_assignments = @msats_detail['RoleAssignments']['RoleAssignment']
+        role_assignments = [role_assignments] if role_assignments.is_a?(Hash)
+        role_assignments.each do |role|
+          @roles[role['Role']] = role['Party']
+        end
       end
-
+      # DataStreams
+      unless @msats_detail['DataStreams'].nil?
+        data_streams = @msats_detail['DataStreams']['DataStream']
+        data_streams = [data_streams] if data_streams.is_a?(Hash) # Deal with issue of only one existing
+        data_streams.each do |stream|
+          @data_streams << OpenStruct.new(suffix: stream['Suffix'], profile_name: stream['ProfileName'],averaged_daily_load: stream['AveragedDailyLoad'], data_stream_type: stream['DataStreamType'],status: stream['Status'])
+        end
+      end
       self
+    end
+
+    # Returns a nice address from the structured one AEMO sends us
+    #
+    # @return [String]
+    def friendly_address
+      friendly_address = ''
+      if @address.is_a?(Hash)
+        friendly_address = @nmi.address.values.map{|x| x.is_a?(Hash) ? x.values.map{|y| y.is_a?(Hash) ? y.values.join(" ") : y }.join(" ") : x }.join(", ")
+      end
+      friendly_address
+    end
+
+    # Returns the meter OpenStructs for the requested status (C/R)
+    #
+    # @param status [String] the stateus [C|R]
+    # @return [Array<OpenStruct>] Returns an array of OpenStructs for Meters with the status provided
+    def meters_by_status(status = 'C')
+      @meters.select{|x| x.status == "#{status}"}
+    end
+  
+    # Returns the data_stream OpenStructs for the requested status (A/I)
+    #
+    # @param status [String] the stateus [A|I]
+    # @return [Array<OpenStruct>] Returns an array of OpenStructs for the current Meters
+    def data_streams_by_status(state = 'A')
+      @data_streams.select{|x| x.status == "#{status}"}
+    end
+  
+    # The current daily load
+    #
+    # @return [Integer] the current daily load for the meter
+    def current_daily_load
+      active_data_streams = data_streams_by_status()
+      current_daily_load = 0 + data_streams_by_status.map{|x| x.averaged_daily_load.to_i }.reduce(:+)
     end
   
     # A function to validate the NMI provided
