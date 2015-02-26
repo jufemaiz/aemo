@@ -576,7 +576,7 @@ module AEMO
     #
     # @param status [String] the stateus [A|I]
     # @return [Array<OpenStruct>] Returns an array of OpenStructs for the current Meters
-    def data_streams_by_status(state = 'A')
+    def data_streams_by_status(status = 'A')
       @data_streams.select{|x| x.status == "#{status}"}
     end
   
