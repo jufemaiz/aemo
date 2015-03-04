@@ -3,7 +3,7 @@ $:.push File.expand_path('../lib', __FILE__)
 
 Gem::Specification.new do |s|
   s.name        = 'aemo'
-  s.version     = '0.1.8'
+  s.version     = '0.1.10'
   s.platform    = Gem::Platform::RUBY
   s.date        = '2015-02-26'
   s.summary     = 'AEMO Gem'

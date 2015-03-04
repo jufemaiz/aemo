@@ -87,36 +87,36 @@ module AEMO
     }
     
     METHOD_FLAGS = {
-      "11" => { type: ["SUB"], installation_type: [1,2,3,4], short_descriptor: "Check", description: "" },
-      "12" => { type: ["SUB"], installation_type: [1,2,3,4], short_descriptor: "Calculated", description: "" },
-      "13" => { type: ["SUB"], installation_type: [1,2,3,4], short_descriptor: "SCADA", description: "" },
-      "14" => { type: ["SUB"], installation_type: [1,2,3,4], short_descriptor: "Like Day", description: "" },
-      "15" => { type: ["SUB"], installation_type: [1,2,3,4], short_descriptor: "Average Like Day", description: "" },
-      "16" => { type: ["SUB"], installation_type: [1,2,3,4], short_descriptor: "Agreed", description: "" },
-      "17" => { type: ["SUB"], installation_type: [1,2,3,4], short_descriptor: "Linear", description: "" },
-      "18" => { type: ["SUB"], installation_type: [1,2,3,4], short_descriptor: "Alternate", description: "" },
-      "19" => { type: ["SUB"], installation_type: [1,2,3,4], short_descriptor: "Zero", description: "" },
-      "51" => { type: ["EST","SUB"], installation_type: 5, short_descriptor: "Previous Year", description: "" },
-      "52" => { type: ["EST","SUB"], installation_type: 5, short_descriptor: "Previous Read", description: "" },
-      "53" => { type: ["SUB"], installation_type: 5, short_descriptor: "Revision", description: "" },
-      "54" => { type: ["SUB"], installation_type: 5, short_descriptor: "Linear", description: "" },
-      "55" => { type: ["SUB"], installation_type: 5, short_descriptor: "Agreed", description: "" },
-      "56" => { type: ["EST","SUB"], installation_type: 5, short_descriptor: "Prior to First Read – Agreed", description: "" },
-      "57" => { type: ["EST","SUB"], installation_type: 5, short_descriptor: "Customer Class", description: "" },
-      "58" => { type: ["EST","SUB"], installation_type: 5, short_descriptor: "Zero", description: "" },
-      "61" => { type: ["EST","SUB"], installation_type: 6, short_descriptor: "Previous Year", description: "" },
-      "62" => { type: ["EST","SUB"], installation_type: 6, short_descriptor: "Previous Read", description: "" },
-      "63" => { type: ["EST","SUB"], installation_type: 6, short_descriptor: "Customer Class", description: "" },
-      "64" => { type: ["SUB"], installation_type: 6, short_descriptor: "Agreed", description: "" },
-      "65" => { type: ["EST"], installation_type: 6, short_descriptor: "ADL", description: "" },
-      "66" => { type: ["SUB"], installation_type: 6, short_descriptor: "Revision", description: "" },
-      "67" => { type: ["SUB"], installation_type: 6, short_descriptor: "Customer Read", description: "" },
-      "68" => { type: ["EST","SUB"], installation_type: 6, short_descriptor: "Zero", description: "" },
-      "71" => { type: ["SUB"], installation_type: 7, short_descriptor: "Recalculation", description: "" },
-      "72" => { type: ["SUB"], installation_type: 7, short_descriptor: "Revised Table", description: "" },
-      "73" => { type: ["SUB"], installation_type: 7, short_descriptor: "Revised Algorithm", description: "" },
-      "74" => { type: ["SUB"], installation_type: 7, short_descriptor: "Agreed", description: "" },
-      "75" => { type: ["EST"], installation_type: 7, short_descriptor: "Existing Table", description: "" }
+      11 => { type: ["SUB"], installation_type: [1,2,3,4], short_descriptor: "Check", description: "" },
+      12 => { type: ["SUB"], installation_type: [1,2,3,4], short_descriptor: "Calculated", description: "" },
+      13 => { type: ["SUB"], installation_type: [1,2,3,4], short_descriptor: "SCADA", description: "" },
+      14 => { type: ["SUB"], installation_type: [1,2,3,4], short_descriptor: "Like Day", description: "" },
+      15 => { type: ["SUB"], installation_type: [1,2,3,4], short_descriptor: "Average Like Day", description: "" },
+      16 => { type: ["SUB"], installation_type: [1,2,3,4], short_descriptor: "Agreed", description: "" },
+      17 => { type: ["SUB"], installation_type: [1,2,3,4], short_descriptor: "Linear", description: "" },
+      18 => { type: ["SUB"], installation_type: [1,2,3,4], short_descriptor: "Alternate", description: "" },
+      19 => { type: ["SUB"], installation_type: [1,2,3,4], short_descriptor: "Zero", description: "" },
+      51 => { type: ["EST","SUB"], installation_type: 5, short_descriptor: "Previous Year", description: "" },
+      52 => { type: ["EST","SUB"], installation_type: 5, short_descriptor: "Previous Read", description: "" },
+      53 => { type: ["SUB"], installation_type: 5, short_descriptor: "Revision", description: "" },
+      54 => { type: ["SUB"], installation_type: 5, short_descriptor: "Linear", description: "" },
+      55 => { type: ["SUB"], installation_type: 5, short_descriptor: "Agreed", description: "" },
+      56 => { type: ["EST","SUB"], installation_type: 5, short_descriptor: "Prior to First Read – Agreed", description: "" },
+      57 => { type: ["EST","SUB"], installation_type: 5, short_descriptor: "Customer Class", description: "" },
+      58 => { type: ["EST","SUB"], installation_type: 5, short_descriptor: "Zero", description: "" },
+      61 => { type: ["EST","SUB"], installation_type: 6, short_descriptor: "Previous Year", description: "" },
+      62 => { type: ["EST","SUB"], installation_type: 6, short_descriptor: "Previous Read", description: "" },
+      63 => { type: ["EST","SUB"], installation_type: 6, short_descriptor: "Customer Class", description: "" },
+      64 => { type: ["SUB"], installation_type: 6, short_descriptor: "Agreed", description: "" },
+      65 => { type: ["EST"], installation_type: 6, short_descriptor: "ADL", description: "" },
+      66 => { type: ["SUB"], installation_type: 6, short_descriptor: "Revision", description: "" },
+      67 => { type: ["SUB"], installation_type: 6, short_descriptor: "Customer Read", description: "" },
+      68 => { type: ["EST","SUB"], installation_type: 6, short_descriptor: "Zero", description: "" },
+      71 => { type: ["SUB"], installation_type: 7, short_descriptor: "Recalculation", description: "" },
+      72 => { type: ["SUB"], installation_type: 7, short_descriptor: "Revised Table", description: "" },
+      73 => { type: ["SUB"], installation_type: 7, short_descriptor: "Revised Algorithm", description: "" },
+      74 => { type: ["SUB"], installation_type: 7, short_descriptor: "Agreed", description: "" },
+      75 => { type: ["EST"], installation_type: 7, short_descriptor: "Existing Table", description: "" }
     }
     
     REASON_CODES = {
@@ -220,6 +220,7 @@ module AEMO
       97 => 'Excluded Data',
       98 => 'Parity Error',
       99 => 'Energy Type (Register Changed)'
+      
     }
     
     DATA_STREAM_SUFFIX = {
@@ -370,7 +371,7 @@ module AEMO
       raise ArgumentError, 'QualityMethod does not have valid QualityFlag'      unless QUALITY_FLAGS.keys.include?(csv[intervals_offset + 0][0])
       unless %w(A N V).include?(csv[intervals_offset + 0][0])
         raise ArgumentError, 'QualityMethod does not have valid length'         unless csv[intervals_offset + 0].length == 3
-        raise ArgumentError, 'QualityMethod does not have valid MethodFlag'     unless METHOD_FLAGS.keys.include?(csv[intervals_offset + 0][1..2])
+        raise ArgumentError, 'QualityMethod does not have valid MethodFlag'     unless METHOD_FLAGS.keys.include?(csv[intervals_offset + 0][1..2].to_i)
       end
       unless %w(A N E).include?(csv[intervals_offset + 0][0])
         raise ArgumentError, 'ReasonCode is not valid'      unless REASON_CODES.keys.include?(csv[intervals_offset + 1].to_i)
@@ -392,10 +393,10 @@ module AEMO
         flag ||= { quality_flag: nil, method_flag: nil, reason_code: nil }
         if csv[intervals_offset + 0].length == 3
           flag[:quality_flag] = csv[intervals_offset + 0][0]
-          flag[:method_flag] = csv[intervals_offset + 0][1,2]
+          flag[:method_flag] = csv[intervals_offset + 0][1,2].to_i
         end
         unless csv[intervals_offset + 1].nil?
-          flag[:reason_code] = csv[intervals_offset + 1]
+          flag[:reason_code] = csv[intervals_offset + 1].to_i
         end
       end
       
@@ -431,31 +432,24 @@ module AEMO
         interval_start_point = @interval_data.length - number_of_intervals
       
         # For each of these
-        base_interval_event = { datetime: nil, quality_method: csv[3], reason_code: csv[4], reason_description: csv[5] }
+        base_interval_event = { datetime: nil, quality_method: csv[3], reason_code: (csv[4].nil? ? nil : csv[4].to_i), reason_description: csv[5] }
 
         # Interval Numbers are 1-indexed
         ((csv[1].to_i)..(csv[2].to_i)).each do |i|
           interval_event = base_interval_event.dup
           interval_event[:datetime] = @interval_data[interval_start_point + (i-1)][:datetime]
           interval_events << interval_event
-          
-          method_flag = nil
-          unless (quality_method = interval_event[:quality_method].match(/(\d+)/)[1]).nil?
-            method_flag = METHOD_FLAGS[quality_method][:short_descriptor]
+          # Create flag details
+          flag ||= { quality_flag: nil, method_flag: nil, reason_code: nil }
+          unless interval_event[:quality_method].nil?
+            flag[:quality_flag] = interval_event[:quality_method][0]
+            flag[:method_flag] = interval_event[:quality_method][1,2].to_i
           end
-          reason_code = nil
-          unless (reason_code = interval_event[:reason_code]).nil?
-            reason_code = REASON_CODES[reason_code.to_i]
+          unless interval_event[:reason_code].nil?
+            flag[:reason_code] = interval_event[:reason_code]
           end
-          
-          case csv[3][0]
-          when 'E'
-            @interval_data[interval_start_point + (i-1)][:flag] = ['Estimate',method_flag,reason_code].compact.join(' - ')
-          when 'F'
-            @interval_data[interval_start_point + (i-1)][:flag] = nil
-          when 'S'
-            @interval_data[interval_start_point + (i-1)][:flag] = ['Substitute',method_flag,reason_code].compact.join(' - ')
-          end
+          # Update with flag details
+          @interval_data[interval_start_point + (i-1)][:flag] = flag
         end
         @interval_events += interval_events
       end

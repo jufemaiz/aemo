@@ -130,7 +130,7 @@ module AEMO
         state: 'QLD',
         type: 'electricity',
         includes: [
-          (/^(QBBB[A-HJ-NP-VX-Z\d][A-HJ-NP-Z\d]{5})$/),
+          (/^(QB\d{2}[A-HJ-NP-VX-Z\d][A-HJ-NP-Z\d]{5})$/),
           (/^(31\d{8})$/)
         ],
         excludes: [
