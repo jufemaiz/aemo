@@ -584,8 +584,7 @@ module AEMO
     #
     # @return [Integer] the current daily load for the meter
     def current_daily_load
-      active_data_streams = data_streams_by_status()
-      current_daily_load = 0 + data_streams_by_status.map{|x| x.averaged_daily_load.to_i }.reduce(:+)
+      data_streams_by_status().inject(0) { |sum, stream| sum += stream.averaged_daily_load.to_i }
     end
   
     # A function to validate the NMI provided
