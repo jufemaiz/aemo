@@ -469,15 +469,15 @@ module AEMO
     # Turns the flag to a string
     #
     # @param [Hash] the object of a flag
-    # @return [String] a hyphenated string for the flag
+    # @return [nil,String] a hyphenated string for the flag or nil
     def flag_to_s(flag)
       flag_to_s = []
       unless flag.nil?
-        flag_to_s << QUALITY_FLAGS[flag[:quality_flag]]
-        flag_to_s << METHOD_FLAGS[flag[:method_flag]][:short_descriptor]
-        flag_to_s << REASON_CODES[flag[:reason_code]]
+        flag_to_s << QUALITY_FLAGS[flag[:quality_flag]]                   unless QUALITY_FLAGS[flag[:quality_flag]].nil?
+        flag_to_s << METHOD_FLAGS[flag[:method_flag]][:short_descriptor]  unless METHOD_FLAGS[flag[:method_flag]].nil?
+        flag_to_s << REASON_CODES[flag[:reason_code]]                     unless REASON_CODES[flag[:reason_code]].nil?
       end
-      flag_to_s.join(" - ")
+      (flag_to_s.length > 0) ? flag_to_s.join(" - ") : nil
     end
 
     # @return [Array] array of a NEM12 file a given Meter + Data Stream for easy reading
