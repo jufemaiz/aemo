@@ -494,15 +494,17 @@ module AEMO
     def update_from_msats!
       # Update local cache
       @msats_detail = raw_msats_nmi_detail
-      # Set the details
-      @tni                          = @msats_detail['MasterData']['TransmissionNodeIdentifier']
-      @dlf                          = @msats_detail['MasterData']['DistributionLossFactorCode']
-      @customer_classification_code = @msats_detail['MasterData']['CustomerClassificationCode']
-      @customer_threshold_code      = @msats_detail['MasterData']['CustomerThresholdCode']
-      @jurisdiction_code            = @msats_detail['MasterData']['JurisdictionCode']
-      @classification_code          = @msats_detail['MasterData']['NMIClassificationCode']
-      @status                       = @msats_detail['MasterData']['Status']
-      @address                      = @msats_detail['MasterData']['Address']
+      # Set the details if there are any
+      unless @msats_detail['MasterData'].nil?
+        @tni                          = @msats_detail['MasterData']['TransmissionNodeIdentifier']
+        @dlf                          = @msats_detail['MasterData']['DistributionLossFactorCode']
+        @customer_classification_code = @msats_detail['MasterData']['CustomerClassificationCode']
+        @customer_threshold_code      = @msats_detail['MasterData']['CustomerThresholdCode']
+        @jurisdiction_code            = @msats_detail['MasterData']['JurisdictionCode']
+        @classification_code          = @msats_detail['MasterData']['NMIClassificationCode']
+        @status                       = @msats_detail['MasterData']['Status']
+        @address                      = @msats_detail['MasterData']['Address']
+      end
       @meters                       ||= []
       @roles                        ||= {}
       @data_streams                 ||= []
