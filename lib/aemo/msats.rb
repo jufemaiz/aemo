@@ -18,22 +18,21 @@ module AEMO
     include HTTParty
     # We like to debug
     # debug_output $stdout
-    
+
     # We like to SSLv3
     ssl_version :SSLv3
 
     # Where we like to party
     base_uri 'https://msats.prod.nemnet.net.au/msats/ws/'
-  
+
     def initialize(options = {})
       @@auth = {username: nil, password: nil}
-      @retailer = 'COZEROER'
 
       @@auth[:username]  = options[:username]        if options[:username].is_a?(String)
       @@auth[:password]  = options[:password]        if options[:password].is_a?(String)
       @@participant_id   = options[:participant_id]  if options[:participant_id].is_a?(String)
     end
-  
+
     # Single NMI Master (C4) Report
     # /C4/PARTICIPANT_IDENTIFIER?transactionId=XXX&nmi=XXX&checksum=X&type=XXX&reason=XXX
     #
@@ -51,10 +50,10 @@ module AEMO
       options[:participantId]   ||= nil
       options[:roleId]          ||= nil
       options[:inittransId]     ||= nil
-    
+
       query = {
         transactionId:  Digest::SHA1.hexdigest(Time.now.to_s)[0..35],
-        NMI:            nmi.nmi,      # Note: AEMO is a bunch of idiots, has case sensitivity but no consistency across requests. Muppets.
+        NMI:            nmi.nmi,      # Note: AEMO has case sensitivity but no consistency across requests.
         fromDate:       from_date,
         toDate:         to_date,
         asatDate:       as_at_date,
@@ -62,8 +61,8 @@ module AEMO
         roleId:         options[:role_id],
         inittransId:    options[:init_trans_id],
       }
-    
-      response =  self.get( "/C4/#{@@participant_id}", basic_auth: @@auth, headers: { 'Accept' => 'text/xml', 'Content-Type' => 'text/xml'}, query: query )    
+
+      response =  self.get( "/C4/#{@@participant_id}", basic_auth: @@auth, headers: { 'Accept' => 'text/xml', 'Content-Type' => 'text/xml'}, query: query )
       response.parsed_response['aseXML']['Transactions']['Transaction']['ReportResponse']['ReportResults']
     end
 
@@ -78,7 +77,7 @@ module AEMO
       response =  self.get( "/MSATSLimits/#{@@participant_id}", basic_auth: @@auth, headers: { 'Accept' => 'text/xml', 'Content-Type' => 'text/xml'}, query: query )
       response.parsed_response['aseXML']['Transactions']['Transaction']['ReportResponse']['ReportResults']
     end
-  
+
     # NMI Discovery - By Delivery Point Identifier
     #
     # @param [String] jurisdiction_code The Jurisdiction Code
@@ -88,13 +87,13 @@ module AEMO
       raise ArgumentError, 'jurisdiction_code is not valid' unless %w(ACT NEM NSW QLD SA VIC TAS).include?(jurisdiction_code)
       raise ArgumentError, 'delivery_point_identifier is not valid' unless delivery_point_identifier.respond_to?("to_i")
       raise ArgumentError, 'delivery_point_identifier is not valid' if( delivery_point_identifier.to_i < 10000000 || delivery_point_identifier.to_i > 99999999)
-    
+
       query = {
         transactionId:  Digest::SHA1.hexdigest(Time.now.to_s)[0..35],
         jurisdictionCode: jurisdiction_code,
         deliveryPointIdentifier: delivery_point_identifier.to_i
       }
-    
+
       response =  self.get( "/NMIDiscovery/#{@@participant_id}", basic_auth: @@auth, headers: { 'Accept' => 'text/xml', 'Content-Type' => 'text/xml'}, query: query )
       response.parsed_response['aseXML']['Transactions']['Transaction']['NMIDiscoveryResponse']['NMIStandingData']
     end
@@ -106,13 +105,13 @@ module AEMO
     # @return [Hash] The response
     def self.nmi_discovery_by_meter_serial_number(jurisdiction_code,meter_serial_number)
       raise ArgumentError, 'jurisdiction_code is not valid' unless %w(ACT NEM NSW QLD SA VIC TAS).include?(jurisdiction_code)
-    
+
       query = {
         transactionId:  Digest::SHA1.hexdigest(Time.now.to_s)[0..35],
         jurisdictionCode: jurisdiction_code,
         meterSerialNumber: meter_serial_number.to_i
       }
-    
+
       response = self.get( "/NMIDiscovery/#{@@participant_id}", basic_auth: @@auth, headers: { 'Accept' => 'text/xml', 'Content-Type' => 'text/xml'}, query: query )
       response.parsed_response['aseXML']['Transactions']['Transaction']['NMIDiscoveryResponse']['NMIStandingData']
     end
@@ -124,7 +123,7 @@ module AEMO
     # @return [Hash] The response
     def self.nmi_discovery_by_address(jurisdiction_code,options = {})
       raise ArgumentError, 'jurisdiction_code is not valid' unless %w(ACT NEM NSW QLD SA VIC TAS).include?(jurisdiction_code)
-    
+
       options[:building_or_property_name] ||= nil
       options[:location_descriptor] ||= nil
       options[:lot_number] ||= nil
@@ -140,7 +139,7 @@ module AEMO
       options[:suburb_or_place_or_locality] ||= nil
       options[:postcode] ||= nil
       options[:state_or_territory] ||= jurisdiction_code
-    
+
       query = {
         transactionId:  Digest::SHA1.hexdigest(Time.now.to_s)[0..35],
         jurisdictionCode: jurisdiction_code,
@@ -160,7 +159,7 @@ module AEMO
         postcode: options[:postcode],
         stateOrTerritory: options[:state_or_territory]
       }
-    
+
       response = self.get( "/NMIDiscovery/#{@@participant_id}", basic_auth: @@auth, headers: { 'Accept' => 'text/xml', 'Content-Type' => 'text/xml'}, query: query )
       response.parsed_response['aseXML']['Transactions']['Transaction']['NMIDiscoveryResponse']['NMIStandingData']
     end
@@ -175,7 +174,7 @@ module AEMO
       end
       options[:type]    ||= nil
       options[:reason]  ||= nil
-    
+
       query = {
         transactionId: Digest::SHA1.hexdigest(Time.now.to_s)[0..35],
         nmi: nmi.nmi,
@@ -183,11 +182,11 @@ module AEMO
         type: options[:type],
         reason: options[:reason]
       }
-    
+
       response = self.get( "/NMIDetail/#{@@participant_id}", basic_auth: @@auth, headers: { 'Accept' => 'text/xml', 'Content-Type' => 'text/xml'}, query: query )
       response.parsed_response['aseXML']['Transactions']['Transaction']['NMIStandingDataResponse']['NMIStandingData']
     end
-  
+
     # Participant System Status
     # /ParticipantSystemStatus/PARTICIPANT_IDENTIFIER?transactionId=XXX
     #
@@ -199,8 +198,8 @@ module AEMO
       response = self.get( "/ParticipantSystemStatus/#{@@participant_id}", basic_auth: @@auth, headers: { 'Accept' => 'text/xml', 'Content-Type' => 'text/xml'}, query: query )
       response.parsed_response['aseXML']['Transactions']['Transaction']['ReportResponse']['ReportResults']
     end
-  
-  
+
+
     # Sets the authentication credentials in a class variable.
     #
     # @param [String] email cl.ly email
@@ -210,13 +209,13 @@ module AEMO
       @@participant_id  = participant_id
       @@auth            = {username: username, password: password}
     end
-    
+
     # Check if credentials are available to use
     #
     # @return [Boolean] true/false if credentials are available
     def self.can_authenticate?
       !(@@participant_id.nil? || @@auth[:username].nil? || @@auth[:username].nil?)
     end
-    
+
   end
 end
