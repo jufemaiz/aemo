@@ -1,5 +1,6 @@
 # -*- encoding: utf-8 -*-
 $:.push File.expand_path('../lib', __FILE__)
+require 'aemo/version'
 
 Gem::Specification.new do |s|
   s.name        = 'aemo'
@@ -8,11 +9,11 @@ Gem::Specification.new do |s|
   s.date        = '2015-02-26'
   s.summary     = 'AEMO Gem'
   s.description = 'Gem providing functionality for the Australian Energy Market Operator data'
-  s.authors     = ['Joel Courtney']
-  s.email       = ['jcourtney@cozero.com.au']
+  s.authors     = ['Joel Courtney','Stuart Auld']
+  s.email       = ['jcourtney@cozero.com.au','sauld@cozero.com.au']
   s.homepage    = 'https://github.com/jufemaiz/aemo'
   s.license     = 'MIT'
-  
+
   s.required_ruby_version     = '>= 1.9.3'
 
   s.add_dependency 'json',      '~> 1.8'
