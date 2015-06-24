@@ -81,7 +81,7 @@ module AEMO
     # NMI Discovery - By Delivery Point Identifier
     #
     # @param [String] jurisdiction_code The Jurisdiction Code
-    # @param [Integer] delivery_point_identifier Delivery Point Iddentifier
+    # @param [Integer] delivery_point_identifier Delivery Point Identifier
     # @return [Hash] The response
     def self.nmi_discovery_by_delivery_point_identifier(jurisdiction_code,delivery_point_identifier)
       raise ArgumentError, 'jurisdiction_code is not valid' unless %w(ACT NEM NSW QLD SA VIC TAS).include?(jurisdiction_code)
@@ -161,7 +161,12 @@ module AEMO
       }
 
       response = self.get( "/NMIDiscovery/#{@@participant_id}", basic_auth: @@auth, headers: { 'Accept' => 'text/xml', 'Content-Type' => 'text/xml'}, query: query )
-      response.parsed_response['aseXML']['Transactions']['Transaction']['NMIDiscoveryResponse']['NMIStandingData']
+      if response.response.code == '400'
+        response
+      else
+        myresponse = response.parsed_response['aseXML']['Transactions']['Transaction']['NMIDiscoveryResponse']['NMIStandingData']
+        myresponse.is_a?(Hash)? [ myresponse ] : myresponse
+      end
     end
 
     # NMI Detail
