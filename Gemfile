@@ -1,4 +1,4 @@
-source "http://rubygems.org" do
+source "https://rubygems.org" do
   # Add dependencies required to use your gem here.
   # Example:
   #   gem "activesupport", ">= 2.3.5"
