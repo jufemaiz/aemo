@@ -3,8 +3,8 @@ source "http://rubygems.org"
 # Example:
 #   gem "activesupport", ">= 2.3.5"
 
-gem 'httparty',   '~0.13'
-gem 'json',       '~1.8'
+gem 'httparty',   '~>0.13'
+gem 'json',       '~>1.8'
 gem 'multi_xml',  '>= 0.5.2'
 gem 'coveralls', :require => false
 gem 'zip'
