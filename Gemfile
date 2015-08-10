@@ -7,6 +7,7 @@ gem 'httparty',   '~0.13'
 gem 'json',       '~1.8'
 gem 'multi_xml',  '>= 0.5.2'
 gem 'coveralls', :require => false
+gem 'zip'
 
 # Add dependencies to develop your gem here.
 # Include everything needed to run rake, tests, features, etc.
