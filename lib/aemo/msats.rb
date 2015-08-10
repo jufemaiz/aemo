@@ -1,6 +1,6 @@
 require 'httparty'
 require 'aemo'
-require 'zip'
+# require 'zip'
 require 'nokogiri'
 require 'digest/sha1'
 
@@ -63,7 +63,11 @@ module AEMO
       }
 
       response =  self.get( "/C4/#{@@participant_id}", basic_auth: @@auth, headers: { 'Accept' => 'text/xml', 'Content-Type' => 'text/xml'}, query: query )
-      response.parsed_response['aseXML']['Transactions']['Transaction']['ReportResponse']['ReportResults']
+      if response.response.code != '200'
+        response
+      else
+        response.parsed_response['aseXML']['Transactions']['Transaction']['ReportResponse']['ReportResults']
+      end
     end
 
     # MSATS Limits
@@ -75,7 +79,11 @@ module AEMO
         transactionId:  Digest::SHA1.hexdigest(Time.now.to_s)[0..35],
       }
       response =  self.get( "/MSATSLimits/#{@@participant_id}", basic_auth: @@auth, headers: { 'Accept' => 'text/xml', 'Content-Type' => 'text/xml'}, query: query )
-      response.parsed_response['aseXML']['Transactions']['Transaction']['ReportResponse']['ReportResults']
+      if response.response.code != '200'
+        response
+      else
+        response.parsed_response['aseXML']['Transactions']['Transaction']['ReportResponse']['ReportResults']
+      end
     end
 
     # NMI Discovery - By Delivery Point Identifier
@@ -95,7 +103,11 @@ module AEMO
       }
 
       response =  self.get( "/NMIDiscovery/#{@@participant_id}", basic_auth: @@auth, headers: { 'Accept' => 'text/xml', 'Content-Type' => 'text/xml'}, query: query )
-      response.parsed_response['aseXML']['Transactions']['Transaction']['NMIDiscoveryResponse']['NMIStandingData']
+      if response.response.code != '200'
+        response
+      else
+        response.parsed_response['aseXML']['Transactions']['Transaction']['NMIDiscoveryResponse']['NMIStandingData']
+      end
     end
 
     # NMI Discovery - By Meter Serial Numner
@@ -113,7 +125,11 @@ module AEMO
       }
 
       response = self.get( "/NMIDiscovery/#{@@participant_id}", basic_auth: @@auth, headers: { 'Accept' => 'text/xml', 'Content-Type' => 'text/xml'}, query: query )
-      response.parsed_response['aseXML']['Transactions']['Transaction']['NMIDiscoveryResponse']['NMIStandingData']
+      if response.response.code != '200'
+        response
+      else
+        response.parsed_response['aseXML']['Transactions']['Transaction']['NMIDiscoveryResponse']['NMIStandingData']
+      end
     end
 
     # NMI Discovery - By Address
@@ -161,7 +177,7 @@ module AEMO
       }
 
       response = self.get( "/NMIDiscovery/#{@@participant_id}", basic_auth: @@auth, headers: { 'Accept' => 'text/xml', 'Content-Type' => 'text/xml'}, query: query )
-      if response.response.code == '400'
+      if response.response.code != '200'
         response
       else
         myresponse = response.parsed_response['aseXML']['Transactions']['Transaction']['NMIDiscoveryResponse']['NMIStandingData']
@@ -189,7 +205,11 @@ module AEMO
       }
 
       response = self.get( "/NMIDetail/#{@@participant_id}", basic_auth: @@auth, headers: { 'Accept' => 'text/xml', 'Content-Type' => 'text/xml'}, query: query )
-      response.parsed_response['aseXML']['Transactions']['Transaction']['NMIStandingDataResponse']['NMIStandingData']
+      if response.response.code != '200'
+        response
+      else
+        response.parsed_response['aseXML']['Transactions']['Transaction']['NMIStandingDataResponse']['NMIStandingData']
+      end
     end
 
     # Participant System Status
@@ -201,7 +221,11 @@ module AEMO
         transactionId:  Digest::SHA1.hexdigest(Time.now.to_s)[0..35],
       }
       response = self.get( "/ParticipantSystemStatus/#{@@participant_id}", basic_auth: @@auth, headers: { 'Accept' => 'text/xml', 'Content-Type' => 'text/xml'}, query: query )
-      response.parsed_response['aseXML']['Transactions']['Transaction']['ReportResponse']['ReportResults']
+      if response.response.code != '200'
+        response
+      else
+        response.parsed_response['aseXML']['Transactions']['Transaction']['ReportResponse']['ReportResults']
+      end
     end
 
 
