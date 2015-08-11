@@ -161,7 +161,7 @@ module AEMO
         excludes: [
         ]
       },
-      'TRANSEND' => {
+      'ETSATP' => {
         title: 'ElectraNet SA',
         friendly_title: 'ElectraNet SA',
         state: 'SA',
@@ -398,7 +398,7 @@ module AEMO
     }
     # Transmission Node Identifier Codes are loaded from a json file
     #  Obtained from http://www.nemweb.com.au/
-    #  
+    #
     #  See /lib/data for further data manipulation required
     TNI_CODES = JSON.parse(File.read(File.join(File.dirname(__FILE__),'..','data','aemo-tni.json')))
     # Distribution Loss Factor Codes are loaded from a json file
@@ -406,7 +406,7 @@ module AEMO
     #  Last accessed 2015-02-06
     #  See /lib/data for further data manipulation required
     DLF_CODES = JSON.parse(File.read(File.join(File.dirname(__FILE__),'..','data','aemo-dlf.json')))
-    
+
     # [String] National Meter Identifier
     @nmi                          = nil
     @msats_detail                 = nil
@@ -421,9 +421,9 @@ module AEMO
     @meters                       = nil
     @roles                        = nil
     @data_streams                 = nil
-    
+
     attr_accessor :nmi, :msats_detail, :tni, :dlf, :customer_classification_code, :customer_threshold_code, :jurisdiction_code, :classification_code, :status, :address, :meters, :roles, :data_streams
-    
+
     # Initialize a NEM12 file
     #
     # @param nmi [String] the National Meter Identifier (NMI)
@@ -433,7 +433,7 @@ module AEMO
       raise ArgumentError.new("NMI is not a string") unless nmi.is_a?(String)
       raise ArgumentError.new("NMI is not 10 characters") unless nmi.length == 10
       raise ArgumentError.new("NMI is not constructed with valid characters") unless AEMO::NMI.valid_nmi?(nmi)
-      
+
       @nmi              = nmi
       @meters           = []
       @roles            = {}
@@ -446,14 +446,14 @@ module AEMO
     def valid_nmi?
       AEMO::NMI.valid_nmi?(@nmi)
     end
-  
+
     # Find the Network of NMI
     #
     # @returns [Hash] The Network information
     def network
       AEMO::NMI.network(@nmi)
     end
-  
+
     # A function to calculate the checksum value for a given National Meter Identifier
     #
     # @param checksum_value [Integer] the checksum value to check against the current National Meter Identifier's checksum value
@@ -474,20 +474,20 @@ module AEMO
         end
         value = value.to_s.split(//).map{|i| i.to_i}.reduce(:+)
         summation += value
-      end      
+      end
       checksum = (10 - (summation % 10)) % 10
       checksum
     end
-    
+
     # Provided MSATS is configured, gets the MSATS data for the NMI
     #
     # @return [Hash] MSATS NMI Detail data
     def raw_msats_nmi_detail
       raise ArgumentError, 'MSATS has no authentication credentials' unless AEMO::MSATS.can_authenticate?
-      
+
       AEMO::MSATS.nmi_detail(@nmi)
     end
-    
+
     # Provided MSATS is configured, uses the raw MSATS data to augment NMI information
     #
     # @return [self] returns self
@@ -573,7 +573,7 @@ module AEMO
     def meters_by_status(status = 'C')
       @meters.select{|x| x.status == "#{status}"}
     end
-  
+
     # Returns the data_stream OpenStructs for the requested status (A/I)
     #
     # @param status [String] the stateus [A|I]
@@ -581,14 +581,14 @@ module AEMO
     def data_streams_by_status(status = 'A')
       @data_streams.select{|x| x.status == "#{status}"}
     end
-  
+
     # The current daily load
     #
     # @return [Integer] the current daily load for the meter
     def current_daily_load
       data_streams_by_status().inject(0) { |sum, stream| sum += stream.averaged_daily_load.to_i }
     end
-  
+
     # A function to validate the NMI provided
     #
     # @param nmi [String] the nmi to be checked
@@ -606,7 +606,7 @@ module AEMO
       nmi = AEMO::NMI.new(nmi)
       nmi.valid_checksum?(checksum_value)
     end
-  
+
     # Find the Network for a given NMI
     #
     # @param nmi [String] NMI
@@ -633,5 +633,5 @@ module AEMO
     end
 
   end
-  
+
 end
