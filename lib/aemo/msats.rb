@@ -204,7 +204,7 @@ module AEMO
         reason: options[:reason]
       }
 
-      response = self.get( "/NMIDetail/#{@@participant_id}", basic_auth: @@auth, headers: { 'Accept' => 'text/xml', 'Content-Type' => 'text/xml'}, query: query )
+      response = self.get( "/NMIDetail/#{@@participant_id}", basic_auth: @@auth, headers: { 'Accept' => 'text/xml', 'Content-Type' => 'text/xml'}, query: query, verify: options[:verify_ssl] == false ? false : true )
       if response.response.code != '200'
         response
       else
