@@ -19,8 +19,8 @@ module AEMO
     # We like to debug
     # debug_output $stdout
 
-    # We like to SSLv3
-    ssl_version :SSLv3
+    # We like to :TLSv1
+    ssl_version :TLSv1
 
     # Where we like to party
     base_uri 'https://msats.prod.nemnet.net.au/msats/ws/'
@@ -62,7 +62,7 @@ module AEMO
         inittransId:    options[:init_trans_id],
       }
 
-      response =  self.get( "/C4/#{@@participant_id}", basic_auth: @@auth, headers: { 'Accept' => 'text/xml', 'Content-Type' => 'text/xml'}, query: query )
+      response =  self.get( "/C4/#{@@participant_id}", basic_auth: @@auth, headers: { 'Accept' => 'text/xml', 'Content-Type' => 'text/xml'}, query: query, verify: (options[:verify_ssl] != false) )
       if response.response.code != '200'
         response
       else
@@ -78,7 +78,7 @@ module AEMO
       query = {
         transactionId:  Digest::SHA1.hexdigest(Time.now.to_s)[0..35],
       }
-      response =  self.get( "/MSATSLimits/#{@@participant_id}", basic_auth: @@auth, headers: { 'Accept' => 'text/xml', 'Content-Type' => 'text/xml'}, query: query )
+      response =  self.get( "/MSATSLimits/#{@@participant_id}", basic_auth: @@auth, headers: { 'Accept' => 'text/xml', 'Content-Type' => 'text/xml'}, query: query, verify: (options[:verify_ssl] != false) )
       if response.response.code != '200'
         response
       else
@@ -102,7 +102,7 @@ module AEMO
         deliveryPointIdentifier: delivery_point_identifier.to_i
       }
 
-      response =  self.get( "/NMIDiscovery/#{@@participant_id}", basic_auth: @@auth, headers: { 'Accept' => 'text/xml', 'Content-Type' => 'text/xml'}, query: query )
+      response =  self.get( "/NMIDiscovery/#{@@participant_id}", basic_auth: @@auth, headers: { 'Accept' => 'text/xml', 'Content-Type' => 'text/xml'}, query: query, verify: (options[:verify_ssl] != false) )
       if response.response.code != '200'
         response
       else
@@ -124,7 +124,7 @@ module AEMO
         meterSerialNumber: meter_serial_number.to_i
       }
 
-      response = self.get( "/NMIDiscovery/#{@@participant_id}", basic_auth: @@auth, headers: { 'Accept' => 'text/xml', 'Content-Type' => 'text/xml'}, query: query )
+      response = self.get( "/NMIDiscovery/#{@@participant_id}", basic_auth: @@auth, headers: { 'Accept' => 'text/xml', 'Content-Type' => 'text/xml'}, query: query, verify: (options[:verify_ssl] != false) )
       if response.response.code != '200'
         response
       else
@@ -176,7 +176,7 @@ module AEMO
         stateOrTerritory: options[:state_or_territory]
       }
 
-      response = self.get( "/NMIDiscovery/#{@@participant_id}", basic_auth: @@auth, headers: { 'Accept' => 'text/xml', 'Content-Type' => 'text/xml'}, query: query )
+      response = self.get( "/NMIDiscovery/#{@@participant_id}", basic_auth: @@auth, headers: { 'Accept' => 'text/xml', 'Content-Type' => 'text/xml'}, query: query, verify: (options[:verify_ssl] != false) )
       if response.response.code != '200'
         response
       else
@@ -204,7 +204,7 @@ module AEMO
         reason: options[:reason]
       }
 
-      response = self.get( "/NMIDetail/#{@@participant_id}", basic_auth: @@auth, headers: { 'Accept' => 'text/xml', 'Content-Type' => 'text/xml'}, query: query )
+      response = self.get( "/NMIDetail/#{@@participant_id}", basic_auth: @@auth, headers: { 'Accept' => 'text/xml', 'Content-Type' => 'text/xml'}, query: query, verify: (options[:verify_ssl] != false) )
       if response.response.code != '200'
         response
       else
@@ -220,7 +220,7 @@ module AEMO
       query = {
         transactionId:  Digest::SHA1.hexdigest(Time.now.to_s)[0..35],
       }
-      response = self.get( "/ParticipantSystemStatus/#{@@participant_id}", basic_auth: @@auth, headers: { 'Accept' => 'text/xml', 'Content-Type' => 'text/xml'}, query: query )
+      response = self.get( "/ParticipantSystemStatus/#{@@participant_id}", basic_auth: @@auth, headers: { 'Accept' => 'text/xml', 'Content-Type' => 'text/xml'}, query: query, verify: (options[:verify_ssl] != false) )
       if response.response.code != '200'
         response
       else
