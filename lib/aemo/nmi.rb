@@ -482,18 +482,18 @@ module AEMO
     # Provided MSATS is configured, gets the MSATS data for the NMI
     #
     # @return [Hash] MSATS NMI Detail data
-    def raw_msats_nmi_detail
+    def raw_msats_nmi_detail(options={})
       raise ArgumentError, 'MSATS has no authentication credentials' unless AEMO::MSATS.can_authenticate?
 
-      AEMO::MSATS.nmi_detail(@nmi)
+      AEMO::MSATS.nmi_detail(@nmi,options)
     end
 
     # Provided MSATS is configured, uses the raw MSATS data to augment NMI information
     #
     # @return [self] returns self
-    def update_from_msats!
+    def update_from_msats!(options={})
       # Update local cache
-      @msats_detail = raw_msats_nmi_detail
+      @msats_detail = raw_msats_nmi_detail(options)
       # Set the details if there are any
       unless @msats_detail['MasterData'].nil?
         @tni                          = @msats_detail['MasterData']['TransmissionNodeIdentifier']
