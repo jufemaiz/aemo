@@ -19,8 +19,8 @@ module AEMO
     # We like to debug
     # debug_output $stdout
 
-    # We like to SSLv3
-    ssl_version :SSLv3
+    # We like to :TLSv1
+    ssl_version :TLSv1
 
     # Where we like to party
     base_uri 'https://msats.prod.nemnet.net.au/msats/ws/'
