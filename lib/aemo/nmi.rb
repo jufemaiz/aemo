@@ -561,7 +561,7 @@ module AEMO
     def friendly_address
       friendly_address = ''
       if @address.is_a?(Hash)
-        friendly_address = @nmi.address.values.map{|x| x.is_a?(Hash) ? x.values.map{|y| y.is_a?(Hash) ? y.values.join(" ") : y }.join(" ") : x }.join(", ")
+        friendly_address = @address.values.map{|x| x.is_a?(Hash) ? x.values.map{|y| y.is_a?(Hash) ? y.values.join(" ") : y }.join(" ") : x }.join(", ")
       end
       friendly_address
     end
