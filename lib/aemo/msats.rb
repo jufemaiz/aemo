@@ -243,7 +243,7 @@ module AEMO
     #
     # @return [Boolean] true/false if credentials are available
     def self.can_authenticate?
-      !(@@participant_id.nil? || @@auth[:username].nil? || @@auth[:username].nil?)
+      !(@@participant_id.nil? || @@auth[:username].nil? || @@auth[:password].nil?)
     end
 
   end
