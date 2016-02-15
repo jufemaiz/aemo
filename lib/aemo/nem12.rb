@@ -101,7 +101,7 @@ module AEMO
       53 => { type: ["SUB"], installation_type: 5, short_descriptor: "Revision", description: "" },
       54 => { type: ["SUB"], installation_type: 5, short_descriptor: "Linear", description: "" },
       55 => { type: ["SUB"], installation_type: 5, short_descriptor: "Agreed", description: "" },
-      56 => { type: ["EST","SUB"], installation_type: 5, short_descriptor: "Prior to First Read – Agreed", description: "" },
+      56 => { type: ["EST","SUB"], installation_type: 5, short_descriptor: "Prior to First Read - Agreed", description: "" },
       57 => { type: ["EST","SUB"], installation_type: 5, short_descriptor: "Customer Class", description: "" },
       58 => { type: ["EST","SUB"], installation_type: 5, short_descriptor: "Zero", description: "" },
       61 => { type: ["EST","SUB"], installation_type: 6, short_descriptor: "Previous Year", description: "" },
