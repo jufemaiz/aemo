@@ -5,3 +5,4 @@
 # Or documentation
 .yardoc/
 .env
+.bundle/
