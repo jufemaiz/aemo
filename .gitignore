@@ -3,6 +3,9 @@
 # Don't include gems in the repository
 *.gem
 # Or documentation
+coverage
+doc
 .yardoc/
 .env
 .bundle/
+vendor/

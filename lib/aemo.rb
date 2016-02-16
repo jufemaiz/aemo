@@ -1,4 +1,7 @@
+require 'active_support/all'
 require 'httparty'
+require 'csv'
+require 'pry'
 
 require 'aemo/market.rb'
 require 'aemo/market/interval.rb'
