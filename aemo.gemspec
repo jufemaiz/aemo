@@ -28,15 +28,15 @@ Gem::Specification.new do |s|
   s.add_dependency 'activesupport', '~> 4.2'
 
   s.add_development_dependency 'bundler', "~> 1.3"
-  s.add_development_dependency 'rspec', '~> 0'
-  s.add_development_dependency 'rdoc', '~> 0'
-  s.add_development_dependency 'jeweler', '~> 0'
-  s.add_development_dependency 'simplecov', '~> 0'
-  s.add_development_dependency 'coveralls', '~> 0'
-  s.add_development_dependency 'awesome_print', '~> 0'
-  s.add_development_dependency 'pry', '~> 0'
-  s.add_development_dependency 'pry-nav', '~> 0'
-  s.add_development_dependency 'yard', '~> 0'
-  s.add_development_dependency 'guard-yard', '~> 0'
+  s.add_development_dependency 'rspec'#, '~> 0'
+  s.add_development_dependency 'rdoc', '~> 4.2'
+  s.add_development_dependency 'jeweler'#, '~> 0'
+  s.add_development_dependency 'simplecov'#, '~> 0'
+  s.add_development_dependency 'coveralls'#, '~> 0'
+  s.add_development_dependency 'awesome_print'#, '~> 0'
+  s.add_development_dependency 'pry'#, '~> 0'
+  s.add_development_dependency 'pry-nav'#, '~> 0'
+  s.add_development_dependency 'yard'#, '~> 0'
+  s.add_development_dependency 'guard-yard'#, '~> 0'
 
 end
