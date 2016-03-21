@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.platform      = Gem::Platform::RUBY
   s.date          = '2016-02-16'
   s.summary       = 'Gem providing functionality for the Australian Energy Market Operator data'
-  s.description   = 'Gem providing functionality for the Australian Energy Market Operator data'
+  s.description   = 'Gem providing functionality for the Australian Energy Market Operator data. Supports NMIs, NEM12, MSATS Web Services and more'
   s.authors       = ['Joel Courtney','Stuart Auld']
   s.email         = ['jcourtney@cozero.com.au','sauld@cozero.com.au']
   s.homepage      = 'https://github.com/jufemaiz/aemo'
@@ -25,18 +25,18 @@ Gem::Specification.new do |s|
   s.add_dependency 'zip',       '~>2.0'
   s.add_dependency 'multi_xml', '~> 0.5',   '>= 0.5.2'
   s.add_dependency 'httparty',  '~> 0.13',  '>= 0.13.1'
-  s.add_dependency 'activesupport'
+  s.add_dependency 'activesupport', '~> 4.2'
 
   s.add_development_dependency 'bundler', "~> 1.3"
-  s.add_development_dependency 'rspec'
-  s.add_development_dependency 'rdoc'
-  s.add_development_dependency 'jeweler'
-  s.add_development_dependency 'simplecov'
-  s.add_development_dependency 'coveralls'
-  s.add_development_dependency 'awesome_print'
-  s.add_development_dependency 'pry'
-  s.add_development_dependency 'pry-nav'
-  s.add_development_dependency 'yard'
-  s.add_development_dependency 'guard-yard'
+  s.add_development_dependency 'rspec', '~> 0'
+  s.add_development_dependency 'rdoc', '~> 0'
+  s.add_development_dependency 'jeweler', '~> 0'
+  s.add_development_dependency 'simplecov', '~> 0'
+  s.add_development_dependency 'coveralls', '~> 0'
+  s.add_development_dependency 'awesome_print', '~> 0'
+  s.add_development_dependency 'pry', '~> 0'
+  s.add_development_dependency 'pry-nav', '~> 0'
+  s.add_development_dependency 'yard', '~> 0'
+  s.add_development_dependency 'guard-yard', '~> 0'
 
 end
