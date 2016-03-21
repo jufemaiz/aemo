@@ -624,6 +624,43 @@ module AEMO
       network
     end
 
+    # A function to return the distribution loss factor value for a given date
+    #
+    # @param [DateTime,Time] datetime the date for the distribution loss factor value
+    # @return [nil,float] the distribution loss factor value
+    def dlfc_value(datetime = DateTime.now)
+      raise 'No DLF set, ensure that you have set the value either via the update_from_msats! function or manually' if @dlf.nil?
+      raise 'DLF is invalid' unless DLF_CODES.keys.include?(@dlf)
+      raise 'Invalid date' unless [DateTime,Time].include?(datetime.class)
+      possible_values = DLF_CODES[@dlf].select{|x| DateTime.parse(x['FromDate']) <= datetime && datetime <= DateTime.parse(x['ToDate']) }
+      if possible_values.length == 0
+        nil
+      else
+        possible_values.first['Value'].to_f
+      end
+    end
+
+    # A function to return the transmission node identifier loss factor value for a given date
+    #
+    # @param [DateTime,Time] datetime the date for the distribution loss factor value
+    # @return [nil,float] the transmission node identifier loss factor value
+    def tni_value(datetime = DateTime.now)
+      raise 'No TNI set, ensure that you have set the value either via the update_from_msats! function or manually' if @tni.nil?
+      raise 'TNI is invalid' unless TNI_CODES.keys.include?(@tni)
+      raise 'Invalid date' unless [DateTime,Time].include?(datetime.class)
+      possible_values = TNI_CODES[@tni].select{|x| DateTime.parse(x['FromDate']) <= datetime && datetime <= DateTime.parse(x['ToDate']) }
+      if possible_values.length == 0
+        nil
+      else
+        possible_values = possible_values.first['mlf_data']['loss_factors'].select{|x| DateTime.parse(x['start']) <= datetime && datetime <= DateTime.parse(x['finish']) }
+        if possible_values.length == 0
+          nil
+        else
+          possible_values.first['value'].to_f
+        end
+      end
+    end
+
     # ######### #
       protected
     # ######### #
