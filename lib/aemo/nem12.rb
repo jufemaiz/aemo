@@ -265,28 +265,13 @@ module AEMO
 
     # Initialize a NEM12 file
     def initialize(nmi,options={})
-      @nmi              = nmi
+      @nmi              = AEMO::NMI.new(nmi) unless nmi.empty?
       @data_details     = []
       @interval_data    = []
       @interval_events  = []
       options.keys.each do |key|
         eval "self.#{key} = #{options[key]}"
       end
-    end
-
-    # @return [Integer] checksum of the NMI
-    def nmi_checksum
-      summation = 0
-      @nmi.reverse.split(//).each_index do |i|
-        value = nmi[nmi.length - i - 1].ord
-        if(i % 2 == 0)
-          value = value * 2
-        end
-        value = value.to_s.split(//).map{|i| i.to_i}.reduce(:+)
-        summation += value
-      end
-      checksum = (10 - (summation % 10)) % 10
-      checksum
     end
 
     # Parses the header record
@@ -319,10 +304,10 @@ module AEMO
       csv = line.parse_csv
 
       raise ArgumentError, 'RecordIndicator is not 200'     if csv[0] != '200'
-      raise ArgumentError, 'NMI is not valid'               if csv[1].match(/[A-Z0-9]{10}/).nil?
+      raise ArgumentError, 'NMI is not valid'               if !AEMO::NMI.valid_nmi?(csv[1])
       raise ArgumentError, 'NMIConfiguration is not valid'  if csv[2].match(/.{1,240}/).nil?
       unless csv[3].nil?
-        raise ArgumentError, 'RegisterID is not valid'        if csv[3].match(/.{1,10}/).nil?
+        raise ArgumentError, 'RegisterID is not valid'      if csv[3].match(/.{1,10}/).nil?
       end
       raise ArgumentError, 'NMISuffix is not valid'         if csv[4].match(/[A-HJ-NP-Z][1-9A-HJ-NP-Z]/).nil?
       if !csv[5].nil? && !csv[5].empty? && !csv[5].match(/^\s*$/)
@@ -336,7 +321,7 @@ module AEMO
       raise ArgumentError, 'IntervalLength is not valid'    unless %w(1 5 10 15 30).include?(csv[8])
       # raise ArgumentError, 'NextScheduledReadDate is not valid' if csv[9].match(/\d{8}/).nil? || csv[9] != Time.parse("#{csv[9]}").strftime('%Y%m%d')
 
-      @nmi = csv[1]
+      @nmi = AEMO::NMI.new(csv[1])
 
       # Push onto the stack
       @data_details << {
@@ -499,12 +484,6 @@ module AEMO
     def to_csv
       headers = ['nmi','suffix','units','datetime','value','flags']
       ([headers]+self.to_a.map{|row| row[3]=row[3].strftime("%Y%m%d%H%M%S%z"); row}).map{|row| row.join(',')}.join("\n")
-    end
-
-    # @param nmi [String] a NMI that is to be checked for validity
-    # @return [Boolean] determines if the NMI is valid
-    def self.valid_nmi?(nmi)
-      (nmi.class == String && nmi.length == 10 && !nmi.match(/^[A-Z1-9][A-Z0-9]{9}$/).nil?)
     end
 
     # @param path_to_file [String] the path to a file

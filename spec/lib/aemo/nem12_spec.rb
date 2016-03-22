@@ -11,23 +11,6 @@ describe AEMO::NEM12 do
     end
   end
 
-  describe '.valid_nmi?' do
-    it 'should validate nmi' do
-      json.each do |nmi|
-        expect(AEMO::NEM12.valid_nmi?(nmi['nmi'])).to eq(true)
-      end
-    end
-  end
-
-  describe '#nmi_checksum' do
-    it 'should return nmi checksum' do
-      json.each do |nmi|
-        nem12 = AEMO::NEM12.new(nmi['nmi'])
-        expect(nem12.nmi_checksum).to eq(nmi['checksum'])
-      end
-    end
-  end
-
   describe '#parse_nem12' do
   end
 
