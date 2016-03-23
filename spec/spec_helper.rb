@@ -18,10 +18,10 @@ RSpec.configure do |config|
   config.before(:each) do
     # Market Data
     stub_request(:get, "http://www.nemweb.com.au/mms.GRAPHS/GRAPHS/GRAPH_5NSW1.csv").
-      with(:headers => {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Ruby'}).
+      with(:headers => {'Accept'=>'*/*', 'User-Agent'=>'Ruby'}).
       to_return(status: 200, body: File.new('spec/fixtures/GRAPH_5NSW1.csv'), headers: {'Content-Type'=>'text/csv'})
     stub_request(:get, 'http://www.nemweb.com.au/mms.GRAPHS/GRAPHS/GRAPH_30NSW1.csv').
-      with(:headers => {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Ruby'}).
+      with(:headers => {'Accept'=>'*/*', 'User-Agent'=>'Ruby'}).
       to_return(status: 200, body: File.new('spec/fixtures/GRAPH_30NSW1.csv'), headers: {'Content-Type'=>'text/csv'})
 
     # MSATS
