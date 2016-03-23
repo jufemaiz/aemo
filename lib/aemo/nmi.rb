@@ -665,10 +665,6 @@ module AEMO
       protected
     # ######### #
 
-    def is_valid_region?(region)
-      REGIONS.keys.include?(region)
-    end
-
   end
 
 end

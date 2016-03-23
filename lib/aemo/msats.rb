@@ -74,11 +74,11 @@ module AEMO
     # /MSATSLimits/PARTICIPANT_IDENTIFIER?transactionId=XXX
     #
     # @return [Hash] The report results from the MSATS Limits web service query
-    def self.msats_limits
+    def self.msats_limits(options={})
       query = {
         transactionId:  Digest::SHA1.hexdigest(Time.now.to_s)[0..35],
       }
-      response =  self.get( "/MSATSLimits/#{@@participant_id}", basic_auth: @@auth, headers: { 'Accept' => 'text/xml', 'Content-Type' => 'text/xml'}, query: query, verify: (options[:verify_ssl] != false) )
+      response = self.get( "/MSATSLimits/#{@@participant_id}", basic_auth: @@auth, headers: { 'Accept' => 'text/xml', 'Content-Type' => 'text/xml'}, query: query, verify: (options[:verify_ssl] != false) )
       if response.response.code != '200'
         response
       else
@@ -91,7 +91,7 @@ module AEMO
     # @param [String] jurisdiction_code The Jurisdiction Code
     # @param [Integer] delivery_point_identifier Delivery Point Identifier
     # @return [Hash] The response
-    def self.nmi_discovery_by_delivery_point_identifier(jurisdiction_code,delivery_point_identifier)
+    def self.nmi_discovery_by_delivery_point_identifier(jurisdiction_code,delivery_point_identifier,options={})
       raise ArgumentError, 'jurisdiction_code is not valid' unless %w(ACT NEM NSW QLD SA VIC TAS).include?(jurisdiction_code)
       raise ArgumentError, 'delivery_point_identifier is not valid' unless delivery_point_identifier.respond_to?("to_i")
       raise ArgumentError, 'delivery_point_identifier is not valid' if( delivery_point_identifier.to_i < 10000000 || delivery_point_identifier.to_i > 99999999)
@@ -115,7 +115,7 @@ module AEMO
     # @param [String] jurisdiction_code The Jurisdiction Code
     # @param [Integer] meter_serial_number The meter's serial number
     # @return [Hash] The response
-    def self.nmi_discovery_by_meter_serial_number(jurisdiction_code,meter_serial_number)
+    def self.nmi_discovery_by_meter_serial_number(jurisdiction_code,meter_serial_number,options={})
       raise ArgumentError, 'jurisdiction_code is not valid' unless %w(ACT NEM NSW QLD SA VIC TAS).include?(jurisdiction_code)
 
       query = {
@@ -216,7 +216,7 @@ module AEMO
     # /ParticipantSystemStatus/PARTICIPANT_IDENTIFIER?transactionId=XXX
     #
     # @return [Hash] The report results from the Participant System Status web service query
-    def self.system_status
+    def self.system_status(options={})
       query = {
         transactionId:  Digest::SHA1.hexdigest(Time.now.to_s)[0..35],
       }
