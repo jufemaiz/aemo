@@ -38,5 +38,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'pry-nav'#, '~> 0'
   s.add_development_dependency 'yard'#, '~> 0'
   s.add_development_dependency 'guard-yard'#, '~> 0'
+  s.add_development_dependency 'webmock'#, '~> 0'
 
 end

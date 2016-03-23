@@ -131,4 +131,13 @@ describe AEMO::NMI do
     end
   end
 
+  describe "MSATS functions" do
+    it 'should get data' do
+      AEMO::MSATS.authorize("ER","ER","ER")
+      nmi = AEMO::NMI.new('4001234567')
+      nmi.update_from_msats!
+      expect(nmi.msats_detail).to_not eq(nil)
+    end
+  end
+
 end

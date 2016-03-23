@@ -23,6 +23,12 @@ describe AEMO::NEM12 do
   end
 
   describe 'parse_nem12_100' do
+    it 'should raise datetime error' do
+      expect {AEMO::NEM12.parse_nem12_100('100,NEM12,666,CNRGYMDP,NEMMCO')}.to raise_error(ArgumentError)
+    end
+    it 'should raise datetime error' do
+      expect {AEMO::NEM12.parse_nem12_100('100,NEM12,666,CNRGYMDP,NEMMCO', {strict: true})}.to raise_error(ArgumentError)
+    end
   end
 
   describe 'parse_nem12_200' do

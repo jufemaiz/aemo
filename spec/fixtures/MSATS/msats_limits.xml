@@ -1,0 +1,67 @@
+<?xml version="1.0" ?>
+<ase:aseXML xmlns:ase="urn:aseXML:r31" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:aseXML:r31 http://www.nemmco.com.au/aseXML/schemas/r31/aseXML_r31.xsd">
+  <Header>
+    <From description="Australian Energy Market Operator Limited">NEMMCO</From>
+    <To description="COzero Energy Retail Pty Ltd">ER</To>
+    <MessageID>NEMMCO-MSG-600256499</MessageID>
+    <MessageDate>2016-03-23T09:59:56+10:00</MessageDate>
+    <TransactionGroup>CATS</TransactionGroup>
+    <Priority>Medium</Priority>
+    <SecurityContext>NEMMCOBATCH</SecurityContext>
+    <Market>NEM</Market>
+  </Header>
+  <Transactions>
+    <Transaction transactionID="CATS-600256499" transactionDate="2016-03-23T09:59:56+10:00" initiatingTransactionID="64aa736c75408366372abca764a67ad08d78">
+      <ReportResponse version="r10">
+        <ReportParameters xsi:type="ase:CATSMsatsLimitsReportParameters">
+          <ReportName>MSATSLimits</ReportName>
+        </ReportParameters>
+        <ReportResults xsi:type="ase:CATSMsatsLimitsReportFormat">
+          <MsatsLimits>
+            <Participant>ER</Participant>
+            <Cr>
+              <DefaultLimit>1300</DefaultLimit>
+              <UpperLimit>1300</UpperLimit>
+              <ParticipantActual>0</ParticipantActual>
+              <StopFlag>N</StopFlag>
+            </Cr>
+            <CrNotification>
+              <DefaultLimit>7500</DefaultLimit>
+              <UpperLimit>7500</UpperLimit>
+              <ParticipantActual>0</ParticipantActual>
+              <StopFlag>N</StopFlag>
+            </CrNotification>
+            <NsrdNotification>
+              <LowerLimit>100000</LowerLimit>
+              <UpperLimit>100000</UpperLimit>
+              <ParticipantActual>0</ParticipantActual>
+              <StopFlag>N</StopFlag>
+            </NsrdNotification>
+            <NsrdResponse>
+              <LowerLimit>80</LowerLimit>
+              <UpperLimit>100</UpperLimit>
+              <ParticipantActual>0</ParticipantActual>
+              <StopFlag>N</StopFlag>
+            </NsrdResponse>
+            <OutboxFile>
+              <LowerLimit>200</LowerLimit>
+              <UpperLimit>200</UpperLimit>
+              <ParticipantActual>0</ParticipantActual>
+              <StopFlag>N</StopFlag>
+            </OutboxFile>
+            <Report>
+              <LowerLimit>80</LowerLimit>
+              <UpperLimit>100</UpperLimit>
+              <ParticipantActual>0</ParticipantActual>
+              <StopFlag>N</StopFlag>
+            </Report>
+          </MsatsLimits>
+        </ReportResults>
+        <Event severity="Information">
+          <Code>0</Code>
+          <Explanation>Success</Explanation>
+        </Event>
+      </ReportResponse>
+    </Transaction>
+  </Transactions>
+</ase:aseXML>

@@ -2,11 +2,7 @@ module AEMO
   module Market
     include HTTParty
     base_uri 'www.nemweb.com.au'
-  
-    def self.regions
-      AEMO::Region::REGIONS
-    end
-    
+
     def self.current_dispatch(region)
       response = AEMO::Market.get "/mms.GRAPHS/GRAPHS/GRAPH_5#{region}1.csv"
       values = AEMO::Market.parse_response(response)
@@ -18,7 +14,7 @@ module AEMO
       values = AEMO::Market.parse_response(response)
       values
     end
-  
+
     # ######### #
       protected
     # ######### #
@@ -37,4 +33,3 @@ module AEMO
   end
 
 end
-

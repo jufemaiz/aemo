@@ -8,15 +8,16 @@ Access to AEMO Market Information from www.nemweb.com.au/mms.GRAPHS/GRAPHS/GRAPH
 ### Regions
 
 ```RUBY
+AEMO::Market::REGIONS
 ```
 
-###
+### Current Dispatch
 
 ```RUBY
 AEMO::Market.current_dispatch('NSW')
 ```
 
-###
+### Current Trading
 
 ```RUBY
 AEMO::Market.current_trading('NSW')

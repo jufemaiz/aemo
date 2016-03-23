@@ -40,8 +40,10 @@ describe AEMO::Region do
 
     describe 'AEMO::Region dispatch information' do
       it 'should return current dispatch data' do
+        expect(@nsw.current_dispatch.count).to eq(AEMO::Market.current_dispatch(@nsw.abbr).count)
       end
       it 'should return current trading data' do
+        expect(@nsw.current_trading.count).to eq(AEMO::Market.current_trading(@nsw.abbr).count)
       end
     end
 
