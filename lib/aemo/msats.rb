@@ -52,7 +52,7 @@ module AEMO
       options[:inittransId]     ||= nil
 
       query = {
-        transactionId:  Digest::SHA1.hexdigest(Time.now.to_s)[0..35],
+        transactionId:  transaction_id,
         NMI:            nmi.nmi,      # Note: AEMO has case sensitivity but no consistency across requests.
         fromDate:       from_date,
         toDate:         to_date,
@@ -76,7 +76,7 @@ module AEMO
     # @return [Hash] The report results from the MSATS Limits web service query
     def self.msats_limits(options={})
       query = {
-        transactionId:  Digest::SHA1.hexdigest(Time.now.to_s)[0..35],
+        transactionId:  transaction_id,
       }
       response = self.get( "/MSATSLimits/#{@@participant_id}", basic_auth: @@auth, headers: { 'Accept' => 'text/xml', 'Content-Type' => 'text/xml'}, query: query, verify: (options[:verify_ssl] != false) )
       if response.response.code != '200'
@@ -97,7 +97,7 @@ module AEMO
       raise ArgumentError, 'delivery_point_identifier is not valid' if( delivery_point_identifier.to_i < 10000000 || delivery_point_identifier.to_i > 99999999)
 
       query = {
-        transactionId:  Digest::SHA1.hexdigest(Time.now.to_s)[0..35],
+        transactionId:  transaction_id,
         jurisdictionCode: jurisdiction_code,
         deliveryPointIdentifier: delivery_point_identifier.to_i
       }
@@ -119,7 +119,7 @@ module AEMO
       raise ArgumentError, 'jurisdiction_code is not valid' unless %w(ACT NEM NSW QLD SA VIC TAS).include?(jurisdiction_code)
 
       query = {
-        transactionId:  Digest::SHA1.hexdigest(Time.now.to_s)[0..35],
+        transactionId:  transaction_id,
         jurisdictionCode: jurisdiction_code,
         meterSerialNumber: meter_serial_number.to_i
       }
@@ -157,7 +157,7 @@ module AEMO
       options[:state_or_territory] ||= jurisdiction_code
 
       query = {
-        transactionId:  Digest::SHA1.hexdigest(Time.now.to_s)[0..35],
+        transactionId:  transaction_id,
         jurisdictionCode: jurisdiction_code,
         buildingOrPropertyName: options[:building_or_property_name],
         locationDescriptor: options[:location_descriptor],
@@ -197,7 +197,7 @@ module AEMO
       options[:reason]  ||= nil
 
       query = {
-        transactionId: Digest::SHA1.hexdigest(Time.now.to_s)[0..35],
+        transactionId: transaction_id,
         nmi: nmi.nmi,
         checksum: nmi.checksum,
         type: options[:type],
@@ -218,7 +218,7 @@ module AEMO
     # @return [Hash] The report results from the Participant System Status web service query
     def self.system_status(options={})
       query = {
-        transactionId:  Digest::SHA1.hexdigest(Time.now.to_s)[0..35],
+        transactionId:  transaction_id,
       }
       response = self.get( "/ParticipantSystemStatus/#{@@participant_id}", basic_auth: @@auth, headers: { 'Accept' => 'text/xml', 'Content-Type' => 'text/xml'}, query: query, verify: (options[:verify_ssl] != false) )
       if response.response.code != '200'
@@ -244,6 +244,13 @@ module AEMO
     # @return [Boolean] true/false if credentials are available
     def self.can_authenticate?
       !(@@participant_id.nil? || @@auth[:username].nil? || @@auth[:password].nil?)
+    end
+
+    # Method for creating a unique transaction id
+    #
+    # @return [String] the transaction id
+    def self.transaction_id
+      Digest::SHA1.hexdigest(Time.now.to_s)[0..35]
     end
 
   end
