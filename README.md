@@ -1,6 +1,29 @@
 # AEMO Gem
 Makes working with AEMO data more pleasant.
 
+[![Gem Version](https://badge.fury.io/rb/aasm.svg)](http://badge.fury.io/rb/aasm)
+[![Build Status](https://travis-ci.org/jufemaiz/aemo.svg?branch=master)](https://travis-ci.org/jufemaiz/aemo)
+[![Dependency Status](https://gemnasium.com/aasm/aasm.svg)](https://gemnasium.com/jufemaiz/aemo)
+[![Code Climate](https://codeclimate.com/github/jufemaiz/aemo/badges/gpa.svg)](https://codeclimate.com/github/jufemaiz/aemo)
+[![Coverage Status](https://coveralls.io/repos/github/jufemaiz/aemo/badge.svg?branch=master)](https://coveralls.io/github/jufemaiz/aemo?branch=master)
+
+# Installation
+
+## Manually from RubyGems.org ###
+
+```sh
+% gem install aemo
+```
+
+## Or if you are using Bundler ###
+
+```ruby
+# Gemfile
+gem 'aemo'
+```
+
+# Using AEMO Gem
+
 ## Market Information
 
 Access to AEMO Market Information from www.nemweb.com.au/mms.GRAPHS/GRAPHS/GRAPH_5#NSW1.csv or www.nemweb.com.au/mms.GRAPHS/GRAPHS/GRAPH_30#NSW1.csv
@@ -386,11 +409,3 @@ AEMO::MSATS.nmi_detail(nmi, options = {})
 
 * :type
 * :reason
-
-# Build Status
-
-[![Build Status](https://travis-ci.org/jufemaiz/aemo.svg?branch=master)](https://travis-ci.org/jufemaiz/aemo)
-
-# Coverage Status
-
-[![Coverage Status](https://coveralls.io/repos/github/jufemaiz/aemo/badge.svg?branch=master)](https://coveralls.io/github/jufemaiz/aemo?branch=master)
