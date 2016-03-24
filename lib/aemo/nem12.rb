@@ -1,5 +1,8 @@
 require 'csv'
 require 'time'
+
+require 'nem12/header'
+
 module AEMO
   class NEM12
     # As per AEMO NEM12 Specification
