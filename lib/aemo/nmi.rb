@@ -640,6 +640,20 @@ module AEMO
       end
     end
 
+    # A function to return the distribution loss factor value for a given date
+    #
+    # @param [DateTime,Time] start the date for the distribution loss factor value
+    # @param [DateTime,Time] finish the date for the distribution loss factor value
+    # @return [Array(Hash)] array of hashes of start,finish and value
+    def dlfc_values(start = DateTime.now, finish=DateTime.now)
+      raise 'No DLF set, ensure that you have set the value either via the update_from_msats! function or manually' if @dlf.nil?
+      raise 'DLF is invalid' unless DLF_CODES.keys.include?(@dlf)
+      raise 'Invalid start' unless [DateTime,Time].include?(start.class)
+      raise 'Invalid finish' unless [DateTime,Time].include?(finish.class)
+      raise 'start cannot be after finish' if start > finish
+      DLF_CODES[@dlf].reject{|x| start > DateTime.parse(x['ToDate']) || finish < DateTime.parse(x['FromDate']) }.map{|x| { 'start' => x['FromDate'], 'finish' => x['ToDate'], 'value' => x['Value'].to_f}}
+    end
+
     # A function to return the transmission node identifier loss factor value for a given date
     #
     # @param [DateTime,Time] datetime the date for the distribution loss factor value
@@ -659,6 +673,29 @@ module AEMO
           possible_values.first['value'].to_f
         end
       end
+    end
+
+    # A function to return the transmission node identifier loss factor value for a given date
+    #
+    # @param [DateTime,Time] start the date for the distribution loss factor value
+    # @param [DateTime,Time] finish the date for the distribution loss factor value
+    # @return [Array(Hash)] array of hashes of start,finish and value
+    def tni_values(start=DateTime.now,finish=DateTime.now)
+      raise 'No TNI set, ensure that you have set the value either via the update_from_msats! function or manually' if @tni.nil?
+      raise 'TNI is invalid' unless TNI_CODES.keys.include?(@tni)
+      raise 'Invalid start' unless [DateTime,Time].include?(start.class)
+      raise 'Invalid finish' unless [DateTime,Time].include?(finish.class)
+      raise 'start cannot be after finish' if start > finish
+      possible_values = TNI_CODES[@tni].reject{|x| start > DateTime.parse(x['ToDate']) || finish < DateTime.parse(x['FromDate']) }
+      tni_values = []
+      if possible_values.length == 0
+        nil
+      else
+        possible_values.each do |possible_value|
+          tni_values += possible_value['mlf_data']['loss_factors'].reject{|x| start > DateTime.parse(x['finish']) || finish < DateTime.parse(x['start']) }
+        end
+      end
+      tni_values
     end
 
     # ######### #
