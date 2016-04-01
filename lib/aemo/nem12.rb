@@ -261,8 +261,15 @@ module AEMO
     @file_contents    = nil
     @header           = nil
     @nmi_data_details = []
-    @nmi              = nil
 
+    @nmi              = nil
+    @data_details     = []
+    @interval_data    = []
+    @interval_events  = []
+
+
+    attr_accessor :nmi, :file_contents
+    attr_reader   :data_details, :interval_data, :interval_events
     attr_accessor :file_contents, :header, :nmi_data_details, :nmi
 
     # Initialize a NEM12 file
@@ -274,6 +281,11 @@ module AEMO
       options.keys.each do |key|
         eval "self.#{key} = #{options[key]}"
       end
+    end
+
+    # Returns the NMI Identifier or nil
+    def nmi_identifier
+      @nmi.nil? ? nil : @nmi.nmi
     end
 
     # Parses the header record
