@@ -261,8 +261,9 @@ module AEMO
     @file_contents    = nil
     @header           = nil
     @nmi_data_details = []
+    @nmi              = nil
 
-    attr_accessor :file_contents, :header, :nmi_data_details
+    attr_accessor :file_contents, :header, :nmi_data_details, :nmi
 
     # Initialize a NEM12 file
     def initialize(nmi,options={})
