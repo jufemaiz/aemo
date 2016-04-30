@@ -202,12 +202,6 @@ AEMO::NEM12.parse_nem12(string)
 
 General support for a National Meter Identifier.
 
-### Regions
-
-```RUBY
-AEMO::NMI::REGIONS
-```
-
 ### NMI Allocations
 
 NMIs have been allocated to DNSPs by AEMO. Provides an easy lookup of the network for a given NMI.

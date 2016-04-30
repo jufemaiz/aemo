@@ -6,10 +6,15 @@ require 'aemo/market.rb'
 require 'aemo/market/interval.rb'
 require 'aemo/region.rb'
 require 'aemo/nem12.rb'
+require 'aemo/nem12/header.rb'
+require 'aemo/nem12/nmi_data_details.rb'
 require 'aemo/nmi.rb'
+require 'aemo/nmi/meter.rb'
+require 'aemo/nmi/register.rb'
 require 'aemo/msats.rb'
 require 'aemo/version.rb'
 
-# AEMO Module to encapsulate all AEMO classes
+# Namespace for classes and modules that handle AEMO interactions
+# @since 0.0.0
 module AEMO
 end

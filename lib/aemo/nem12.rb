@@ -258,13 +258,10 @@ module AEMO
       # 'J' => { :stream => 'Net',    :description => 'Net', :units => 'kVArh' }
     }
 
-    @nmi              = nil
-    @data_details     = []
-    @interval_data    = []
-    @interval_events  = []
-
-    attr_accessor :nmi, :file_contents
-    attr_reader   :data_details, :interval_data, :interval_events
+    @file_contents    = nil
+    @header           = nil
+    @nmi_data_details = []
+    attr_accessor :file_contents, :header, :nmi_data_details
 
     # Initialize a NEM12 file
     def initialize(nmi,options={})

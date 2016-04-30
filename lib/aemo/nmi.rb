@@ -2,20 +2,12 @@ require 'csv'
 require 'json'
 require 'time'
 require 'ostruct'
+require 'active_support'
+
 module AEMO
   # AEMO::NMI acts as an object to simplify access to data and information about a NMI and provide verification of the NMI value
   class NMI
-    # Operational Regions for the NMI
-    REGIONS = {
-      'ACT' => 'Australian Capital Territory',
-      'NSW' => 'New South Wales',
-      'QLD' => 'Queensland',
-      'SA'  => 'South Australia',
-      'TAS' => 'Tasmania',
-      'VIC' => 'Victoria',
-      'WA'  => 'Western Australia',
-      'NT'  => 'Northern Territory'
-    }
+
     # NMI_ALLOCATIONS as per AEMO Documentation at http://aemo.com.au/Electricity/Policies-and-Procedures/Retail-and-Metering/~/media/Files/Other/Retail%20and%20Metering/NMI_Allocation_List_v7_June_2012.ashx
     #   Last accessed 2015-02-04
     NMI_ALLOCATIONS = {
@@ -396,11 +388,13 @@ module AEMO
         ]
       }
     }
+
     # Transmission Node Identifier Codes are loaded from a json file
     #  Obtained from http://www.nemweb.com.au/
     #
     #  See /lib/data for further data manipulation required
     TNI_CODES = JSON.parse(File.read(File.join(File.dirname(__FILE__),'..','data','aemo-tni.json')))
+
     # Distribution Loss Factor Codes are loaded from a json file
     #  Obtained from MSATS, matching to DNSP from file http://www.aemo.com.au/Electricity/Market-Operations/Loss-Factors-and-Regional-Boundaries/~/media/Files/Other/loss%20factors/DLF_FINAL_V2_2014_2015.ashx
     #  Last accessed 2015-02-06
@@ -417,12 +411,13 @@ module AEMO
     @jurisdiction_code            = nil
     @classification_code          = nil
     @status                       = nil
-    @address                      = nil
-    @meters                       = nil
-    @roles                        = nil
-    @data_streams                 = nil
+    @address                      = {}
+    @meters                       = []
+    @roles                        = {}
+    @data_streams                 = []
 
-    attr_accessor :nmi, :msats_detail, :tni, :dlf, :customer_classification_code, :customer_threshold_code, :jurisdiction_code, :classification_code, :status, :address, :meters, :roles, :data_streams
+    attr_accessor :nmi, :tni, :dlf, :customer_classification_code, :customer_threshold_code, :jurisdiction_code, :classification_code, :status, :address, :meters, :roles, :data_streams
+    attr_reader   :msats_detail
 
     # Initialize a NEM12 file
     #
@@ -430,14 +425,64 @@ module AEMO
     # @param options [Hash] a hash of options
     # @return [AEMO::NMI] an instance of AEMO::NMI is returned
     def initialize(nmi,options={})
-      raise ArgumentError.new("NMI is not a string") unless nmi.is_a?(String)
-      raise ArgumentError.new("NMI is not 10 characters") unless nmi.length == 10
-      raise ArgumentError.new("NMI is not constructed with valid characters") unless AEMO::NMI.valid_nmi?(nmi)
+      raise ArgumentError, "NMI is not a string"                          unless nmi.is_a?(String)
+      raise ArgumentError, "NMI is not 10 characters"                     unless nmi.length == 10
+      raise ArgumentError, "NMI is not constructed with valid characters" unless AEMO::NMI.valid_nmi?(nmi)
 
-      @nmi              = nmi
-      @meters           = []
-      @roles            = {}
-      @data_streams     = []
+      # National Meter Identifier
+      @nmi = nmi
+
+      # Roles
+      unless options[:roles].nil?
+        raise ArgumentError, ''
+        @roles  = options[:roles]
+      end
+
+      # Meters are based upon
+      unless options[:nmi_configuration].nil?
+        raise 'NMI Configuration is not a string' unless options[:nmi_configuration].is_a?(String)
+        raise "NMI Configuration #{options[:nmi_configuration]} is invalid" unless options[:nmi_configuration].match(/^([A-Z]\d+)+$/)
+        options[:nmi_configuration].scan(/([A-Z]\d+)/).flatten.group_by{|x| x.match(/[A-Z](\d+)/)[1].to_i } do |meter,registers|
+          @meters << AEMO::NMI::Meter.new({nem12_meter: meter, registers: registers.join()})
+        end
+      end
+
+      unless options[:next_scheduled_read_date].nil?
+        raise ArgumentError, "Next Scheduled Read Date is invalid" unless options[:next_scheduled_read_date].is_a?(Date)
+        @next_scheduled_read_date = options[:next_scheduled_read_date]
+      end
+
+      unless options[:meter_serial_number].nil?
+        raise ArgumentError, "" unless options[:meter_serial_number].is_a?(String)
+        @meter_serial_number = options[:meter_serial_number]
+      end
+
+      unless options[:register_id].nil?
+        raise ArgumentError, "" unless options[:register_id].is_a?(String)
+        @register_id = options[:register_id]
+      end
+
+      unless options[:nmi_suffix].nil?
+        raise ArgumentError, "" unless options[:nmi_suffix].is_a?(String)
+        @nmi_suffix = options[:nmi_suffix]
+      end
+
+      unless options[:mdm_data_streaming_identifier].nil?
+        raise ArgumentError, "" unless options[:mdm_data_streaming_identifier].is_a?(String)
+        raise ArgumentError, "" unless options[:mdm_data_streaming_identifier].match(/^[A-Z0-9]+$/)
+        @mdm_data_streaming_identifier = options[:mdm_data_streaming_identifier]
+      end
+
+      unless options[:unit_of_measurement].nil?
+        raise ArgumentError, "" unless options[:].is_a?()
+        @ = options[:]
+      end
+
+      unless options[:interval_length].nil?
+        raise ArgumentError, "" unless options[:].is_a?()
+        @ = options[:]
+      end
+
     end
 
     # A function to validate the instance's nmi value
@@ -449,7 +494,7 @@ module AEMO
 
     # Find the Network of NMI
     #
-    # @returns [Hash] The Network information
+    # @return [Hash] The Network information
     def network
       AEMO::NMI.network(@nmi)
     end
@@ -559,11 +604,13 @@ module AEMO
     #
     # @return [String]
     def friendly_address
-      friendly_address = ''
       if @address.is_a?(Hash)
         friendly_address = @address.values.map{|x| x.is_a?(Hash) ? x.values.map{|y| y.is_a?(Hash) ? y.values.join(" ") : y }.join(" ") : x }.join(", ")
+      elsif @address.is_a?(String)
+        @address
+      else
+        ''
       end
-      friendly_address
     end
 
     # Returns the meter OpenStructs for the requested status (C/R)
@@ -610,7 +657,7 @@ module AEMO
     # Find the Network for a given NMI
     #
     # @param nmi [String] NMI
-    # @returns [Hash] The Network information
+    # @return [Hash] The Network information
     def self.network(nmi)
       network = nil
       AEMO::NMI::NMI_ALLOCATIONS.each_pair do |identifier, details|
