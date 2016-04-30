@@ -22,7 +22,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'json',      '~> 1.8'
   s.add_dependency 'nokogiri',  '~> 1.6', '>= 1.6.6'
-  s.add_dependency 'zip',       '~>2.0'
+  s.add_dependency 'rubyzip',   '~> 1.1.7'
   s.add_dependency 'multi_xml', '~> 0.5',   '>= 0.5.2'
   s.add_dependency 'httparty',  '~> 0.13',  '>= 0.13.1'
   s.add_dependency 'activesupport', '~> 4.2', '>= 4.2.0'
