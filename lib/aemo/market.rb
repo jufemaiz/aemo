@@ -23,7 +23,14 @@ module AEMO
       values = []
       if response.response.code == '200'
         CSV.parse(response.body, :headers => true, :converters => :numeric) do |row|
-          row = row.to_h
+          puts "row(#{row.class})(respond_to?:#{row.respond_to?(:to_hash)}): #{row.inspect}"
+          if row.respond_to?(:to_h)
+            row = row.to_h
+          elsif row.respond_to?(:to_hash)
+            row = row.to_hash
+          else
+            raise NoMethodError, "cannot convert #{row.class} to Hash"
+          end
           values.push AEMO::Market::Interval.new(row['SETTLEMENTDATE'],row)
         end
       end
