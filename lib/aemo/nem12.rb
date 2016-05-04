@@ -299,8 +299,8 @@ module AEMO
       if options[:strict] && (csv[2].match(/\d{12}/).nil? || csv[2] != Time.parse("#{csv[2]}00").strftime('%Y%m%d%H%M'))
         raise ArgumentError, 'DateTime is not valid'
       end
-      raise ArgumentError, 'FromParticispant is not valid'  if csv[3].match(/.{1, 10}/).nil?
-      raise ArgumentError, 'ToParticispant is not valid'    if csv[4].match(/.{1, 10}/).nil?
+      raise ArgumentError, 'FromParticispant is not valid'  if csv[3].match(/.{1,10}/).nil?
+      raise ArgumentError, 'ToParticispant is not valid'    if csv[4].match(/.{1,10}/).nil?
 
       {
         record_indicator: csv[0].to_i,
@@ -319,8 +319,8 @@ module AEMO
 
       raise ArgumentError, 'RecordIndicator is not 200'     if csv[0] != '200'
       raise ArgumentError, 'NMI is not valid'               unless AEMO::NMI.valid_nmi?(csv[1])
-      raise ArgumentError, 'NMIConfiguration is not valid'  if csv[2].match(/.{1, 240}/).nil?
-      if !csv[3].nil? && csv[3].match(/.{1, 10}/).nil?
+      raise ArgumentError, 'NMIConfiguration is not valid'  if csv[2].match(/.{1,240}/).nil?
+      if !csv[3].nil? && csv[3].match(/.{1,10}/).nil?
         raise ArgumentError, 'RegisterID is not valid'
       end
       raise ArgumentError, 'NMISuffix is not valid' if csv[4].match(/[A-HJ-NP-Z][1-9A-HJ-NP-Z]/).nil?
