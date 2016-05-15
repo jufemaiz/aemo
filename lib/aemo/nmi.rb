@@ -18,7 +18,7 @@ module AEMO
     }.freeze
 
     # NMI_ALLOCATIONS as per AEMO Documentation at http://aemo.com.au/Electricity/Policies-and-Procedures/Retail-and-Metering/~/media/Files/Other/Retail% 20and% 20Metering/NMI_Allocation_List_v7_June_2012.ashx
-    #   Last accessed 2015-02-04
+    #   Last accessed 2016-05-15
     NMI_ALLOCATIONS = {
       'ACTEWP' => {
         title: 'Actew Distribution Ltd and Jemena Networks (ACT) Pty Ltd',
@@ -425,12 +425,12 @@ module AEMO
 
     attr_accessor :nmi, :msats_detail, :tni, :dlf, :customer_classification_code, :customer_threshold_code, :jurisdiction_code, :classification_code, :status, :address, :meters, :roles, :data_streams
 
-    # Initialize a NEM12 file
+    # Initialize a NMI file
     #
     # @param nmi [String] the National Meter Identifier (NMI)
     # @param options [Hash] a hash of options
     # @return [AEMO::NMI] an instance of AEMO::NMI is returned
-    def initialize(nmi, _options = {})
+    def initialize(nmi, options = {})
       raise ArgumentError, 'NMI is not a string' unless nmi.is_a?(String)
       raise ArgumentError, 'NMI is not 10 characters' unless nmi.length == 10
       raise ArgumentError, 'NMI is not constructed with valid characters' unless AEMO::NMI.valid_nmi?(nmi)
@@ -439,6 +439,9 @@ module AEMO
       @meters           = []
       @roles            = {}
       @data_streams     = []
+      @msats_detail = options['msats_detail']
+
+      parse_msats_detail unless options['msats_detail'].nil?
     end
 
     # A function to validate the instance's nmi value
@@ -482,8 +485,8 @@ module AEMO
     #
     # @return [Hash] MSATS NMI Detail data
     def raw_msats_nmi_detail(options = {})
-      raise ArgumentError, 'MSATS has no authentication credentials' unless AEMO::MSATS.can_authenticate?
-
+      raise ArgumentError,
+            'MSATS has no authentication credentials' unless AEMO::MSATS.can_authenticate?
       AEMO::MSATS.nmi_detail(@nmi, options)
     end
 
@@ -493,6 +496,14 @@ module AEMO
     def update_from_msats!(options = {})
       # Update local cache
       @msats_detail = raw_msats_nmi_detail(options)
+      parse_msats_detail
+      self
+    end
+
+    # Turns raw MSATS junk into useful things
+    #
+    # @return [self] returns self
+    def parse_msats_detail
       # Set the details if there are any
       unless @msats_detail['MasterData'].nil?
         @tni                          = @msats_detail['MasterData']['TransmissionNodeIdentifier']

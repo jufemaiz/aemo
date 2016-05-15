@@ -9,3 +9,4 @@ doc
 .env
 .bundle/
 vendor/
+.DS_Store
