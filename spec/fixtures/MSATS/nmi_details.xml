@@ -1,0 +1,144 @@
+<?xml version="1.0" ?>
+<ase:aseXML xmlns:ase="urn:aseXML:r31" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:aseXML:r31 http://www.nemmco.com.au/aseXML/schemas/r31/aseXML_r31.xsd">
+  <Header>
+    <From description="Australian Energy Market Operator Limited">NEMMCO</From>
+    <To description="COzero Energy Retail Pty Ltd">COZEROER</To>
+    <MessageID>NEMMCO-MSG-600252453</MessageID>
+    <MessageDate>2016-03-23T09:24:54+10:00</MessageDate>
+    <TransactionGroup>NMID</TransactionGroup>
+    <Priority>High</Priority>
+    <SecurityContext>NEMMCOBATCH</SecurityContext>
+    <Market>NEM</Market>
+  </Header>
+  <Transactions>
+    <Transaction transactionID="NMID-600252453" transactionDate="2016-03-23T09:24:54+10:00" initiatingTransactionID="3638f25224992dd3be29394300c6492ab80b">
+<NMIStandingDataResponse version="r4">
+<NMIStandingData xsi:type="ase:ElectricityStandingData" version="r31">
+<NMI>4001234567</NMI>
+<MasterData>
+  <JurisdictionCode>NSW</JurisdictionCode>
+  <NMIClassificationCode>SMALL</NMIClassificationCode>
+  <TransmissionNodeIdentifier>NGN2</TransmissionNodeIdentifier>
+  <DistributionLossFactorCode>BL0A</DistributionLossFactorCode>
+  <Address>
+    <UnstructuredAddress>
+      <AddressLine>GUNNEDAH</AddressLine>
+      <AddressLine>NSW 2380</AddressLine>
+      <AddressLine>7 WARATAH CLOSE</AddressLine>
+    </UnstructuredAddress>
+    <SuburbOrPlaceOrLocality>GUNNEDAH</SuburbOrPlaceOrLocality>
+    <StateOrTerritory>NSW</StateOrTerritory>
+    <PostCode>2380</PostCode>
+  </Address>
+  <Status>A</Status>
+  <CustomerClassificationCode>RESIDENTIAL</CustomerClassificationCode>
+</MasterData>
+
+<RoleAssignments>
+  <RoleAssignment>
+    <Party>CNRGYMDP</Party>
+    <Role>MDP</Role>
+  </RoleAssignment>
+  <RoleAssignment>
+    <Party>CNRGYMDP</Party>
+    <Role>MPC</Role>
+  </RoleAssignment>
+  <RoleAssignment>
+    <Party>CNRGYMPB</Party>
+    <Role>MPB</Role>
+  </RoleAssignment>
+  <RoleAssignment>
+    <Party>CNRGYP</Party>
+    <Role>LNSP</Role>
+  </RoleAssignment>
+</RoleAssignments>
+
+<DataStreams>
+  <DataStream>
+    <Suffix>11</Suffix>
+    <ProfileName>NSLP</ProfileName>
+    <AveragedDailyLoad>3</AveragedDailyLoad>
+    <DataStreamType>Consumption</DataStreamType>
+    <Status>I</Status>
+  </DataStream>
+  <DataStream>
+    <Suffix>21</Suffix>
+    <ProfileName>NSLP</ProfileName>
+    <AveragedDailyLoad>3</AveragedDailyLoad>
+    <DataStreamType>Consumption</DataStreamType>
+    <Status>I</Status>
+  </DataStream>
+  <DataStream>
+    <Suffix>31</Suffix>
+    <ProfileName>NSLP</ProfileName>
+    <AveragedDailyLoad>5</AveragedDailyLoad>
+    <DataStreamType>Consumption</DataStreamType>
+    <Status>I</Status>
+  </DataStream>
+</DataStreams>
+
+<MeterRegister>
+  <Meter>
+    <SerialNumber>60085201</SerialNumber>
+    <NextScheduledReadDate>2016-04-15</NextScheduledReadDate>
+    <InstallationTypeCode>BASIC</InstallationTypeCode>
+    <ReadTypeCode>MV3</ReadTypeCode>
+    <Status>C</Status>
+  </Meter>
+
+
+
+  <Meter>
+    <SerialNumber>60085201</SerialNumber>
+    <RegisterConfiguration>
+      <Register>
+        <RegisterID>1</RegisterID>
+        <NetworkTariffCode>BLNN2AU</NetworkTariffCode>
+        <UnitOfMeasure>KWH</UnitOfMeasure>
+        <TimeOfDay>PEAK</TimeOfDay>
+        <Multiplier>1</Multiplier>
+        <DialFormat>6</DialFormat>
+        <ControlledLoad>N</ControlledLoad>
+        <Status>C</Status>
+      </Register>
+    </RegisterConfiguration>
+  </Meter>
+  <Meter>
+    <SerialNumber>60085201</SerialNumber>
+    <RegisterConfiguration>
+      <Register>
+        <RegisterID>2</RegisterID>
+        <NetworkTariffCode>BLNN2AU</NetworkTariffCode>
+        <UnitOfMeasure>KWH</UnitOfMeasure>
+        <TimeOfDay>SHOULDER</TimeOfDay>
+        <Multiplier>1</Multiplier>
+        <DialFormat>6</DialFormat>
+        <ControlledLoad>N</ControlledLoad>
+        <Status>C</Status>
+      </Register>
+    </RegisterConfiguration>
+  </Meter>
+  <Meter>
+    <SerialNumber>60085201</SerialNumber>
+    <RegisterConfiguration>
+      <Register>
+        <RegisterID>3</RegisterID>
+        <NetworkTariffCode>BLNN2AU</NetworkTariffCode>
+        <UnitOfMeasure>KWH</UnitOfMeasure>
+        <TimeOfDay>OFFPEAK</TimeOfDay>
+        <Multiplier>1</Multiplier>
+        <DialFormat>6</DialFormat>
+        <ControlledLoad>N</ControlledLoad>
+        <Status>C</Status>
+      </Register>
+    </RegisterConfiguration>
+  </Meter>
+</MeterRegister>
+</NMIStandingData>
+        <Event severity="Information">
+          <Code>0</Code>
+        </Event>
+</NMIStandingDataResponse>
+    </Transaction>
+  </Transactions>
+</ase:aseXML>

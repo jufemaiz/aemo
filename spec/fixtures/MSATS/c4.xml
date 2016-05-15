@@ -1,0 +1,275 @@
+<?xml version="1.0" ?>
+<ase:aseXML xmlns:ase="urn:aseXML:r31" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:aseXML:r31 http://www.nemmco.com.au/aseXML/schemas/r31/aseXML_r31.xsd">
+  <Header>
+    <From description="Australian Energy Market Operator Limited">NEMMCO</From>
+    <To description="Energy Retail">ER</To>
+    <MessageID>NEMMCO-MSG-22283380</MessageID>
+    <MessageDate>2016-03-23T10:08:20+10:00</MessageDate>
+    <TransactionGroup>CATS</TransactionGroup>
+    <Priority>Medium</Priority>
+    <SecurityContext>NEMMCOBATCH</SecurityContext>
+    <Market>NEM</Market>
+  </Header>
+  <Transactions>
+    <Transaction transactionID="CATS-22283380" transactionDate="2016-03-23T10:08:20+10:00">
+      <ReportResponse version="r10">
+        <ReportParameters xsi:type="ase:CATSMasterReportParameters">
+          <ReportName>Master</ReportName>
+          <FromDate>2016-03-23</FromDate>
+          <ToDate>2016-03-23</ToDate>
+          <AsAtDate>2016-03-23</AsAtDate>
+          <LastSequenceNumber>0</LastSequenceNumber>
+          <NMI>4311235759</NMI>
+          <Participant>ER</Participant>
+          <Role>FRMP</Role>
+          <ReportType>Detailed</ReportType>
+        </ReportParameters>
+        <ReportResults xsi:type="ase:ReplicationReportFormat">
+<ReplicationBlock tableName="ElectricityNMIMaster">
+   <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:ElectricityNMIMasterRow">
+      <SequenceNumber>9999999</SequenceNumber>
+      <CreationDate>2016-02-11T01:06:19+10:00</CreationDate>
+      <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+      <RowStatus>A</RowStatus>
+      <FromDate>2016-02-10T00:00:00+10:00</FromDate>
+      <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+      <NMI>4311235759</NMI>
+      <JurisdictionCode>NSW</JurisdictionCode>
+      <NMIClassificationCode>SIZE</NMIClassificationCode>
+      <TransmissionNodeIdentifier>NSW2</TransmissionNodeIdentifier>
+      <DistributionLossFactorCode>HLVL</DistributionLossFactorCode>
+      <Address>
+         <StructuredAddress>
+            <BuildingOrPropertyName>PARENT NMI NIBHET0005</BuildingOrPropertyName>
+            <LocationDescriptor>EMBEDDED NETWORK</LocationDescriptor>
+            <House>
+               <HouseNumber>1</HouseNumber>
+            </House>
+            <Lot>
+               <LotNumber>1</LotNumber>
+            </Lot>
+            <Street>
+               <StreetName>TESTING</StreetName>
+               <StreetType>RD</StreetType>
+            </Street>
+         </StructuredAddress>
+         <SuburbOrPlaceOrLocality>TESTVILLE</SuburbOrPlaceOrLocality>
+         <StateOrTerritory>NSW</StateOrTerritory>
+         <PostCode>2000</PostCode>
+      </Address>
+      <Aggregate>Yes</Aggregate>
+      <Status>A</Status>
+      <CustomerThresholdCode>LOW</CustomerThresholdCode>
+   </Row>
+</ReplicationBlock>
+<ReplicationBlock tableName="ElectricityNMIRoles">
+   <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:ElectricityNMIRoleRow">
+      <SequenceNumber>9999999</SequenceNumber>
+      <CreationDate>2015-09-03T00:30:55+10:00</CreationDate>
+      <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+      <RowStatus>A</RowStatus>
+      <FromDate>2015-08-07T00:00:00+10:00</FromDate>
+      <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+      <NMI>4311235759</NMI>
+      <Party>ER</Party>
+      <Role>FRMP</Role>
+   </Row>
+   <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:ElectricityNMIRoleRow">
+      <SequenceNumber>9999999</SequenceNumber>
+      <CreationDate>2015-09-03T00:30:55+10:00</CreationDate>
+      <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+      <RowStatus>A</RowStatus>
+      <FromDate>2015-08-07T00:00:00+10:00</FromDate>
+      <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+      <NMI>4311235759</NMI>
+      <Party>LNSP</Party>
+      <Role>LNSP</Role>
+   </Row>
+   <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:ElectricityNMIRoleRow">
+      <SequenceNumber>9999999</SequenceNumber>
+      <CreationDate>2015-09-03T00:30:55+10:00</CreationDate>
+      <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+      <RowStatus>A</RowStatus>
+      <FromDate>2015-08-07T00:00:00+10:00</FromDate>
+      <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+      <NMI>4311235759</NMI>
+      <Party>LR</Party>
+      <Role>LR</Role>
+   </Row>
+   <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:ElectricityNMIRoleRow">
+      <SequenceNumber>9999999</SequenceNumber>
+      <CreationDate>2015-09-03T00:30:55+10:00</CreationDate>
+      <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+      <RowStatus>A</RowStatus>
+      <FromDate>2015-08-07T00:00:00+10:00</FromDate>
+      <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+      <NMI>4311235759</NMI>
+      <Party>MDP</Party>
+      <Role>MDP</Role>
+   </Row>
+   <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:ElectricityNMIRoleRow">
+      <SequenceNumber>9999999</SequenceNumber>
+      <CreationDate>2015-09-03T00:30:55+10:00</CreationDate>
+      <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+      <RowStatus>A</RowStatus>
+      <FromDate>2015-08-07T00:00:00+10:00</FromDate>
+      <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+      <NMI>4311235759</NMI>
+      <Party>MPB</Party>
+      <Role>MPB</Role>
+   </Row>
+   <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:ElectricityNMIRoleRow">
+      <SequenceNumber>9999999</SequenceNumber>
+      <CreationDate>2015-09-03T00:30:55+10:00</CreationDate>
+      <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+      <RowStatus>A</RowStatus>
+      <FromDate>2015-08-07T00:00:00+10:00</FromDate>
+      <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+      <NMI>4311235759</NMI>
+      <Party>ENERGEXM</Party>
+      <Role>MPC</Role>
+   </Row>
+   <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:ElectricityNMIRoleRow">
+      <SequenceNumber>9999999</SequenceNumber>
+      <CreationDate>2015-09-03T00:30:55+10:00</CreationDate>
+      <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+      <RowStatus>A</RowStatus>
+      <FromDate>2015-08-07T00:00:00+10:00</FromDate>
+      <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+      <NMI>4311235759</NMI>
+      <Party>ROLR</Party>
+      <Role>ROLR</Role>
+   </Row>
+   <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:ElectricityNMIRoleRow">
+      <SequenceNumber>9999999</SequenceNumber>
+      <CreationDate>2015-09-03T00:30:55+10:00</CreationDate>
+      <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+      <RowStatus>A</RowStatus>
+      <FromDate>2015-08-07T00:00:00+10:00</FromDate>
+      <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+      <NMI>4311235759</NMI>
+      <Party>ER</Party>
+      <Role>RP</Role>
+   </Row>
+</ReplicationBlock>
+<ReplicationBlock tableName="ElectricityNMIDataStreams">
+   <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:ElectricityNMIDataStreamRow">
+      <SequenceNumber>9999999</SequenceNumber>
+      <CreationDate>2015-11-06T01:22:07+10:00</CreationDate>
+      <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+      <RowStatus>A</RowStatus>
+      <FromDate>2015-11-05T00:00:00+10:00</FromDate>
+      <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+      <NMI>4311235759</NMI>
+      <Suffix>N1</Suffix>
+      <ProfileName>NOPROF</ProfileName>
+      <AveragedDailyLoad>939</AveragedDailyLoad>
+      <DataStreamType>Interval</DataStreamType>
+      <Status>A</Status>
+   </Row>
+</ReplicationBlock>
+<ReplicationBlock tableName="ElectricityNMIMeters">
+   <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:ElectricityNMIMeterRow">
+      <SequenceNumber>9999999</SequenceNumber>
+      <CreationDate>2015-10-14T00:54:49+10:00</CreationDate>
+      <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+      <RowStatus>A</RowStatus>
+      <FromDate>2015-10-07T00:00:00+10:00</FromDate>
+      <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+      <NMI>4311235759</NMI>
+      <SerialNumber>9999999</SerialNumber>
+      <Location>MSR LOCATED ADJACENT TO SUB</Location>
+      <InstallationTypeCode>COMMS4</InstallationTypeCode>
+      <Point>1</Point>
+      <LastTestDate>2015-10-07</LastTestDate>
+      <Status>C</Status>
+      <AdditionalSiteInformation>ENERGY TRADE PTY LTD</AdditionalSiteInformation>
+   </Row>
+</ReplicationBlock>
+<ReplicationBlock tableName="ElectricityNMIRegisterConfiguration">
+   <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:ElectricityNMIMeterRegisterRow">
+      <SequenceNumber>9999999</SequenceNumber>
+      <CreationDate>2016-02-20T01:22:21+10:00</CreationDate>
+      <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+      <RowStatus>A</RowStatus>
+      <FromDate>2016-02-01T00:00:00+10:00</FromDate>
+      <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+      <NMI>4311235759</NMI>
+      <SerialNumber>9999999</SerialNumber>
+      <RegisterID>B1</RegisterID>
+      <NetworkTariffCode>NTC</NetworkTariffCode>
+      <UnitOfMeasure>KWH</UnitOfMeasure>
+      <TimeOfDay>interval</TimeOfDay>
+      <Multiplier>1</Multiplier>
+      <DialFormat>8</DialFormat>
+      <ControlledLoad>NO</ControlledLoad>
+      <ConsumptionType>Actual</ConsumptionType>
+      <Status>C</Status>
+   </Row>
+   <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:ElectricityNMIMeterRegisterRow">
+      <SequenceNumber>9999999</SequenceNumber>
+      <CreationDate>2016-02-20T01:22:21+10:00</CreationDate>
+      <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+      <RowStatus>A</RowStatus>
+      <FromDate>2016-02-01T00:00:00+10:00</FromDate>
+      <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+      <NMI>4311235759</NMI>
+      <SerialNumber>9999999</SerialNumber>
+      <RegisterID>E1</RegisterID>
+      <NetworkTariffCode>NTC</NetworkTariffCode>
+      <UnitOfMeasure>KWH</UnitOfMeasure>
+      <TimeOfDay>interval</TimeOfDay>
+      <Multiplier>1</Multiplier>
+      <DialFormat>8</DialFormat>
+      <ControlledLoad>NO</ControlledLoad>
+      <ConsumptionType>Actual</ConsumptionType>
+      <Status>C</Status>
+   </Row>
+   <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:ElectricityNMIMeterRegisterRow">
+      <SequenceNumber>9999999</SequenceNumber>
+      <CreationDate>2016-02-20T01:22:21+10:00</CreationDate>
+      <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+      <RowStatus>A</RowStatus>
+      <FromDate>2016-02-01T00:00:00+10:00</FromDate>
+      <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+      <NMI>4311235759</NMI>
+      <SerialNumber>9999999</SerialNumber>
+      <RegisterID>K1</RegisterID>
+      <NetworkTariffCode>NTC</NetworkTariffCode>
+      <UnitOfMeasure>KVARH</UnitOfMeasure>
+      <TimeOfDay>interval</TimeOfDay>
+      <Multiplier>1</Multiplier>
+      <DialFormat>8</DialFormat>
+      <ControlledLoad>NO</ControlledLoad>
+      <ConsumptionType>Actual</ConsumptionType>
+      <Status>C</Status>
+   </Row>
+   <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:ElectricityNMIMeterRegisterRow">
+      <SequenceNumber>9999999</SequenceNumber>
+      <CreationDate>2016-02-20T01:22:21+10:00</CreationDate>
+      <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+      <RowStatus>A</RowStatus>
+      <FromDate>2016-02-01T00:00:00+10:00</FromDate>
+      <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+      <NMI>4311235759</NMI>
+      <SerialNumber>9999999</SerialNumber>
+      <RegisterID>Q1</RegisterID>
+      <NetworkTariffCode>NTC</NetworkTariffCode>
+      <UnitOfMeasure>KVARH</UnitOfMeasure>
+      <TimeOfDay>interval</TimeOfDay>
+      <Multiplier>1</Multiplier>
+      <DialFormat>8</DialFormat>
+      <ControlledLoad>NO</ControlledLoad>
+      <ConsumptionType>Actual</ConsumptionType>
+      <Status>C</Status>
+   </Row>
+</ReplicationBlock>
+        </ReportResults>
+        <Event severity="Information">
+          <Code>0</Code>
+          <Explanation>Success</Explanation>
+        </Event>
+      </ReportResponse>
+    </Transaction>
+  </Transactions>
+</ase:aseXML>

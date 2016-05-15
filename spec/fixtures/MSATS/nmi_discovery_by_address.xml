@@ -1,0 +1,141 @@
+<?xml version="1.0" ?>
+<ase:aseXML xmlns:ase="urn:aseXML:r31" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:aseXML:r31 http://www.nemmco.com.au/aseXML/schemas/r31/aseXML_r31.xsd">
+  <Header>
+    <From description="Australian Energy Market Operator Limited">NEMMCO</From>
+    <To description="COzero Energy Retail Pty Ltd">COZEROER</To>
+    <MessageID>NEMMCO-MSG-600298046</MessageID>
+    <MessageDate>2016-03-23T16:12:34+10:00</MessageDate>
+    <TransactionGroup>NMID</TransactionGroup>
+    <Priority>High</Priority>
+    <SecurityContext>NEMMCOBATCH</SecurityContext>
+    <Market>NEM</Market>
+  </Header>
+  <Transactions>
+    <Transaction transactionID="NMID-600298046" transactionDate="2016-03-23T16:12:34+10:00" initiatingTransactionID="1234567890">
+<NMIDiscoveryResponse version="r17">
+<NMIStandingData xsi:type="ase:ElectricityStandingData" version="r31">
+  <NMI checksum="7">4000000000</NMI>
+<MasterData>
+  <Address>
+    <StructuredAddress>
+      <FlatOrUnit>
+        <FlatOrUnitType>SITE</FlatOrUnitType>
+        <FlatOrUnitNumber>0</FlatOrUnitNumber>
+      </FlatOrUnit>
+      <BuildingOrPropertyName>PARLIAMENT HOUSE</BuildingOrPropertyName>
+      <LocationDescriptor>HUT PARLIAMENT HOUSE TELSTRA</LocationDescriptor>
+      <House>
+        <HouseNumber>6</HouseNumber>
+      </House>
+      <Street>
+        <StreetName>MACQUARIE</StreetName>
+        <StreetType>ST</StreetType>
+      </Street>
+    </StructuredAddress>
+    <SuburbOrPlaceOrLocality>SYDNEY</SuburbOrPlaceOrLocality>
+    <StateOrTerritory>NSW</StateOrTerritory>
+    <PostCode>2000</PostCode>
+  </Address>
+  <CustomerClassificationCode>BUSINESS</CustomerClassificationCode>
+  <CustomerThresholdCode>LOW</CustomerThresholdCode>
+</MasterData>
+  <RoleAssignments>
+    <RoleAssignment>
+      <Party>ENERGYAP</Party>
+      <Role>LNSP</Role>
+    </RoleAssignment>
+  </RoleAssignments>
+</NMIStandingData>
+<NMIStandingData xsi:type="ase:ElectricityStandingData" version="r31">
+  <NMI checksum="4">4000000001</NMI>
+<MasterData>
+  <Address>
+    <StructuredAddress>
+      <BuildingOrPropertyName>PARLIAMENT HOUSE</BuildingOrPropertyName>
+      <LocationDescriptor>SUPPLY 3</LocationDescriptor>
+      <House>
+        <HouseNumber>6</HouseNumber>
+      </House>
+      <Street>
+        <StreetName>MACQUARIE</StreetName>
+        <StreetType>ST</StreetType>
+      </Street>
+    </StructuredAddress>
+    <SuburbOrPlaceOrLocality>SYDNEY</SuburbOrPlaceOrLocality>
+    <StateOrTerritory>NSW</StateOrTerritory>
+    <PostCode>2000</PostCode>
+  </Address>
+  <CustomerClassificationCode>BUSINESS</CustomerClassificationCode>
+  <CustomerThresholdCode>HIGH</CustomerThresholdCode>
+</MasterData>
+  <RoleAssignments>
+    <RoleAssignment>
+      <Party>ENERGYAP</Party>
+      <Role>LNSP</Role>
+    </RoleAssignment>
+  </RoleAssignments>
+</NMIStandingData>
+<NMIStandingData xsi:type="ase:ElectricityStandingData" version="r31">
+  <NMI checksum="8">4000000002</NMI>
+<MasterData>
+  <Address>
+    <StructuredAddress>
+      <BuildingOrPropertyName>PARLIAMENT HOUSE</BuildingOrPropertyName>
+      <House>
+        <HouseNumber>6</HouseNumber>
+      </House>
+      <Street>
+        <StreetName>MACQUARIE</StreetName>
+        <StreetType>ST</StreetType>
+      </Street>
+    </StructuredAddress>
+    <SuburbOrPlaceOrLocality>SYDNEY</SuburbOrPlaceOrLocality>
+    <StateOrTerritory>NSW</StateOrTerritory>
+    <PostCode>2000</PostCode>
+  </Address>
+  <CustomerClassificationCode>BUSINESS</CustomerClassificationCode>
+  <CustomerThresholdCode>LOW</CustomerThresholdCode>
+</MasterData>
+  <RoleAssignments>
+    <RoleAssignment>
+      <Party>ENERGYAP</Party>
+      <Role>LNSP</Role>
+    </RoleAssignment>
+  </RoleAssignments>
+</NMIStandingData>
+<NMIStandingData xsi:type="ase:ElectricityStandingData" version="r31">
+  <NMI checksum="6">4000000003</NMI>
+<MasterData>
+  <Address>
+    <StructuredAddress>
+      <BuildingOrPropertyName>PARLIAMENT HOUSE</BuildingOrPropertyName>
+      <LocationDescriptor>SUPPLIES 1 AND 2</LocationDescriptor>
+      <House>
+        <HouseNumber>6</HouseNumber>
+      </House>
+      <Street>
+        <StreetName>MACQUARIE</StreetName>
+        <StreetType>ST</StreetType>
+      </Street>
+    </StructuredAddress>
+    <SuburbOrPlaceOrLocality>SYDNEY</SuburbOrPlaceOrLocality>
+    <StateOrTerritory>NSW</StateOrTerritory>
+    <PostCode>2000</PostCode>
+  </Address>
+  <CustomerClassificationCode>BUSINESS</CustomerClassificationCode>
+  <CustomerThresholdCode>HIGH</CustomerThresholdCode>
+</MasterData>
+  <RoleAssignments>
+    <RoleAssignment>
+      <Party>ENERGYAP</Party>
+      <Role>LNSP</Role>
+    </RoleAssignment>
+  </RoleAssignments>
+</NMIStandingData>
+        <Event severity="Information">
+          <Code>0</Code>
+        </Event>
+</NMIDiscoveryResponse>
+    </Transaction>
+  </Transactions>
+</ase:aseXML>

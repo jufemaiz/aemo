@@ -1,0 +1,30 @@
+<?xml version="1.0" ?>
+<ase:aseXML xmlns:ase="urn:aseXML:r32" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:aseXML:r32 http://www.nemmco.com.au/aseXML/schemas/r32/aseXML_r32.xsd">
+  <Header>
+    <From description="Australian Energy Market Operator Limited">NEMMCO</From>
+    <To description="Energy Retail">ER</To>
+    <MessageID>NEMMCO-MSG-666</MessageID>
+    <MessageDate>2016-01-01T00:00:00+10:00</MessageDate>
+    <TransactionGroup>CATS</TransactionGroup>
+    <Priority>Medium</Priority>
+    <SecurityContext>NEMMCOBATCH</SecurityContext>
+    <Market>NEM</Market>
+  </Header>
+  <Transactions>
+    <Transaction transactionID="CATS-666" transactionDate="2016-01-01T00:00:00+10:00" initiatingTransactionID="1234567890">
+      <ReportResponse version="r10">
+        <ReportParameters xsi:type="ase:GenericReportParameters">
+          <ReportName>ParticipantSystemStatus</ReportName>
+        </ReportParameters>
+        <ReportResults xsi:type="ase:CATSParticipantSystemStatusReportFormat">
+          <ParticipantSystemsStatus>
+          </ParticipantSystemsStatus>
+        </ReportResults>
+        <Event severity="Information">
+          <Code>0</Code>
+          <Explanation>Success</Explanation>
+        </Event>
+      </ReportResponse>
+    </Transaction>
+  </Transactions>
+</ase:aseXML>

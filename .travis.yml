@@ -1,0 +1,22 @@
+language: ruby
+bundler_args: --retry=3 --jobs=3
+cache: bundler
+sudo: false
+rvm:
+  - 2.3.0
+  - 2.2.4
+  - 2.2.3
+  - 2.2.2
+  - 2.2.1
+  - 2.2.0
+  - 2.1.8
+  - 1.9.3-p551
+  - ruby-head
+matrix:
+  allow_failures:
+    - rvm: ruby-head
+  fast_finish: true
+install:
+  - bundle install
+script:
+  - rspec
