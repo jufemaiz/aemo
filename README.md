@@ -148,7 +148,7 @@ AEMO::Region.all
 
 ## NEM12 Files
 
-TODO: Update this to provide more information on these class constants.
+@todo Update this to provide more information on these class constants.
 
 RECORD_INDICATORS
 TRANSACTION_CODE_FLAGS

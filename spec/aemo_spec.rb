@@ -5,5 +5,4 @@ describe AEMO do
     @klass = Class.new
     @klass.instance_eval { include AEMO }
   end
-  
 end

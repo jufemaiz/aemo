@@ -1,0 +1,33 @@
+inherit_from: .rubocop_todo.yml
+
+AllCops:
+  Exclude:
+    - 'vendor/**/*'
+  DefaultFormatter: progress
+  DisplayCopNames: true
+  DisplayStyleGuide: true
+  ExtraDetails: true
+  # TargetRubyVersion: 2.3
+
+# Metrics/AbcSize:
+# # Target: 15
+#   Max: 175
+Metrics/LineLength:
+  AllowHeredoc: true
+  AllowURI: true
+  URISchemes:
+    - http
+    - https
+  # Target: 80
+  # Max: 210
+# Metrics/MethodLength:
+#   # Target 10
+#   Max: 80
+# Metrics/ClassLength:
+#   Max: 600
+# Metrics/CyclomaticComplexity:
+# # Target 6
+#   Max: 29
+# Metrics/PerceivedComplexity:
+# # Target 7
+#   Max: 29

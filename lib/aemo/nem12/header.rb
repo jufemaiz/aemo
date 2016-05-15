@@ -10,7 +10,7 @@ require 'time'
 # @attr [String] from_participant The originator of the NEM12 file
 # @attr [String] to_participant The recipient of the NEM12 file
 module AEMO
-  module NEM12
+  class NEM12
     class Header
       # As per AEMO NEM12 Specification
       # http://www.aemo.com.au/Consultations/National-Electricity-Market/Open/~/media/Files/Other/consultations/nem/Meter%20Data%20File%20Format%20Specification%20NEM12_NEM13/MDFF_Specification_NEM12_NEM13_Final_v102_clean.ashx
