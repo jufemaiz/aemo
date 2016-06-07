@@ -75,7 +75,7 @@ describe AEMO::NMI do
         expect(AEMO::NMI.new('NM10000000')).to be_a(AEMO::NMI)
       end
       it 'should return a valid NMI with MSATS' do
-        expect(AEMO::NMI.new('NM10000000', { msats_detail: {} })).to be_a(AEMO::NMI)
+        expect(AEMO::NMI.new('NM10000000', msats_detail: {})).to be_a(AEMO::NMI)
       end
     end
     context 'invalid' do
