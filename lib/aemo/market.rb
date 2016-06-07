@@ -35,7 +35,7 @@ module AEMO
             else
               raise NoMethodError, "cannot convert #{row.class} to Hash"
             end
-            values.push ::AEMO::Market::Interval.new(row['SETTLEMENTDATE'], row)
+            values.push ::AEMO::Market::Interval.parse_csv(row)
           end
         end
         values
