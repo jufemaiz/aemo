@@ -31,3 +31,8 @@ Metrics/LineLength:
 # Metrics/PerceivedComplexity:
 # # Target 7
 #   Max: 29
+Style/StringLiterals:
+  EnforcedStyle: single_quotes
+  SupportedStyles:
+    - single_quotes
+    - double_quotes
