@@ -520,7 +520,7 @@ module AEMO
       raise ArgumentError, 'First row should be have a RecordIndicator of 100 and be of type Header Record' unless file_contents.first.parse_csv[0] == '100'
 
       nem12s = []
-      AEMO::NEM12.parse_nem12_100(file_contents.first, strict: strict)
+      AEMO::NEM12.parse_nem12_100(file_contents.first, strict: _strict)
       file_contents.each do |line|
         case line[0..2].to_i
         when 200

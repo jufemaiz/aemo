@@ -429,19 +429,20 @@ module AEMO
     #
     # @param nmi [String] the National Meter Identifier (NMI)
     # @param options [Hash] a hash of options
+    # @option options [Hash] :msats_detail MSATS details as per #parse_msats_detail requirements
     # @return [AEMO::NMI] an instance of AEMO::NMI is returned
     def initialize(nmi, options = {})
       raise ArgumentError, 'NMI is not a string' unless nmi.is_a?(String)
       raise ArgumentError, 'NMI is not 10 characters' unless nmi.length == 10
       raise ArgumentError, 'NMI is not constructed with valid characters' unless AEMO::NMI.valid_nmi?(nmi)
 
-      @nmi              = nmi
-      @meters           = []
-      @roles            = {}
-      @data_streams     = []
-      @msats_detail = options['msats_detail']
+      @nmi          = nmi
+      @meters       = []
+      @roles        = {}
+      @data_streams = []
+      @msats_detail = options[:msats_detail]
 
-      parse_msats_detail unless options['msats_detail'].nil?
+      parse_msats_detail unless @msats_detail.nil?
     end
 
     # A function to validate the instance's nmi value
