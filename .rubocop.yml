@@ -31,3 +31,15 @@ Metrics/LineLength:
 # Metrics/PerceivedComplexity:
 # # Target 7
 #   Max: 29
+Style/StringLiterals:
+  EnforcedStyle: single_quotes
+  SupportedStyles:
+    - single_quotes
+    - double_quotes
+
+# Multi-line method chaining should be done with trailing dots.
+Style/DotPosition:
+  EnforcedStyle: leading
+  SupportedStyles:
+    - leading
+    - trailing
