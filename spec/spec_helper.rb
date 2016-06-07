@@ -1,18 +1,10 @@
-require 'coveralls'
 require 'simplecov'
+SimpleCov.start
 require 'pry'
 require 'webmock/rspec'
 require 'aemo'
 
 WebMock.disable_net_connect!(allow_localhost: true)
-
-SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter.new(
-  [
-    SimpleCov::Formatter::HTMLFormatter,
-    Coveralls::SimpleCov::Formatter
-  ]
-)
-SimpleCov.start
 
 RSpec.configure do |config|
   # WebMock
