@@ -604,11 +604,18 @@ module AEMO
       @data_streams.select { |x| x.status == status.to_s }
     end
 
-    # The current daily load
+    # The current daily load in kWh
     #
-    # @return [Integer] the current daily load for the meter
+    # @return [Integer] the current daily load for the meter in kWh
     def current_daily_load
       data_streams_by_status.map { |x| x.averaged_daily_load.to_i }.inject(0, :+)
+    end
+
+    # The current annual load in MWh
+    #
+    # @return [Integer] the current annual load for the meter in MWh
+    def current_annual_load
+      (current_daily_load * 365.2425 / 1000).to_i
     end
 
     # A function to validate the NMI provided
