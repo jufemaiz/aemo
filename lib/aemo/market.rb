@@ -22,6 +22,37 @@ module AEMO
         values
       end
 
+      # Return an array of historic trading values based on a start and finish
+      #
+      # @param [String] region
+      # @param [DateTime] start this is inclusive not exclusive
+      # @param [DateTime] finish this is inclusive not exclusive
+      # @return [Array<AEMO::Market::Interval>]
+      def historic_trading_by_range(region, start, finish)
+        year_months = (start..finish).map { |d| [d.year, d.month] }.uniq
+        required_data = []
+        year_months.each do |ym|
+          required_data += historic_trading(region, y[0], m[0])
+        end
+        required_data.select { |values| values.datetime >= start && values.datetime <= finish }
+      end
+
+      # Return an array of historic trading values for a Year, Month and Region
+      #   As per the historical data at
+      #   http://www.aemo.com.au/Electricity/Data/Price-and-Demand/Aggregated-Price-and-Demand-Data-Files/Aggregated-Price-and-Demand-2011-to-2016
+      #
+      # @param [String] region
+      # @param [Integer] year The year for the report from AEMO
+      # @param [Integer] month The month for the report from AEMO
+      # @return [Array<AEMO::Market::Interval>]
+      def historic_trading(region, year, month)
+        month = "%02d" % month
+
+        response = get "/mms.GRAPHS/data/DATA#{year}#{month}_#{region}1.csv"
+        values = parse_response(response)
+        values
+      end
+
       protected
 
       def parse_response(response)
