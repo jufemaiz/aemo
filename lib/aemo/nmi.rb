@@ -427,8 +427,8 @@ module AEMO
 
     # Initialize a NMI file
     #
-    # @param nmi [String] the National Meter Identifier (NMI)
-    # @param options [Hash] a hash of options
+    # @param [String] nmi the National Meter Identifier (NMI)
+    # @param [Hash] options a hash of options
     # @option options [Hash] :msats_detail MSATS details as per #parse_msats_detail requirements
     # @return [AEMO::NMI] an instance of AEMO::NMI is returned
     def initialize(nmi, options = {})
@@ -461,7 +461,7 @@ module AEMO
 
     # A function to calculate the checksum value for a given National Meter Identifier
     #
-    # @param checksum_value [Integer] the checksum value to check against the current National Meter Identifier's checksum value
+    # @param [Integer] checksum_value the checksum value to check against the current National Meter Identifier's checksum value
     # @return [Boolean] whether or not the checksum is valid
     def valid_checksum?(checksum_value)
       checksum_value == checksum
@@ -590,7 +590,7 @@ module AEMO
 
     # Returns the meter OpenStructs for the requested status (C/R)
     #
-    # @param status [String] the stateus [C|R]
+    # @param [String] status the stateus [C|R]
     # @return [Array<OpenStruct>] Returns an array of OpenStructs for Meters with the status provided
     def meters_by_status(status = 'C')
       @meters.select { |x| x.status == status.to_s }
@@ -598,7 +598,7 @@ module AEMO
 
     # Returns the data_stream OpenStructs for the requested status (A/I)
     #
-    # @param status [String] the stateus [A|I]
+    # @param [String] status the stateus [A|I]
     # @return [Array<OpenStruct>] Returns an array of OpenStructs for the current Meters
     def data_streams_by_status(status = 'A')
       @data_streams.select { |x| x.status == status.to_s }
@@ -620,7 +620,7 @@ module AEMO
 
     # A function to validate the NMI provided
     #
-    # @param nmi [String] the nmi to be checked
+    # @param [String] nmi the nmi to be checked
     # @return [Boolean] whether or not the nmi is valid
     def self.valid_nmi?(nmi)
       ((nmi.length == 10) && !nmi.match(/^([A-HJ-NP-Z\d]{10})/).nil?)
@@ -628,8 +628,8 @@ module AEMO
 
     # A function to calculate the checksum value for a given National Meter Identifier
     #
-    # @param nmi [String] the NMI to check the checksum against
-    # @param checksum_value [Integer] the checksum value to check against the current National Meter Identifier's checksum value
+    # @param [String] nmi the NMI to check the checksum against
+    # @param [Integer] checksum_value the checksum value to check against the current National Meter Identifier's checksum value
     # @return [Boolean] whether or not the checksum is valid
     def self.valid_checksum?(nmi, checksum_value)
       nmi = AEMO::NMI.new(nmi)
@@ -638,7 +638,7 @@ module AEMO
 
     # Find the Network for a given NMI
     #
-    # @param nmi [String] NMI
+    # @param [String] nmi NMI
     # @returns [Hash] The Network information
     def self.network(nmi)
       network = nil
