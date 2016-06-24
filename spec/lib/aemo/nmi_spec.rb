@@ -163,7 +163,7 @@ describe AEMO::NMI do
   describe '#current_annual_load' do
     it 'should return zero for no data' do
       @nmi = AEMO::NMI.new('4001234567')
-      expect(@nmi.current_daily_load).to eq(0)
+      expect(@nmi.current_annual_load).to eq(0)
     end
   end
 
