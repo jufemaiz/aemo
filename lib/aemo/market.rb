@@ -15,7 +15,7 @@ module AEMO
       # @param [String, AEMO::Region] region AEMO::Region
       # @return [Array<AEMO::Market::Interval>] an array of AEMO::Market::Intervals
       def current_dispatch(region)
-        region = AEMO::REGION.new(region) if region.is_a?(String)
+        region = AEMO::Region.new(region) if region.is_a?(String)
 
         response = get "/mms.GRAPHS/GRAPHS/GRAPH_5#{region}1.csv"
         values = parse_response(response)
@@ -27,7 +27,7 @@ module AEMO
       # @param [String, AEMO::Region] region AEMO::Region
       # @return [Array<AEMO::Market::Interval>] an array of AEMO::Market::Intervals
       def current_trading(region)
-        region = AEMO::REGION.new(region) if region.is_a?(String)
+        region = AEMO::Region.new(region) if region.is_a?(String)
 
         response = get "/mms.GRAPHS/GRAPHS/GRAPH_30#{region}1.csv"
         values = parse_response(response)
@@ -41,7 +41,7 @@ module AEMO
       # @param [DateTime] finish this is inclusive not exclusive
       # @return [Array<AEMO::Market::Interval>]
       def historic_trading_by_range(region, start, finish)
-        region = AEMO::REGION.new(region) if region.is_a?(String)
+        region = AEMO::Region.new(region) if region.is_a?(String)
 
         required_data = []
         (start..finish).map { |d| { year: d.year, month: d.month } }.uniq.each do |period|
@@ -60,9 +60,9 @@ module AEMO
       # @param [Integer] month The month for the report from AEMO
       # @return [Array<AEMO::Market::Interval>]
       def historic_trading(region, year, month)
-        region = AEMO::REGION.new(region) if region.is_a?(String)
+        region = AEMO::Region.new(region) if region.is_a?(String)
 
-        month = format('%02d', month)
+        month = sprintf('%02d', month)
 
         response = get "/mms.GRAPHS/data/DATA#{year}#{month}_#{region}1.csv"
         values = parse_response(response)
