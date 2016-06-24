@@ -289,7 +289,7 @@ module AEMO
     end
 
     # Parses the header record
-    # @param line [String] A single line in string format
+    # @param [String] line A single line in string format
     # @return [Hash] the line parsed into a hash of information
     def self.parse_nem12_100(line, options = {})
       csv = line.parse_csv
@@ -312,7 +312,7 @@ module AEMO
     end
 
     # Parses the NMI Data Details
-    # @param line [String] A single line in string format
+    # @param [String] line A single line in string format
     # @return [Hash] the line parsed into a hash of information
     def parse_nem12_200(line, _options = {})
       csv = line.parse_csv
@@ -352,7 +352,7 @@ module AEMO
       }
     end
 
-    # @param line [String] A single line in string format
+    # @param [String] line A single line in string format
     # @return [Array of hashes] the line parsed into a hash of information
     def parse_nem12_300(line, options = {})
       csv = line.parse_csv
@@ -415,7 +415,7 @@ module AEMO
       intervals
     end
 
-    # @param line [String] A single line in string format
+    # @param [String] line A single line in string format
     # @return [Hash] the line parsed into a hash of information
     def parse_nem12_400(line)
       csv = line.parse_csv
@@ -458,19 +458,19 @@ module AEMO
       interval_events
     end
 
-    # @param line [String] A single line in string format
+    # @param [String] line A single line in string format
     # @return [Hash] the line parsed into a hash of information
     def parse_nem12_500(_line, _options = {})
     end
 
-    # @param line [String] A single line in string format
+    # @param [String] line A single line in string format
     # @return [Hash] the line parsed into a hash of information
     def parse_nem12_900(_line, _options = {})
     end
 
     # Turns the flag to a string
     #
-    # @param [Hash] the object of a flag
+    # @param [Hash] flag the object of a flag
     # @return [nil, String] a hyphenated string for the flag or nil
     def flag_to_s(flag)
       flag_to_s = []
@@ -507,20 +507,21 @@ module AEMO
       end.join('\n')
     end
 
-    # @param path_to_file [String] the path to a file
-    # @return [] NEM12 object
+    # @param [String] path_to_file the path to a file
+    # @return [Array<AEMO::NEM12>] NEM12 object
     def self.parse_nem12_file(path_to_file, strict = false)
       parse_nem12(File.read(path_to_file), strict)
     end
 
-    # @param contents [String] the path to a file
-    # @return [Array[AEMO::NEM12]] An array of NEM12 objects
-    def self.parse_nem12(contents, _strict = false)
+    # @param [String] contents the path to a file
+    # @param [Boolean] strict
+    # @return [Array<AEMO::NEM12>] An array of NEM12 objects
+    def self.parse_nem12(contents, strict = false)
       file_contents = contents.tr('\r', '\n').tr('\n\n', '\n').split('\n').delete_if(&:empty?)
       raise ArgumentError, 'First row should be have a RecordIndicator of 100 and be of type Header Record' unless file_contents.first.parse_csv[0] == '100'
 
       nem12s = []
-      AEMO::NEM12.parse_nem12_100(file_contents.first, strict: _strict)
+      AEMO::NEM12.parse_nem12_100(file_contents.first, strict: strict)
       file_contents.each do |line|
         case line[0..2].to_i
         when 200
