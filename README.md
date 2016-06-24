@@ -51,7 +51,19 @@ AEMO::Market.current_trading('NSW')
 ### Initialize
 
 ```RUBY
-AEMO::Market::Interval(datetime, { 'REGION' => 'NSW', 'TOTALDEMAND' => 123.456, 'RRP' => 78.96, 'PERIODTYPE' => 'TRADING'})
+AEMO::Market::Interval(datetime, { region: 'NSW', total_demand: 123.456, rrp: 78.96, period_type: 'TRADING' })
+```
+
+### parse_csv
+
+```RUBY
+AEMO::Market::Interval.parse_csv(CSV::Row)
+```
+
+### parse_json
+
+```RUBY
+AEMO::Market::Interval.parse_json(String)
 ```
 
 ### datetime

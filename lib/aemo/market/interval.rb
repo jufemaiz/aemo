@@ -4,7 +4,7 @@ module AEMO
     #
     # @author Joel Courtney
     # @abstract
-    # @since 0.1.0
+    # @since 0.1.0, overhaul at 0.2.0
     class Interval
       INTERVALS = {
         trading: 'Trading',
@@ -17,11 +17,34 @@ module AEMO
       # @param options [Hash] Hash of optional data values
       # @return [AEMO::Market::Interval]
       def initialize(datetime, options = {})
-        @datetime     = Time.parse("#{datetime} +1000")
-        @region       = options['REGION']
-        @total_demand = options['TOTALDEMAND']
-        @rrp          = options['RRP']
-        @period_type  = options['PERIODTYPE']
+        @datetime     = datetime
+        @region       = options[:region]
+        @total_demand = options[:total_demand]
+        @rrp          = options[:rrp]
+        @period_type  = options[:period_type]
+      end
+
+      class << self
+        def parse_json(json_string)
+          data = JSON.parse(json_string)
+          AEMO::Market::Interval.new(
+            Time.parse(data['datetime']),
+            region: data['region'],
+            total_demand: data['total_demand'],
+            rrp: data['rrp'],
+            period_type: data['period_type']
+          )
+        end
+
+        def parse_csv(row)
+          AEMO::Market::Interval.new(
+            Time.parse("#{row['SETTLEMENTDATE']}+1000"),
+            region: row['REGION'],
+            total_demand: row['TOTALDEMAND'],
+            rrp: row['RRP'],
+            period_type: row['PERIODTYPE']
+          )
+        end
       end
 
       # Instance Variable Getters
@@ -46,7 +69,7 @@ module AEMO
 
       # @return [Time] the time of the
       def interval_length
-        Time.at(300)
+        dispatch? ? Time.at(300) : Time.at(1800)
       end
 
       # @return [Symbol] :dispatch or :trading
