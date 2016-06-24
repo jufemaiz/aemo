@@ -23,16 +23,16 @@ RSpec.configure do |config|
     # Market Data
     stub_request(:get, 'http://www.nemweb.com.au/mms.GRAPHS/GRAPHS/GRAPH_5NSW1.csv')
       .with(headers: { 'Accept' => '*/*', 'User-Agent' => 'Ruby' })
-      .to_return(status: 200, body: File.new('spec/fixtures/market/GRAPH_5NSW1.csv'), headers: csv_headers)
+      .to_return(status: 200, body: File.new('spec/fixtures/Market/GRAPH_5NSW1.csv'), headers: csv_headers)
     stub_request(:get, 'http://www.nemweb.com.au/mms.GRAPHS/GRAPHS/GRAPH_30NSW1.csv')
       .with(headers: { 'Accept' => '*/*', 'User-Agent' => 'Ruby' })
-      .to_return(status: 200, body: File.new('spec/fixtures/market/GRAPH_30NSW1.csv'), headers: csv_headers)
+      .to_return(status: 200, body: File.new('spec/fixtures/Market/GRAPH_30NSW1.csv'), headers: csv_headers)
     stub_request(:get, 'http://www.nemweb.com.au/mms.GRAPHS/data/DATA201501_NSW1.csv')
       .with(headers: { 'Accept' => '*/*', 'User-Agent' => 'Ruby' })
-      .to_return(status: 200, body: File.new('spec/fixtures/market/DATA201501_NSW1.csv'), headers: csv_headers)
+      .to_return(status: 200, body: File.new('spec/fixtures/Market/DATA201501_NSW1.csv'), headers: csv_headers)
     stub_request(:get, 'http://www.nemweb.com.au/mms.GRAPHS/data/DATA201502_NSW1.csv')
       .with(headers: { 'Accept' => '*/*', 'User-Agent' => 'Ruby' })
-      .to_return(status: 200, body: File.new('spec/fixtures/market/DATA201502_NSW1.csv'), headers: csv_headers)
+      .to_return(status: 200, body: File.new('spec/fixtures/Market/DATA201502_NSW1.csv'), headers: csv_headers)
 
     # MSATS
     stub_request(:get, %r{msats.prod.nemnet.net.au\/msats\/ws\/C4\/ER})
