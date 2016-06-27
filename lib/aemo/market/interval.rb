@@ -18,10 +18,10 @@ module AEMO
       # @return [AEMO::Market::Interval]
       def initialize(datetime, options = {})
         @datetime     = datetime
-        @region       = options[:region]
-        @total_demand = options[:total_demand]
-        @rrp          = options[:rrp]
-        @period_type  = options[:period_type]
+        @region       = options.fetch(:region)
+        @total_demand = options.fetch(:total_demand)
+        @rrp          = options.fetch(:rrp)
+        @period_type  = options.fetch(:period_type)
       end
 
       class << self
