@@ -1,6 +1,11 @@
 require 'csv'
 require 'time'
 
+require_relative 'nem12/header'
+require_relative 'nem12/nmi_data_details'
+require_relative 'nem12/interval'
+require_relative 'nem12/b2b_details'
+
 module AEMO
   # Namespace for classes and modules that handle AEMO Gem NEM12 interactions
   # @since 0.1.4
@@ -9,6 +14,7 @@ module AEMO
     # http://www.aemo.com.au/Consultations/National-Electricity-Market/Open/~/media/
     # Files/Other/consultations/nem/Meter% 20Data% 20File% 20Format% 20Specification% 20
     # NEM12_NEM13/MDFF_Specification_NEM12_NEM13_Final_v102_clean.ashx
+
     RECORD_INDICATORS = {
       100 => 'Header',
       200 => 'NMI Data Details',
@@ -263,14 +269,8 @@ module AEMO
     @header           = nil
     @nmi_data_details = []
 
-    @nmi              = nil
-    @data_details     = []
-    @interval_data    = []
-    @interval_events  = []
-
-    attr_accessor :nmi, :file_contents
+    attr_accessor :nmi, :file_contents, :header, :nmi_data_details, :nmi
     attr_reader   :data_details, :interval_data, :interval_events
-    attr_accessor :file_contents, :header, :nmi_data_details, :nmi
 
     class << self
       # Parses the header record

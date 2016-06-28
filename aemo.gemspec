@@ -29,7 +29,6 @@ Gem::Specification.new do |s|
   s.add_dependency 'activesupport', '~> 4.2',   '>= 4.2.0'
 
   # Development Dependencies
-
   s.add_development_dependency 'awesome_print', '~> 1.7', '>= 1.7.0'
   s.add_development_dependency 'bundler',       '~> 1.3', '>= 1.3.0'
   s.add_development_dependency 'coveralls',     '~> 0.8', '>= 0.8.13'

@@ -15,6 +15,7 @@ rvm:
 matrix:
   allow_failures:
     - rvm: ruby-head
+    - rvm: 1.9.3-p551
   fast_finish: true
 install:
   - bundle install

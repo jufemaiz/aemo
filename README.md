@@ -28,12 +28,6 @@ gem 'aemo'
 
 Access to AEMO Market Information from www.nemweb.com.au/mms.GRAPHS/GRAPHS/GRAPH_5#NSW1.csv or www.nemweb.com.au/mms.GRAPHS/GRAPHS/GRAPH_30#NSW1.csv
 
-### Regions
-
-```RUBY
-AEMO::Market::REGIONS
-```
-
 ### Current Dispatch
 
 ```RUBY
@@ -160,7 +154,7 @@ AEMO::Region.all
 
 ## NEM12 Files
 
-TODO: Update this to provide more information on these class constants.
+@todo Update this to provide more information on these class constants.
 
 RECORD_INDICATORS
 TRANSACTION_CODE_FLAGS
@@ -213,12 +207,6 @@ AEMO::NEM12.parse_nem12(string)
 ## NMI
 
 General support for a National Meter Identifier.
-
-### Regions
-
-```RUBY
-AEMO::NMI::REGIONS
-```
 
 ### NMI Allocations
 
