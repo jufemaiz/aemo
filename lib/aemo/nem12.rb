@@ -272,6 +272,70 @@ module AEMO
     attr_reader   :data_details, :interval_data, :interval_events
     attr_accessor :file_contents, :header, :nmi_data_details, :nmi
 
+    class << self
+      # Parses the header record
+      #
+      # @param [String] line A single line in string format
+      # @return [Hash] the line parsed into a hash of information
+      def parse_nem12_100(line, options = {})
+        csv = line.parse_csv
+
+        raise ArgumentError, 'RecordIndicator is not 100'     if csv[0] != '100'
+        raise ArgumentError, 'VersionHeader is not NEM12'     if csv[1] != 'NEM12'
+        if options[:strict] && (csv[2].match(/\d{12}/).nil? || csv[2] != Time.parse("#{csv[2]}00").strftime('%Y%m%d%H%M'))
+          raise ArgumentError, 'DateTime is not valid'
+        end
+        raise ArgumentError, 'FromParticispant is not valid'  if csv[3].match(/.{1,10}/).nil?
+        raise ArgumentError, 'ToParticispant is not valid'    if csv[4].match(/.{1,10}/).nil?
+
+        {
+          record_indicator: csv[0].to_i,
+          version_header:   csv[1],
+          datetime:         Time.parse("#{csv[2]}+1000"),
+          from_participant: csv[3],
+          to_participant:   csv[4]
+        }
+      end
+
+      # Parses a NEM12 based file, returning an array of AEMO::NEM12 objects
+      #
+      # @param [String] path_to_file the path to a file
+      # @return [Array<AEMO::NEM12>] An array of AEMO::NEM12 objects
+      def parse_nem12_file(path_to_file, strict = false)
+        parse_nem12(File.read(path_to_file), strict)
+      end
+
+      # Parses a NEM12 based string, returning an array of AEMO::NEM12 objects
+      #
+      # @param [String] contents the path to a file
+      # @param [Boolean] strict
+      # @return [Array<AEMO::NEM12>] An array of NEM12 objects
+      def parse_nem12(contents, strict = false)
+        file_contents = contents.tr('\r', '\n').tr('\n\n', '\n').split('\n').delete_if(&:empty?)
+        raise ArgumentError, 'First row should be have a RecordIndicator of 100 and be of type Header Record' unless file_contents.first.parse_csv[0] == '100'
+
+        nem12s = []
+        AEMO::NEM12.parse_nem12_100(file_contents.first, strict: strict)
+        file_contents.each do |line|
+          case line[0..2].to_i
+          when 200
+            nem12s << AEMO::NEM12.new('')
+            nem12s.last.parse_nem12_200(line)
+          when 300
+            nem12s.last.parse_nem12_300(line)
+          when 400
+            nem12s.last.parse_nem12_400(line)
+          when 500
+            nem12s.last.parse_nem12_500(line)
+          when 900
+            nem12s.last.parse_nem12_900(line)
+          end
+        end
+        # Return the array of AEMO::NEM12 Objects
+        nem12s
+      end
+    end
+
     # Initialize a NEM12 file
     def initialize(nmi, options = {})
       @nmi              = AEMO::NMI.new(nmi) unless nmi.empty?
@@ -286,29 +350,6 @@ module AEMO
     # Returns the NMI Identifier or nil
     def nmi_identifier
       @nmi.nil? ? nil : @nmi.nmi
-    end
-
-    # Parses the header record
-    # @param [String] line A single line in string format
-    # @return [Hash] the line parsed into a hash of information
-    def self.parse_nem12_100(line, options = {})
-      csv = line.parse_csv
-
-      raise ArgumentError, 'RecordIndicator is not 100'     if csv[0] != '100'
-      raise ArgumentError, 'VersionHeader is not NEM12'     if csv[1] != 'NEM12'
-      if options[:strict] && (csv[2].match(/\d{12}/).nil? || csv[2] != Time.parse("#{csv[2]}00").strftime('%Y%m%d%H%M'))
-        raise ArgumentError, 'DateTime is not valid'
-      end
-      raise ArgumentError, 'FromParticispant is not valid'  if csv[3].match(/.{1,10}/).nil?
-      raise ArgumentError, 'ToParticispant is not valid'    if csv[4].match(/.{1,10}/).nil?
-
-      {
-        record_indicator: csv[0].to_i,
-        version_header:   csv[1],
-        datetime:         Time.parse("#{csv[2]}+1000"),
-        from_participant: csv[3],
-        to_participant:   csv[4]
-      }
     end
 
     # Parses the NMI Data Details
@@ -507,38 +548,22 @@ module AEMO
       end.join('\n')
     end
 
-    # @param [String] path_to_file the path to a file
-    # @return [Array<AEMO::NEM12>] NEM12 object
-    def self.parse_nem12_file(path_to_file, strict = false)
-      parse_nem12(File.read(path_to_file), strict)
+    #
+    #
+    # @return [String]
+    def to_json
     end
 
-    # @param [String] contents the path to a file
-    # @param [Boolean] strict
-    # @return [Array<AEMO::NEM12>] An array of NEM12 objects
-    def self.parse_nem12(contents, strict = false)
-      file_contents = contents.tr('\r', '\n').tr('\n\n', '\n').split('\n').delete_if(&:empty?)
-      raise ArgumentError, 'First row should be have a RecordIndicator of 100 and be of type Header Record' unless file_contents.first.parse_csv[0] == '100'
+    #
+    #
+    # @return [String]
+    def to_xml
+    end
 
-      nem12s = []
-      AEMO::NEM12.parse_nem12_100(file_contents.first, strict: strict)
-      file_contents.each do |line|
-        case line[0..2].to_i
-        when 200
-          nem12s << AEMO::NEM12.new('')
-          nem12s.last.parse_nem12_200(line)
-        when 300
-          nem12s.last.parse_nem12_300(line)
-        when 400
-          nem12s.last.parse_nem12_400(line)
-          # when 500
-          #   nem12s.last.parse_nem12_500(line)
-          # when 900
-          #   nem12s.last.parse_nem12_900(line)
-        end
-      end
-      # Return the array of NEM12 groups
-      nem12s
+    #
+    #
+    # @return [String]
+    def to_nem12
     end
   end
 end
