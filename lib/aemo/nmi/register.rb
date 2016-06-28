@@ -53,7 +53,7 @@ module AEMO
 
       attr_accessor :suffix, :register_id, :unit_of_measure, :network_tariff_code, :time_of_day, :multiplier, :dial_format, :controlled_load, :status, :mdm_data_streaming_identifier, :interval_length
 
-      def initilize(suffix, register_id, unit_of_measure, options={})
+      def initialize(suffix, register_id, unit_of_measure, options={})
         @suffix           = suffix
         @register_id      = register_id
         @unit_of_measure  = unit_of_measure
@@ -67,6 +67,8 @@ module AEMO
         @status = options[:status]
         @mdm_data_streaming_identifier = options[:mdm_data_streaming_identifier]
         @interval_length = options[:interval_length]
+
+        self
       end
     end
   end

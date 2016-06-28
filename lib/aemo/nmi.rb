@@ -5,403 +5,12 @@ require 'ostruct'
 require 'active_support'
 
 require_relative 'nmi/unit_of_measurement'
+require_relative 'nmi/allocations'
+require_relative 'nmi/loss_factors'
 
 module AEMO
   # AEMO::NMI acts as an object to simplify access to data and information about a NMI and provide verification of the NMI value
   class NMI
-    # NMI_ALLOCATIONS as per AEMO Documentation at http://aemo.com.au/Electricity/Policies-and-Procedures/Retail-and-Metering/~/media/Files/Other/Retail% 20and% 20Metering/NMI_Allocation_List_v7_June_2012.ashx
-    #   Last accessed 2015-02-04
-    NMI_ALLOCATIONS = {
-      'ACTEWP' => {
-        title: 'Actew Distribution Ltd and Jemena Networks (ACT) Pty Ltd',
-        friendly_title: 'ACTEWAgl',
-        state: 'ACT',
-        type: 'electricity',
-        includes: [
-          /^(NGGG[A-HJ-NP-VX-Z\d][A-HJ-NP-Z\d]{5})$/,
-          /^(7001\d{6})$/
-        ],
-        excludes: [
-        ]
-      },
-      'CNRGYP' => {
-        title: 'Essential Energy',
-        friendly_title: 'Essential Energy',
-        state: 'NSW',
-        type: 'electricity',
-        includes: [
-          /^(NAAA[A-HJ-NP-VX-Z\d][A-HJ-NP-Z\d]{5})$/,
-          /^(NBBB[A-HJ-NP-VX-Z\d][A-HJ-NP-Z\d]{5})$/,
-          /^(NDDD[A-HJ-NP-VX-Z\d][A-HJ-NP-Z\d]{5})$/,
-          /^(NFFF[A-HJ-NP-VX-Z\d][A-HJ-NP-Z\d]{5})$/,
-          /^(4001\d{6})$/,
-          /^(4508\d{6})$/,
-          /^(4204\d{6})$/,
-          /^(4407\d{6})$/
-        ],
-        excludes: [
-        ]
-      },
-      'ENERGYAP' => {
-        title: 'Ausgrid',
-        friendly_title: 'Ausgrid',
-        state: 'NSW',
-        type: 'electricity',
-        includes: [
-          /^(NCCC[A-HJ-NP-VX-Z\d][A-HJ-NP-Z\d]{5})$/,
-          /^(410[234]\d{6})$/
-        ],
-        excludes: [
-        ]
-      },
-      'INTEGP' => {
-        title: 'Endeavour Energy',
-        friendly_title: 'Endeavour Energy',
-        state: 'NSW',
-        type: 'electricity',
-        includes: [
-          /^(NEEE[A-HJ-NP-VX-Z\d][A-HJ-NP-Z\d]{5})$/,
-          /^(431\d{7})$/
-        ],
-        excludes: [
-        ]
-      },
-      'TRANSGP' => {
-        title: 'TransGrid',
-        friendly_title: 'TransGrid',
-        state: 'NSW',
-        type: 'electricity',
-        includes: [
-          /^(NTTT[A-HJ-NP-VX-Z\d][A-HJ-NP-Z\d]{5})$/,
-          /^(460810[0-8]\d{3})$/
-        ],
-        excludes: [
-        ]
-      },
-      'SNOWY' => {
-        title: 'Snowy Hydro Ltd',
-        friendly_title: 'Snowy Hydro',
-        state: 'NSW',
-        type: 'electricity',
-        includes: [
-          /^(4708109\d{3})$/
-        ],
-        excludes: [
-        ]
-      },
-      'NT_RESERVED' => {
-        title: 'Northern Territory Reserved Block',
-        friendly_title: 'Northern Territory Reserved Block',
-        state: 'NT',
-        type: 'electricity',
-        includes: [
-          /^(250\d{7})$/
-        ],
-        excludes: [
-        ]
-      },
-      'ERGONETP' => {
-        title: 'Ergon Energy Corporation',
-        friendly_title: 'Ergon Energy',
-        state: 'QLD',
-        type: 'electricity',
-        includes: [
-          /^(QAAA[A-HJ-NP-VX-Z\d][A-HJ-NP-Z\d]{5})$/,
-          /^(QCCC[A-HJ-NP-VX-Z\d][A-HJ-NP-Z\d]{5})$/,
-          /^(QDDD[A-HJ-NP-VX-Z\d][A-HJ-NP-Z\d]{5})$/,
-          /^(QEEE[A-HJ-NP-VX-Z\d][A-HJ-NP-Z\d]{5})$/,
-          /^(QFFF[A-HJ-NP-VX-Z\d][A-HJ-NP-Z\d]{5})$/,
-          /^(QGGG[A-HJ-NP-VX-Z\d][A-HJ-NP-Z\d]{5})$/,
-          /^(30\d{8})$/
-        ],
-        excludes: [
-        ]
-      },
-      'ENERGEXP' => {
-        title: 'ENERGEX Limited',
-        friendly_title: 'Energex',
-        state: 'QLD',
-        type: 'electricity',
-        includes: [
-          /^(QB\d{2}[A-HJ-NP-VX-Z\d][A-HJ-NP-Z\d]{5})$/,
-          /^(31\d{8})$/
-        ],
-        excludes: [
-        ]
-      },
-      'PLINKP' => {
-        title: 'Qld Electricity Transmission Corp (Powerlink)',
-        friendly_title: 'Powerlink',
-        state: 'QLD',
-        type: 'electricity',
-        includes: [
-          /^(Q[A-HJ-NP-Z\d]{3}W[A-HJ-NP-Z\d]{5})$/,
-          /^(320200\d{4})$/
-        ],
-        excludes: [
-        ]
-      },
-      'UMPLP' => {
-        title: 'SA Power Networks',
-        friendly_title: 'SA Power Networks',
-        state: 'SA',
-        type: 'electricity',
-        includes: [
-          /^(SAAA[A-HJ-NP-VX-Z\d][A-HJ-NP-Z\d]{5})$/,
-          /^(SASMPL[\d]{4})$/,
-          /^(200[12]\d{6})$/
-        ],
-        excludes: [
-        ]
-      },
-      'ETSATP' => {
-        title: 'ElectraNet SA',
-        friendly_title: 'ElectraNet SA',
-        state: 'SA',
-        type: 'electricity',
-        includes: [
-          /^(S[A-HJ-NP-Z\d]{3}W[A-HJ-NP-Z\d]{5})$/,
-          /^(210200\d{4})$/
-        ],
-        excludes: [
-        ]
-      },
-      'AURORAP' => {
-        title: 'TasNetworks',
-        friendly_title: 'TasNetworks',
-        state: 'TAS',
-        type: 'electricity',
-        includes: [
-          /^(T000000(([0-4]\d{3})|(500[01])))$/,
-          /^(8000\d{6})$/,
-          /^(8590[23]\d{5})$/
-        ],
-        excludes: [
-        ]
-      },
-      'TRANSEND' => {
-        title: 'TasNetworks',
-        friendly_title: 'TasNetworks',
-        state: 'TAS',
-        type: 'electricity',
-        includes: [
-          /^(T[A-HJ-NP-Z\d]{3}W[A-HJ-NP-Z\d]{5})$/
-        ],
-        excludes: [
-        ]
-      },
-      'CITIPP' => {
-        title: 'CitiPower',
-        friendly_title: 'CitiPower',
-        state: 'VIC',
-        type: 'electricity',
-        includes: [
-          /^(VAAA[A-HJ-NP-VX-Z\d][A-HJ-NP-Z\d]{5})$/,
-          /^(610[23]\d{6})$/
-        ],
-        excludes: [
-        ]
-      },
-      'EASTERN' => {
-        title: 'SP AusNet',
-        friendly_title: 'SP AusNet DNSP',
-        state: 'VIC',
-        type: 'electricity',
-        includes: [
-          /^(VBBB[A-HJ-NP-VX-Z\d][A-HJ-NP-Z\d]{5})$/,
-          /^(630[56]\d{6})$/
-        ],
-        excludes: [
-        ]
-      },
-      'POWCP' => {
-        title: 'PowerCor Australia',
-        friendly_title: 'PowerCor',
-        state: 'VIC',
-        type: 'electricity',
-        includes: [
-          /^(VCCC[A-HJ-NP-VX-Z\d][A-HJ-NP-Z\d]{5})$/,
-          /^(620[34]\d{6})$/
-        ],
-        excludes: [
-        ]
-      },
-      'SOLARISP' => {
-        title: 'Jemena  Electricity Networks (VIC)',
-        friendly_title: 'Jemena',
-        state: 'VIC',
-        type: 'electricity',
-        includes: [
-          /^(VDDD[A-HJ-NP-VX-Z\d][A-HJ-NP-Z\d]{5})$/,
-          /^(6001\d{6})$/
-        ],
-        excludes: [
-        ]
-      },
-      'UNITED' => {
-        title: 'United Energy Distribution',
-        friendly_title: 'United Energy',
-        state: 'VIC',
-        type: 'electricity',
-        includes: [
-          /^(VEEE[A-HJ-NP-VX-Z\d][A-HJ-NP-Z\d]{5})$/,
-          /^(640[78]\d{6})$/
-        ],
-        excludes: [
-        ]
-      },
-      'GPUPP' => {
-        title: 'SP AusNet TNSP',
-        friendly_title: 'SP AusNet TNSP',
-        state: 'VIC',
-        type: 'electricity',
-        includes: [
-          /^(V[A-HJ-NP-Z\d]{3}W[A-HJ-NP-Z\d]{5})$/,
-          /^(650900\d{4})$/
-        ],
-        excludes: [
-        ]
-      },
-      'WESTERNPOWER' => {
-        title: 'Western Power',
-        friendly_title: 'Western Power',
-        state: 'WA',
-        type: 'electricity',
-        includes: [
-          /^(WAAA[A-HJ-NP-VX-Z\d][A-HJ-NP-Z\d]{5})$/,
-          /^(800[1-9]\d{6})$/,
-          /^(801\d{7})$/,
-          /^(8020\d{6})$/
-        ],
-        excludes: [
-        ]
-      },
-      'HORIZONPOWER' => {
-        title: 'Horizon Power',
-        friendly_title: 'Horizon Power',
-        state: 'WA',
-        type: 'electricity',
-        includes: [
-          /^(8021\d{6})$/
-        ],
-        excludes: [
-        ]
-      },
-      'GAS_NSW' => {
-        title: 'GAS NSW',
-        friendly_title: 'GAS NSW',
-        state: 'NSW',
-        type: 'gas',
-        includes: [
-          /^(52\d{8})$/
-        ],
-        excludes: [
-        ]
-      },
-      'GAS_VIC' => {
-        title: 'GAS VIC',
-        friendly_title: 'GAS VIC',
-        state: 'VIC',
-        type: 'gas',
-        includes: [
-          /^(53\d{8})$/
-        ],
-        excludes: [
-        ]
-      },
-      'GAS_QLD' => {
-        title: 'GAS QLD',
-        friendly_title: 'GAS QLD',
-        state: 'QLD',
-        type: 'gas',
-        includes: [
-          /^(54\d{8})$/
-        ],
-        excludes: [
-        ]
-      },
-      'GAS_SA' => {
-        title: 'GAS SA',
-        friendly_title: 'GAS SA',
-        state: 'SA',
-        type: 'gas',
-        includes: [
-          /^(55\d{8})$/
-        ],
-        excludes: [
-        ]
-      },
-      'GAS_WA' => {
-        title: 'GAS WA',
-        friendly_title: 'GAS WA',
-        state: 'WA',
-        type: 'gas',
-        includes: [
-          /^(56\d{8})$/
-        ],
-        excludes: [
-        ]
-      },
-      'GAS_TAS' => {
-        title: 'GAS TAS',
-        friendly_title: 'GAS TAS',
-        state: 'TAS',
-        type: 'gas',
-        includes: [
-          /^(57\d{8})$/
-        ],
-        excludes: [
-        ]
-      },
-      'FEDAIRPORTS' => {
-        title: 'Federal Airports Corporation (Sydney Airport)',
-        friendly_title: 'Sydney Airport',
-        state: 'NSW',
-        type: 'electricity',
-        includes: [
-          /^(NJJJNR[A-HJ-NP-Z\d]{4})$/
-        ],
-        excludes: [
-        ]
-      },
-      'EXEMPTNETWORKS' => {
-        title: 'Exempt Networks - various',
-        friendly_title: 'Exempt Networks - various',
-        state: '',
-        type: 'electricity',
-        includes: [
-          /^(NKKK[A-HJ-NP-VX-Z\d][A-HJ-NP-Z\d]{5})$/,
-          /^(7102\d{6})$/
-        ],
-        excludes: [
-        ]
-      },
-      'AEMORESERVED' => {
-        title: 'AEMO Reserved',
-        friendly_title: 'AEMO Reserved',
-        state: '',
-        type: 'electricity',
-        includes: [
-          /^(880[1-5]\d{6})$/,
-          /^(9\d{9})$/
-        ],
-        excludes: [
-        ]
-      }
-    }.freeze
-
-    # Transmission Node Identifier Codes are loaded from a json file
-    #  Obtained from http://www.nemweb.com.au/
-    #
-    #  See /lib/data for further data manipulation required
-    TNI_CODES = JSON.parse(File.read(File.join(File.dirname(__FILE__), '..', 'data', 'aemo-tni.json'))).freeze
-
-    # Distribution Loss Factor Codes are loaded from a json file
-    #  Obtained from MSATS, matching to DNSP from file http://www.aemo.com.au/Electricity/Market-Operations/Loss-Factors-and-Regional-Boundaries/~/media/Files/Other/loss% 20factors/DLF_FINAL_V2_2014_2015.ashx
-    #  Last accessed 2015-02-06
-    #  See /lib/data for further data manipulation required
-    DLF_CODES = JSON.parse(File.read(File.join(File.dirname(__FILE__), '..', 'data', 'aemo-dlf.json'))).freeze
-
     # [String] National Meter Identifier
     @nmi                          = nil
     @msats_detail                 = nil
@@ -461,7 +70,25 @@ module AEMO
     #
     # @param [String] nmi the National Meter Identifier (NMI)
     # @param [Hash] options a hash of options
-    # @option options [Hash] :msats_detail MSATS details as per #parse_msats_detail requirements
+    # @option options [String] :nmi_configuration
+    # @option options [Date] :next_scheduled_read_date
+    # @option options [String] :meter_serial_number
+    # @option options [String] :register_id
+    # @option options [String] :nmi_suffix
+    # @option options [String] :mdm_data_streaming_identifier
+    # @option options [Integer] :interval_length
+    # @option options [String, AEMO::NMI::UnitOfMeasurement] :unit_of_measurement
+    # @option options [String] :tni
+    # @option options [String] :dlf
+    # @option options [String] :customer_classification_code
+    # @option options [String] :customer_threshold_code
+    # @option options [String] :jurisdiction_code
+    # @option options [String] :classification_code
+    # @option options [String] :status
+    # @option options [String] :address
+    # @option options [Array<AEMO::NMI::Meter>] :meters
+    # @option options [String] :roles
+    # @option options [Array<AEMO::NMI::DataStream>] :data_streams
     # @return [AEMO::NMI] an instance of AEMO::NMI is returned
     def initialize(nmi, options={})
       # Validations
@@ -474,7 +101,7 @@ module AEMO
 
       # Roles
       unless options[:roles].nil?
-        raise ArgumentError, ''
+        raise ArgumentError, 'Role is not valid' unless options[:roles].is_a?(String)
         @roles  = options[:roles]
       end
 
@@ -483,7 +110,8 @@ module AEMO
         raise 'NMI Configuration is not a string' unless options[:nmi_configuration].is_a?(String)
         raise "NMI Configuration #{options[:nmi_configuration]} is invalid" unless options[:nmi_configuration].match(/^([A-Z]\d+)+$/)
         options[:nmi_configuration].scan(/([A-Z]\d+)/).flatten.group_by { |x| x.match(/[A-Z](\d+)/)[1].to_i }.each do |meter, registers|
-          @meters << AEMO::NMI::Meter.new({nem12_meter: meter, registers: registers.join()})
+          @meters ||= []
+          @meters << AEMO::NMI::Meter.new({ nem12_meter: meter, registers: registers.join() })
         end
       end
 
@@ -509,7 +137,7 @@ module AEMO
 
       unless options[:mdm_data_streaming_identifier].nil?
         raise ArgumentError, 'MDM Data Streaming Identifier is invalid' unless options[:mdm_data_streaming_identifier].is_a?(String)
-        raise ArgumentError, '' unless options[:mdm_data_streaming_identifier].match(/^[A-Z0-9]+$/)
+        raise ArgumentError, 'MDM Data Streaming Identifier is invalid' unless options[:mdm_data_streaming_identifier].match(/^[A-Z0-9]+$/)
         @mdm_data_streaming_identifier = options[:mdm_data_streaming_identifier]
       end
 
@@ -519,7 +147,7 @@ module AEMO
       end
 
       unless options[:interval_length].nil?
-        raise ArgumentError, '' unless options[:interval_length].is_a?(Number)
+        raise ArgumentError, '' unless options[:interval_length].is_a?(Numeric)
         @interval_length = options[:interval_length]
       end
     end
@@ -536,6 +164,15 @@ module AEMO
     # @return [Hash] The Network information
     def network
       AEMO::NMI.network(@nmi)
+    end
+
+    # Updates Register information
+    #
+    # @param [String] register_id
+    # @param [Hash] options
+    # @return [self]
+    def update_register_details(register_id, options = {})
+      @meters.map { |meter| meter.registers }
     end
 
     # A function to calculate the checksum value for a given National Meter Identifier
@@ -761,9 +398,11 @@ module AEMO
       raise 'start cannot be after finish' if start > finish
       possible_values = TNI_CODES[@tni]
                         .reject { |x| start > DateTime.parse(x['ToDate']) || finish < DateTime.parse(x['FromDate']) }
-                        .reject { |x| start > DateTime.parse(x['finish']) || finish < DateTime.parse(x['start']) }
-      return nil if possible_values.empty?
+                        # .map { |x| { 'start' => x['FromDate'], 'finish' => x['ToDate'], 'value' => x['Value'].to_f } }
+      return [] if possible_values.empty?
       possible_values.map { |x| x['mlf_data']['loss_factors'] }
+        .flatten
+        .reject{ |x| start > DateTime.parse(x['finish']) || finish < DateTime.parse(x['start']) }
     end
   end
 end

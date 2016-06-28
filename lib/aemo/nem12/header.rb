@@ -31,9 +31,9 @@ module AEMO
       # @param [String] to_participant
       # @return [AEMO::NEM12::Header]
       def initialize(file_created_at,from_participant,to_participant)
-        raise ArgumentError, "Invalid file_created_at" unless file_created_at.is_a?(DateTime)
-        raise ArgumentError, "Invalid from_participant" unless from_participant.is_a?(String)
-        raise ArgumentError, "Invalid to_participant" unless to_participant.is_a?(String)
+        raise ArgumentError, 'Invalid file_created_at' unless file_created_at.is_a?(DateTime)
+        raise ArgumentError, 'Invalid from_participant' unless from_participant.is_a?(String)
+        raise ArgumentError, 'Invalid to_participant' unless to_participant.is_a?(String)
 
         @file_created_at  = file_created_at
         @from_participant = from_participant
@@ -50,11 +50,19 @@ module AEMO
         AEMO::NEM12::Header.new(DateTime.parse("#{data[2]}00+1000"),data[3],data[4])
       end
 
+
+      # Helper method to recreate a NEM12 File
+      #
+      # @return [String]
+      def to_a
+        [@file_created_at.strftime('%Y%m%d%H%M'),@from_participant,@to_participant]
+      end
+
       # Helper method to recreate a NEM12 File
       #
       # @return [String]
       def to_nem12
-        ['100','NEM12',@file_created_at.strftime("%Y%m%d%H%M"),@from_participant,@to_participant].join(',')
+        (['100', 'NEM12'] + to_a).join(',')
       end
     end
   end

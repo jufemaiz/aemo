@@ -12,7 +12,7 @@ describe AEMO::NMI::UnitOfMeasurement do
       end
     end
 
-    describe '#multiplier' do
+    describe '.multiplier' do
       it 'raises ArgumentError' do
         expect { AEMO::NMI::UnitOfMeasurement.multiplier('BOB')}.to raise_error(ArgumentError)
       end
@@ -22,18 +22,25 @@ describe AEMO::NMI::UnitOfMeasurement do
       end
     end
 
-    describe '#covert' do
+    describe '.covert' do
       it 'converts 1234567890Wh to 1234.567890GWh' do
         expect(AEMO::NMI::UnitOfMeasurement.convert(1234567890, '', 'G')).to eq(1.234567890)
       end
     end
   end
-  describe 'Instance Methods' do
-    describe '.initialize' do
 
+  describe 'Instance Methods' do
+    describe '#initialize' do
+      it 'invalid' do
+        expect { AEMO::NMI::UnitOfMeasurement.new('bob') }.to raise_error(ArgumentError)
+      end
+
+      it 'valid' do
+        expect { AEMO::NMI::UnitOfMeasurement.new('kwh') }.not_to raise_error(ArgumentError)
+      end
     end
 
-    describe '.convert_to' do
+    describe '#convert_to' do
       it 'valid conversion from AEMO::NMI::UnitOfMeasurement to AEMO::NMI::UnitOfMeasurement' do
         old_uom = AEMO::NMI::UnitOfMeasurement.new('kWh')
         new_uom = AEMO::NMI::UnitOfMeasurement.new('Wh')
@@ -46,7 +53,7 @@ describe AEMO::NMI::UnitOfMeasurement do
       end
     end
 
-    describe '.title' do
+    describe '#title' do
       it 'with prefix' do
         uom = AEMO::NMI::UnitOfMeasurement.new('kWh')
         expect(uom.title).to eq('Kilowatt Hour')
@@ -58,7 +65,7 @@ describe AEMO::NMI::UnitOfMeasurement do
       end
     end
 
-    describe '.abbreviation' do
+    describe '#abbreviation' do
       it do
         uom = AEMO::NMI::UnitOfMeasurement.new('kWh')
         expect(uom.abbreviation).to eq('kWh')

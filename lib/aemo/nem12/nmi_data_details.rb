@@ -60,9 +60,9 @@ module AEMO
 
           data = CSV.parse_line(csv_string)
 
-          nmi = AEMO::NMI.new(data[1])
+          nmi = AEMO::NMI.new(data[1], nmi_configuration: data[2])
           options = {
-            regiser_id: data[3],
+            register_id: data[3],
             suffix: data[4],
             mdm_data_streaming_identifier: data[5],
             meter_serial_number: data[6],
@@ -87,7 +87,7 @@ module AEMO
       # @option options [Integer] :interval_length
       # @option options [DateTime] :next_scheduled_read_date
       # @return [AEMO::NEM12::NMIDataDetails]
-      def initialize(nmi,options={})
+      def initialize(nmi, options={})
         raise ArgumentError, "NMI is neither String nor AEMO::NMI but #{nmi.class}" unless [String, AEMO::NMI].include?(nmi.class)
 
         # Set NMI properly

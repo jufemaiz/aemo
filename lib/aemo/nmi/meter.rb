@@ -1,7 +1,18 @@
+# [AEMO::NMI::Meter]
+#
+# @author Joel Courtney
+# @abstract
+# @since 0.2.0
+# @attr [String] serial_number
+# @attr [Integer] nem12_meter
+# @attr [Date] next_scheduled_read_date
+# @attr [String] installation_type_code
+# @attr [String] read_type_code
+# @attr [String] status
+# @attr [String] registers
 module AEMO
   class NMI
     class Meter
-
       # Meter Information
       @serial_number            = nil
       @next_scheduled_read_date = nil
@@ -20,8 +31,16 @@ module AEMO
 
       # Creates a new instance of the AEMO::NMI::Meter
       #
+      # @param [Hash] options
+      # @option options [String] :serial_number
+      # @option options [Integer] :nem12_meter
+      # @option options [Date] :next_scheduled_read_date
+      # @option options [String] :installation_type_code
+      # @option options [String] :read_type_code
+      # @option options [String] :status
+      # @option options [String] :registers
       # @return [AEMO::NMI::Meter]
-      def initilize(options = {})
+      def initialize(options = {})
 
         # Serial Number
         unless options[:serial_number].nil?
@@ -60,7 +79,8 @@ module AEMO
           raise ArgumentError, "Registers are not a string" unless options[:registers].is_a?(String)
           raise ArgumentError, "Registers #{options[:registers]} is not valid" unless options[:registers].match(/^([A-Z]\d+)+$/)
           options[:registers].scan(/([A-Z]\d+)/).flatten.each do |register|
-            @registers << AEMO::NMI::Register.new(register,register)
+            @registers ||= []
+            @registers << AEMO::NMI::Register.new(register, register, nil)
           end
         end
 
