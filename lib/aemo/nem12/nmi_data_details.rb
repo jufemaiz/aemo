@@ -1,4 +1,6 @@
+# encoding: UTF-8
 require 'csv'
+require 'json'
 require 'time'
 
 #
@@ -43,21 +45,59 @@ module AEMO
                     :interval_length,
                     :next_scheduled_read_date
 
+      class << self
+        # Provides a helper to create the NEM12::Header from a CSV (as per NEM12 specification)
+        #
+        # @param [String] csv_string The CSV String in format
+        # @return [AEMO::NEM12::NMIDataDetails]
+        def parse_csv(csv_string)
+          # Make sure you're working with a String
+          raise ArgumentError, "CSV string is not a string" unless csv_string.is_a?(String)
+          # Make sure it validates
+          unless csv_string.match(/^(200),([A-Z0-9]{10}),([A-HJ-MP-WYZ0-9]{1,240}),([A-HJ-MP-WYZ0-9]{0,10}),([A-HJ-MP-WYZ]\d+),(N\d+),([A-Z0-9]{1,12})?,([A-Z]{1,5}),(1|5|10|15|30),(\d{8})?$/i)
+            raise ArgumentError, "CSV string '#{csv_string}' does not meet specification"
+          end
+
+          data = CSV.parse_line(csv_string)
+
+          nmi = AEMO::NMI.new(data[1])
+          options = {
+            regiser_id: data[3],
+            suffix: data[4],
+            mdm_data_streaming_identifier: data[5],
+            meter_serial_number: data[6],
+            unit_of_measurement: data[7],
+            interval_length: data[8].to_i,
+            next_scheduled_read_date: data[9].nil? ? nil : DateTime.parse("#{data[9]}000000+1000")
+          }
+          AEMO::NEM12::NMIDataDetails.new(nmi, options)
+        end
+      end
+
       # Creates an instance of a NEM12 Header
       #
       # @param [String,AEMO::NMI] nmi
       # @param [Hash] options
+      # @option options [String] :nmi_configuration
+      # @option options [String] :register_id
+      # @option options [String] :suffix
+      # @option options [String] :mdm_data_streaming_identifier
+      # @option options [String] :meter_serial_number
+      # @option options [String] :unit_of_measurement
+      # @option options [Integer] :interval_length
+      # @option options [DateTime] :next_scheduled_read_date
       # @return [AEMO::NEM12::NMIDataDetails]
       def initialize(nmi,options={})
         raise ArgumentError, "NMI is neither String nor AEMO::NMI but #{nmi.class}" unless [String, AEMO::NMI].include?(nmi.class)
 
         # Set NMI properly
-        if nmi.is_a?(String)
-          nmi = AEMO::NMI.new(nmi, options.slice(:nmi_configuration,:next_scheduled_read_date))
-        end
-        @nmi = nmi
+        @nmi = if nmi.is_a?(String)
+                 AEMO::NMI.new(nmi, options.slice(:nmi_configuration,:next_scheduled_read_date))
+               elsif nmi.is_a?(AEMO::NMI)
+                 nmi
+               end
 
-        options = options.slice(:nmi_configuration,:next_scheduled_read_date,:meter_serial_number,:register_id,:nmi_suffix,:mdm_data_streaming_identifier,:unit_of_measurement,:interval_length)
+        options = options.slice(:nmi_configuration, :next_scheduled_read_date, :meter_serial_number, :register_id, :suffix, :mdm_data_streaming_identifier, :unit_of_measurement, :interval_length)
 
         unless options[:nmi_configuration].nil?
           unless options[:nmi_configuration].is_a?(String) && options[:nmi_configuration].split(%r{([A-Z]\d+)}).reject(&:empty?).join('') == options[:nmi_configuration]
@@ -92,16 +132,18 @@ module AEMO
           @meter_serial_number = options[:meter_serial_number]
         end
 
-        unless options[:unit_of_measurement].nil?
-          unless options[:unit_of_measurement].is_a?(String) && AEMO::NMI::UOM_NON_SPEC_MAPPING.keys.include?(options[:unit_of_measurement])
+        if options[:unit_of_measurement].is_a?(AEMO::NMI::UnitOfMeasurement)
+          @unit_of_measurement = options[:unit_of_measurement]
+        elsif !options[:unit_of_measurement].nil?
+          puts "options[:unit_of_measurement]: #{options[:unit_of_measurement]}"
+          unless AEMO::NMI::UnitOfMeasurement.valid?(options[:unit_of_measurement])
             raise ArgumentError 'unit_of_measurement is not valid'
           end
           @unit_of_measurement = options[:unit_of_measurement]
         end
 
         unless options[:interval_length].nil?
-          unless options[:interval_length].is_a?(String) && %w(1 5 10 15 30).include?(options[:interval_length])
-          raise ArgumentError 'interval_length is not valid'
+          raise ArgumentError 'interval_length is not valid' unless %w(1 5 10 15 30).include?(options[:interval_length].to_s)
           @interval_length = options[:interval_length]
         end
 
@@ -114,40 +156,56 @@ module AEMO
         end
       end
 
-      # Provides a helper to create the NEM12::Header from a CSV (as per NEM12 specification)
+      # Helper method to an array
       #
-      # @param [String] csv_string The CSV String in format
-      def self.parse_csv(csv_string)
-        # Make sure you're working with a String
-        raise ArgumentError, "CSV string is not a string" unless csv_string.is_a?(String)
-        # Make sure it validates
-        unless csv_string.match(/^(200),([A-Z0-9]{10}),([A-HJ-MP-WYZ0-9]{1,240}),([A-HJ-MP-WYZ0-9]{0,10}),([A-HJ-MP-WYZ]\d+),(N\d+),([A-Z0-9]{1,12})?,([A-Z]{1,5}),(1|5|10|15|30),(\d{8})?$/i)
-          raise ArgumentError, "CSV string '#{csv_string}' does not meet specification"
-        end
-
-        data = CSV.parse_line(csv_string)
-
-        nmi = AEMO::NMI.new(data[1])
-        options = {
-          regiser_id: data[3],
-          suffix: data[4],
-          mdm_data_streaming_identifier: data[5],
-          meter_serial_number: data[6],
-          # @todo Migrate to a NMI::UnitOfMeasurement class
-          unit_of_measurement: data[7],
-          interval_length: data[8],
-          next_scheduled_read_date: data[9].nil? ? nil : DateTime.parse("#{data[9]}000000+1000")
-        }
-        AEMO::NEM12::NMIDataDetails.new(nmi, options)
+      # @return [Array]
+      def to_a
+        [
+          @nmi.nmi,
+          @nmi_configuration,
+          @register_id,
+          @suffix,
+          @mdm_data_streaming_identifier,
+          @meter_serial_number,
+          @unit_of_measurement.title,
+          @interval_length,
+          @next_scheduled_read_date.nil? ? '' : @next_scheduled_read_date.strftime('%Y%m%d')
+        ]
       end
 
       # Helper method to recreate a NEM12 File
       #
       # @return [String]
       def to_nem12
-        ['100','NEM12',@file_created_at.strftime("%Y%m%d%H%M"),@from_participant,@to_participant].join(',')
+        ([200] + to_a).join(',')
       end
 
+      # Return in Hash format
+      #
+      # @return [Hash]
+      def to_h
+        {
+          header: @header,
+          nmi: @nmi.nmi,
+          nmi_configuration: @nmi_configuration,
+          next_scheduled_read_date: @next_scheduled_read_date,
+          # @todo Move this to AEMO::NMI::Meter
+          meter_serial_number: @meter_serial_number,
+          # @todo AEMO::NMI::Register - interval data and events to be children of the register of the meter?.
+          register_id: @register_id,
+          nmi_suffix: @nmi_suffix,
+          mdm_data_streaming_identifier: @mdm_data_streaming_identifier,
+          unit_of_measurement: @unit_of_measurement,
+          interval_length: @interval_length
+        }
+      end
+
+      # Return in Hash format
+      #
+      # @return [String]
+      def to_json
+        to_h.to_json
+      end
     end
   end
 end

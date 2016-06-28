@@ -4,6 +4,8 @@ require 'time'
 require 'ostruct'
 require 'active_support'
 
+require_relative 'nmi/unit_of_measurement'
+
 module AEMO
   # AEMO::NMI acts as an object to simplify access to data and information about a NMI and provide verification of the NMI value
   class NMI
@@ -461,10 +463,11 @@ module AEMO
     # @param [Hash] options a hash of options
     # @option options [Hash] :msats_detail MSATS details as per #parse_msats_detail requirements
     # @return [AEMO::NMI] an instance of AEMO::NMI is returned
-    def initialize(nmi,options={})
-      raise ArgumentError, "NMI is not a string"                          unless nmi.is_a?(String)
-      raise ArgumentError, "NMI is not 10 characters"                     unless nmi.length == 10
-      raise ArgumentError, "NMI is not constructed with valid characters" unless AEMO::NMI.valid_nmi?(nmi)
+    def initialize(nmi, options={})
+      # Validations
+      raise ArgumentError, 'NMI is not a string'                          unless nmi.is_a?(String)
+      raise ArgumentError, 'NMI is not 10 characters'                     unless nmi.length == 10
+      raise ArgumentError, 'NMI is not constructed with valid characters' unless AEMO::NMI.valid_nmi?(nmi)
 
       # National Meter Identifier
       @nmi = nmi
@@ -485,34 +488,34 @@ module AEMO
       end
 
       unless options[:next_scheduled_read_date].nil?
-        raise ArgumentError, "Next Scheduled Read Date is invalid" unless options[:next_scheduled_read_date].is_a?(Date)
+        raise ArgumentError, 'Next Scheduled Read Date is invalid' unless options[:next_scheduled_read_date].is_a?(Date)
         @next_scheduled_read_date = options[:next_scheduled_read_date]
       end
 
       unless options[:meter_serial_number].nil?
-        raise ArgumentError, '' unless options[:meter_serial_number].is_a?(String)
+        raise ArgumentError, 'Meter Serial Number is invalid' unless options[:meter_serial_number].is_a?(String)
         @meter_serial_number = options[:meter_serial_number]
       end
 
       unless options[:register_id].nil?
-        raise ArgumentError, '' unless options[:register_id].is_a?(String)
+        raise ArgumentError, 'Register ID is invalid' unless options[:register_id].is_a?(String)
         @register_id = options[:register_id]
       end
 
       unless options[:nmi_suffix].nil?
-        raise ArgumentError, '' unless options[:nmi_suffix].is_a?(String)
+        raise ArgumentError, 'NMI Suffix is invalid' unless options[:nmi_suffix].is_a?(String)
         @nmi_suffix = options[:nmi_suffix]
       end
 
       unless options[:mdm_data_streaming_identifier].nil?
-        raise ArgumentError, '' unless options[:mdm_data_streaming_identifier].is_a?(String)
+        raise ArgumentError, 'MDM Data Streaming Identifier is invalid' unless options[:mdm_data_streaming_identifier].is_a?(String)
         raise ArgumentError, '' unless options[:mdm_data_streaming_identifier].match(/^[A-Z0-9]+$/)
         @mdm_data_streaming_identifier = options[:mdm_data_streaming_identifier]
       end
 
       unless options[:unit_of_measurement].nil?
-        raise ArgumentError, '' unless options[:unit_of_measurement].is_a?(String)
-        @unit_of_measurement = options[:unit_of_measurement]
+        raise ArgumentError, 'Unit of Measurement is invalid' unless options[:unit_of_measurement].is_a?(String)
+        @unit_of_measurement = AEMO::NMI::UnitOfMeasurement.new(options[:unit_of_measurement])
       end
 
       unless options[:interval_length].nil?

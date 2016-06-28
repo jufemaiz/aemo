@@ -5,7 +5,7 @@ PATH
       activesupport (~> 4.2, >= 4.2.0)
       httparty (~> 0.13, >= 0.13.1)
       json (~> 1.8)
-      multi_xml (~> 0.5, >= 0.5.2)
+      multi_xml (~> 0.5, >= 0.5.5)
       nokogiri (~> 1.6, >= 1.6.6)
       rubyzip (~> 1.2.0)
 
