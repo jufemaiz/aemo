@@ -11,6 +11,8 @@ require_relative 'nmi/allocations'
 require_relative 'nmi/loss_factors'
 require_relative 'nmi/address'
 require_relative 'nmi/meter'
+require_relative 'nmi/role'
+require_relative 'nmi/data_stream'
 require_relative 'nmi/register'
 
 module AEMO
@@ -29,10 +31,10 @@ module AEMO
   # @attr [String] jurisdiction_code
   # @attr [String] classification_code
   # @attr [String] status
-  # @attr [Hash] address
-  # @attr [Array] meters
-  # @attr [Hash] roles
-  # @attr [Array] data_streams
+  # @attr [AEMO::NMI::Address] address
+  # @attr [Array<AEMO::NMI::Meter>] meters
+  # @attr [Array<AEMO::NMI::Role>] roles
+  # @attr [Array<AEMO::NMI::DataStream>] data_streams
   class NMI
     # [String] National Meter Identifier
     @nmi                          = nil
@@ -44,9 +46,9 @@ module AEMO
     @jurisdiction_code            = nil
     @classification_code          = nil
     @status                       = nil
-    @address                      = {}
+    @address                      = nil
     @meters                       = []
-    @roles                        = {}
+    @roles                        = []
     @data_streams                 = []
 
     attr_accessor :nmi, :tni, :dlf, :customer_classification_code, :customer_threshold_code, :jurisdiction_code, :classification_code, :status, :address, :meters, :roles, :data_streams
@@ -290,25 +292,11 @@ module AEMO
       end
       # Roles
       unless @msats_detail['RoleAssignments'].nil?
-        role_assignments = @msats_detail['RoleAssignments']['RoleAssignment']
-        role_assignments = [role_assignments] if role_assignments.is_a?(Hash)
-        role_assignments.each do |role|
-          @roles[role['Role']] = role['Party']
-        end
+        @roles = AEMO::NMI::Role.parse_msats_hash(@msats_detail['RoleAssignments']['RoleAssignment'])
       end
       # DataStreams
       unless @msats_detail['DataStreams'].nil?
-        data_streams = @msats_detail['DataStreams']['DataStream']
-        data_streams = [data_streams] if data_streams.is_a?(Hash) # Deal with issue of only one existing
-        data_streams.each do |stream|
-          @data_streams << OpenStruct.new(
-            suffix: stream['Suffix'],
-            profile_name: stream['ProfileName'],
-            averaged_daily_load: stream['AveragedDailyLoad'],
-            data_stream_type: stream['DataStreamType'],
-            status: stream['Status']
-          )
-        end
+        @data_streams = AEMO::NMI::DataStream.parse_msats_hash(@msats_detail['DataStreams']['DataStream'])
       end
       self
     end
@@ -317,16 +305,8 @@ module AEMO
     #
     # @return [String]
     def friendly_address
-      if @address.is_a?(Hash)
-        friendly_address = @address.values.map do |x|
-          if x.is_a?(Hash)
-            x = x.values.map { |y| y.is_a?(Hash) ? y.values.join(' ') : y }.join(' ')
-          end
-          x
-        end.join(', ')
-      else
-        ''
-      end
+      warn "[DEPRECATION] `friendly_address` is deprecated. Please use `address.to_s` instead"
+      @address.to_s
     end
 
     # Returns the meter OpenStructs for the requested status (C/R)

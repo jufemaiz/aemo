@@ -9,6 +9,7 @@ module AEMO
     # @abstract
     # @since 0.2.0
     # @attr [String] building_or_property_name
+    # @attr [String] location_descriptor
     # @attr [String] lot_number
     # @attr [String] flat_or_unit_number
     # @attr [String] flat_or_unit_type
@@ -20,7 +21,6 @@ module AEMO
     # @attr [String] street_suffix
     # @attr [String] street_type
     # @attr [String] suburb_or_place_or_locality
-    # @attr [String] location_descriptor
     # @attr [String] post_code
     # @attr [String] state_or_territory
     class Address

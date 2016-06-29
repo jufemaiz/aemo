@@ -174,20 +174,10 @@ describe AEMO::NMI do
     end
 
     describe '#friendly_address' do
-      it 'should return the empty string if the address is not a hash' do
+      it 'should use AEMO::NMI::Address#to_s' do
         nmi = AEMO::NMI.new('4001234567')
-        nmi.address = 'An address'
-        expect(nmi.friendly_address).to eq('')
-      end
-      it 'should return a friendly address if the address is a hash' do
-        nmi = AEMO::NMI.new('4001234567')
-        nmi.address = { number: '1', street: 'Bob', street_type: 'Street' }
-        expect(nmi.friendly_address).to eq('1, Bob, Street')
-      end
-      it 'should return a friendly address if the address is a hash' do
-        nmi = AEMO::NMI.new('4001234567')
-        nmi.address = { number: '1', street: 'Bob', street_type: 'Street', tmp: { x: 'x', y: 'y' } }
-        expect(nmi.friendly_address).to eq('1, Bob, Street, x y')
+        nmi.address = AEMO::NMI::Address.new(house_number: 10, street_name: 'GEORGE', street_type: 'ST', suburb_or_place_or_locality: 'SYDNEY', post_code: '2000', state_or_territory: 'NSW')
+        expect(nmi.friendly_address).to eq('10 GEORGE ST, SYDNEY NSW 2000')
       end
     end
 
