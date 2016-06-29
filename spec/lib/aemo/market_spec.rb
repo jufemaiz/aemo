@@ -30,7 +30,7 @@ describe AEMO::Market do
 
   describe '.historic_trading' do
     it 'has an array of data' do
-      expect(AEMO::Market.historic_trading('NSW', 2015, 01).class).to eq(Array)
+      expect(AEMO::Market.historic_trading('NSW', 2015, 0o1).class).to eq(Array)
     end
   end
 end

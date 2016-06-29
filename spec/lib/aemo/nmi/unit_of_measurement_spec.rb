@@ -14,7 +14,7 @@ describe AEMO::NMI::UnitOfMeasurement do
 
     describe '.multiplier' do
       it 'raises ArgumentError' do
-        expect { AEMO::NMI::UnitOfMeasurement.multiplier('BOB')}.to raise_error(ArgumentError)
+        expect { AEMO::NMI::UnitOfMeasurement.multiplier('BOB') }.to raise_error(ArgumentError)
       end
 
       it 'returns the multiplier' do
@@ -24,7 +24,7 @@ describe AEMO::NMI::UnitOfMeasurement do
 
     describe '.covert' do
       it 'converts 1234567890Wh to 1234.567890GWh' do
-        expect(AEMO::NMI::UnitOfMeasurement.convert(1234567890, '', 'G')).to eq(1.234567890)
+        expect(AEMO::NMI::UnitOfMeasurement.convert(1_234_567_890, '', 'G')).to eq(1.234567890)
       end
     end
   end
@@ -44,12 +44,12 @@ describe AEMO::NMI::UnitOfMeasurement do
       it 'valid conversion from AEMO::NMI::UnitOfMeasurement to AEMO::NMI::UnitOfMeasurement' do
         old_uom = AEMO::NMI::UnitOfMeasurement.new('kWh')
         new_uom = AEMO::NMI::UnitOfMeasurement.new('Wh')
-        expect(old_uom.convert_to(1.2345,new_uom)).to eq(1234.5)
+        expect(old_uom.convert_to(1.2345, new_uom)).to eq(1234.5)
       end
 
       it 'valid conversion from AEMO::NMI::UnitOfMeasurement to String' do
         old_uom = AEMO::NMI::UnitOfMeasurement.new('kWh')
-        expect(old_uom.convert_to(1.2345,'')).to eq(1234.5)
+        expect(old_uom.convert_to(1.2345, '')).to eq(1234.5)
       end
     end
 

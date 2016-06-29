@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 require 'csv'
 require 'json'
 require 'time'
@@ -7,13 +9,34 @@ require 'active_support'
 require_relative 'nmi/unit_of_measurement'
 require_relative 'nmi/allocations'
 require_relative 'nmi/loss_factors'
+require_relative 'nmi/address'
+require_relative 'nmi/meter'
+require_relative 'nmi/register'
 
 module AEMO
+  # [AEMO::NMI]
   # AEMO::NMI acts as an object to simplify access to data and information about a NMI and provide verification of the NMI value
+  #
+  # @author Joel Courtney
+  # @abstract
+  # @since 0.1.0, overhauled 0.2.0
+  # @attr [String] nmi
+  # @attr [Hash] msats_detail
+  # @attr [String] tni
+  # @attr [String] dlf
+  # @attr [String] customer_classification_code
+  # @attr [String] customer_threshold_code
+  # @attr [String] jurisdiction_code
+  # @attr [String] classification_code
+  # @attr [String] status
+  # @attr [Hash] address
+  # @attr [Array] meters
+  # @attr [Hash] roles
+  # @attr [Array] data_streams
   class NMI
     # [String] National Meter Identifier
     @nmi                          = nil
-    @msats_detail                 = nil
+    @msats_detail                 = {}
     @tni                          = nil
     @dlf                          = nil
     @customer_classification_code = nil
@@ -172,7 +195,8 @@ module AEMO
     # @param [Hash] options
     # @return [self]
     def update_register_details(register_id, options = {})
-      @meters.map { |meter| meter.registers }
+      register = @meters.map { |meter| meter.registers }.select { |register| register.register_id == register_id }
+      return self if register.nil?
     end
 
     # A function to calculate the checksum value for a given National Meter Identifier
@@ -231,7 +255,7 @@ module AEMO
         @jurisdiction_code            = @msats_detail['MasterData']['JurisdictionCode']
         @classification_code          = @msats_detail['MasterData']['NMIClassificationCode']
         @status                       = @msats_detail['MasterData']['Status']
-        @address                      = @msats_detail['MasterData']['Address']
+        @address                      = AEMO::NMI::Address.parse_msats_hash(@msats_detail['MasterData']['Address'])
       end
       @meters                       ||= []
       @roles                        ||= {}

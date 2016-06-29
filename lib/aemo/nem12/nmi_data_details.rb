@@ -3,20 +3,20 @@ require 'csv'
 require 'json'
 require 'time'
 
-#
-#
-# @author Joel Courtney
-# @abstract
-# @since 0.2.0
-# @attr [DateTime] file_created_at DateTime that the file was created at
-# @attr [String] from_participant The originator of the NEM12 file
-# @attr [String] to_participant The recipient of the NEM12 file
 module AEMO
   class NEM12
     class NMIDataDetails
+      # [AEMO::NEM12::NMIDataDetails]
+      #
+      # @author Joel Courtney
+      # @abstract
+      # @since 0.2.0
+      # @attr [DateTime] file_created_at DateTime that the file was created at
+      # @attr [String] from_participant The originator of the NEM12 file
+      # @attr [String] to_participant The recipient of the NEM12 file
       # As per AEMO NEM12 Specification
       # http://www.aemo.com.au/Consultations/National-Electricity-Market/Open/~/media/Files/Other/consultations/nem/Meter%20Data%20File%20Format%20Specification%20NEM12_NEM13/MDFF_Specification_NEM12_NEM13_Final_v102_clean.ashx
-      RECORD_INDICATOR = 200.freeze
+      RECORD_INDICATOR = 200
 
       # Attributes
       @header   = nil
@@ -52,9 +52,9 @@ module AEMO
         # @return [AEMO::NEM12::NMIDataDetails]
         def parse_csv(csv_string)
           # Make sure you're working with a String
-          raise ArgumentError, "CSV string is not a string" unless csv_string.is_a?(String)
+          raise ArgumentError, 'CSV string is not a string' unless csv_string.is_a?(String)
           # Make sure it validates
-          unless csv_string.match(/^(200),([A-Z0-9]{10}),([A-HJ-MP-WYZ0-9]{1,240}),([A-HJ-MP-WYZ0-9]{0,10}),([A-HJ-MP-WYZ]\d+),(N\d+),([A-Z0-9]{1,12})?,([A-Z]{1,5}),(1|5|10|15|30),(\d{8})?$/i)
+          unless csv_string =~ /^(200),([A-Z0-9]{10}),([A-HJ-MP-WYZ0-9]{1,240}),([A-HJ-MP-WYZ0-9]{0,10}),([A-HJ-MP-WYZ]\d+),(N\d+),([A-Z0-9]{1,12})?,([A-Z]{1,5}),(1|5|10|15|30),(\d{8})?$/i
             raise ArgumentError, "CSV string '#{csv_string}' does not meet specification"
           end
 
@@ -87,12 +87,12 @@ module AEMO
       # @option options [Integer] :interval_length
       # @option options [DateTime] :next_scheduled_read_date
       # @return [AEMO::NEM12::NMIDataDetails]
-      def initialize(nmi, options={})
+      def initialize(nmi, options = {})
         raise ArgumentError, "NMI is neither String nor AEMO::NMI but #{nmi.class}" unless [String, AEMO::NMI].include?(nmi.class)
 
         # Set NMI properly
         @nmi = if nmi.is_a?(String)
-                 AEMO::NMI.new(nmi, options.slice(:nmi_configuration,:next_scheduled_read_date))
+                 AEMO::NMI.new(nmi, options.slice(:nmi_configuration, :next_scheduled_read_date))
                elsif nmi.is_a?(AEMO::NMI)
                  nmi
                end
@@ -100,28 +100,28 @@ module AEMO
         options = options.slice(:nmi_configuration, :next_scheduled_read_date, :meter_serial_number, :register_id, :suffix, :mdm_data_streaming_identifier, :unit_of_measurement, :interval_length)
 
         unless options[:nmi_configuration].nil?
-          unless options[:nmi_configuration].is_a?(String) && options[:nmi_configuration].split(%r{([A-Z]\d+)}).reject(&:empty?).join('') == options[:nmi_configuration]
+          unless options[:nmi_configuration].is_a?(String) && options[:nmi_configuration].split(/([A-Z]\d+)/).reject(&:empty?).join('') == options[:nmi_configuration]
             raise ArgumentError 'nmi_configuration is not valid'
           end
           @nmi_configuration = options[:nmi_configuration]
         end
 
         unless options[:register_id].nil?
-          unless options[:register_id].is_a?(String) && options[:register_id] =~ %r{^[A-Z]?\d+$}
+          unless options[:register_id].is_a?(String) && options[:register_id] =~ /^[A-Z]?\d+$/
             raise ArgumentError 'register_id is not valid'
           end
           @register_id = options[:register_id]
         end
 
         unless options[:suffix].nil?
-          unless options[:suffix].is_a?(String) && options[:suffix] =~ %r{^[A-Z]?\d+$}
+          unless options[:suffix].is_a?(String) && options[:suffix] =~ /^[A-Z]?\d+$/
             raise ArgumentError 'suffix is not valid'
           end
           @suffix = options[:suffix]
         end
 
         unless options[:mdm_data_streaming_identifier].nil?
-          unless options[:mdm_data_streaming_identifier].is_a?(String) && options[:mdm_data_streaming_identifier] =~ %r{^N\d+$}
+          unless options[:mdm_data_streaming_identifier].is_a?(String) && options[:mdm_data_streaming_identifier] =~ /^N\d+$/
             raise ArgumentError 'mdm_data_streaming_identifier is not valid'
           end
           @mdm_data_streaming_identifier = options[:mdm_data_streaming_identifier]
@@ -149,7 +149,7 @@ module AEMO
 
         unless options[:next_scheduled_read_date].nil?
           raise ArgumentError, "next_scheduled_read_date is neither String nor DateTime but #{nmi.class}" unless [String, DateTime].include?(options[:next_scheduled_read_date].class)
-          if options[:next_scheduled_read_date].is_a?(String) && options[:next_scheduled_read_date] =~ %r{^\d{8}$}
+          if options[:next_scheduled_read_date].is_a?(String) && options[:next_scheduled_read_date] =~ /^\d{8}$/
             raise ArgumentError, 'next_scheduled_read_date is not in proper format of YYYYMMDD'
           end
           @next_scheduled_read_date = options[:next_scheduled_read_date]

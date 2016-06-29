@@ -11,7 +11,7 @@ describe AEMO::NEM12::NMIDataDetails do
       end
       it 'raises an error if not a valid CSV string' do
         csv_string = '300,20160324,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,A,,,20160325015730,'
-        expect { AEMO::NEM12::NMIDataDetails.parse_csv(csv_string)}.to raise_error(ArgumentError)
+        expect { AEMO::NEM12::NMIDataDetails.parse_csv(csv_string) }.to raise_error(ArgumentError)
       end
     end
   end
@@ -21,8 +21,18 @@ describe AEMO::NEM12::NMIDataDetails do
       it 'successfully creates a new AEMO::NEM12::NMIDataDetails with correct data' do
         expect(AEMO::NEM12::NMIDataDetails.new('4001234567').class).to eq(AEMO::NEM12::NMIDataDetails)
       end
+
       it 'raises error if file_created_at is not valid' do
-        expect {AEMO::NEM12::NMIDataDetails.new(nil)}.to raise_error(ArgumentError)
+        expect { AEMO::NEM12::NMIDataDetails.new(nil) }.to raise_error(ArgumentError)
+      end
+
+      describe 'with options' do
+        describe 'has nmi_configuration' do
+          it do
+            expect(AEMO::NEM12::NMIDataDetails.new('4001234567').class).to eq(AEMO::NEM12::NMIDataDetails)
+          end
+          it 'has a nmi with multiple meters'
+        end
       end
     end
   end

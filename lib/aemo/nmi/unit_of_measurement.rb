@@ -24,7 +24,7 @@ module AEMO
         'M' => { multiplier: 1e6, title: 'Mega', abbreviation: 'M' },
         'K' => { multiplier: 1e3, title: 'Kilo', abbreviation: 'k' },
         ''  => { multiplier: 1e0, title: '', abbreviation: '' }
-      }
+      }.freeze
 
       @unit_abbreviation = nil
       @unit_title = nil
@@ -64,7 +64,7 @@ module AEMO
           matches = unit_of_measurement.match(/^([KM])?(.+?)$/)
           return false unless PREFIXES.keys.include?(matches[1].to_s)
           return false unless UNITS_OF_MEASUREMENT.keys.include?(matches[2])
-          return true
+          true
         end
       end
 
