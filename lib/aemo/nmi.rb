@@ -305,9 +305,10 @@ module AEMO
 
     # Returns a nice address from the structured one AEMO sends us
     #
+    # @deprecated Please use {AEMO::NMI::Address#to_s} instead
     # @return [String]
     def friendly_address
-      warn '[DEPRECATION] `friendly_address` is deprecated. Please use `address.to_s` instead'
+      warn '[DEPRECATION] `friendly_address` is deprecated. Please use `AEMO::NMI::Address#to_s` instead'
       @address.to_s
     end
 
