@@ -10,7 +10,10 @@ describe AEMO::NEM12::NMIDataDetails do
         expect { AEMO::NEM12::NMIDataDetails.parse_csv(nil) }.to raise_error(ArgumentError)
       end
       it 'raises an error if not a valid CSV string' do
-        csv_string = '300,20160324,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,A,,,20160325015730,'
+        csv_string = '300,20160324,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'\
+                     '0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'\
+                     '0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,'\
+                     '0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,A,,,20160325015730,'
         expect { AEMO::NEM12::NMIDataDetails.parse_csv(csv_string) }.to raise_error(ArgumentError)
       end
     end

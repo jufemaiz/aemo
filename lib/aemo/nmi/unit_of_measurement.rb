@@ -1,11 +1,13 @@
-# [AEMO::NMI::UnitOfMeasurement]
-#
-# @author Joel Courtney
-# @abstract
-# @since 0.2.0
-# @attr [String] unit_of_measurement DateTime that the file was created at
+# encoding: UTF-8
+
 module AEMO
   class NMI
+    # [AEMO::NMI::UnitOfMeasurement]
+    #
+    # @author Joel Courtney
+    # @abstract
+    # @since 0.2.0
+    # @attr [String] unit_of_measurement DateTime that the file was created at
     class UnitOfMeasurement
       UNITS_OF_MEASUREMENT = {
         'WH'    => { abbreviation: 'Wh', title: 'Watt Hour' },

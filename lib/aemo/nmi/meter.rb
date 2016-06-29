@@ -81,7 +81,7 @@ module AEMO
           raise ArgumentError, "Registers #{options[:registers]} is not valid" unless options[:registers] =~ /^([A-Z]\d+)+$/
           options[:registers].scan(/([A-Z]\d+)/).flatten.each do |register|
             @registers ||= []
-            @registers << AEMO::NMI::Register.new(register, register, nil)
+            @registers << AEMO::NMI::Meter::Register.new(register, register, nil)
           end
         end
       end

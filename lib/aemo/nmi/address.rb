@@ -24,7 +24,6 @@ module AEMO
     # @attr [String] post_code
     # @attr [String] state_or_territory
     class Address
-
       attr_accessor :building_or_property_name,
                     :lot_number,
                     :flat_or_unit_number,
@@ -126,7 +125,7 @@ module AEMO
           @building_or_property_name,
           @location_descriptor,
           [@lot_number, @flat_or_unit_number, @flat_or_unit_type, @floor_or_level_number, @floor_or_level_type].compact.join(' '),
-          ["#{@house_number}#{@house_number_suffix}", @street_name, @street_suffix, @street_type].compact.join(' '),
+          ["#{@house_number}#{@house_number_suffix}", @street_name, @street_suffix, @street_type].reject(&:blank?).compact.join(' '),
           [@suburb_or_place_or_locality, @state_or_territory, @post_code].compact.join(' ')
         ].reject(&:blank?).join(', ')
       end

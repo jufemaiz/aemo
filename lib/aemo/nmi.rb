@@ -6,14 +6,14 @@ require 'time'
 require 'ostruct'
 require 'active_support'
 
-require_relative 'nmi/unit_of_measurement'
-require_relative 'nmi/allocations'
-require_relative 'nmi/loss_factors'
 require_relative 'nmi/address'
-require_relative 'nmi/meter'
-require_relative 'nmi/role'
+require_relative 'nmi/allocations'
 require_relative 'nmi/data_stream'
-require_relative 'nmi/register'
+require_relative 'nmi/loss_factors'
+require_relative 'nmi/meter'
+require_relative 'nmi/meter/register'
+require_relative 'nmi/role'
+require_relative 'nmi/unit_of_measurement'
 
 module AEMO
   # [AEMO::NMI]
@@ -115,7 +115,7 @@ module AEMO
     # @option options [String] :roles
     # @option options [Array<AEMO::NMI::DataStream>] :data_streams
     # @return [AEMO::NMI] an instance of AEMO::NMI is returned
-    def initialize(nmi, options={})
+    def initialize(nmi, options = {})
       # Validations
       raise ArgumentError, 'NMI is not a string'                          unless nmi.is_a?(String)
       raise ArgumentError, 'NMI is not 10 characters'                     unless nmi.length == 10
@@ -127,16 +127,16 @@ module AEMO
       # Roles
       unless options[:roles].nil?
         raise ArgumentError, 'Role is not valid' unless options[:roles].is_a?(String)
-        @roles  = options[:roles]
+        @roles = options[:roles]
       end
 
       # Meters are based upon
       unless options[:nmi_configuration].nil?
         raise 'NMI Configuration is not a string' unless options[:nmi_configuration].is_a?(String)
-        raise "NMI Configuration #{options[:nmi_configuration]} is invalid" unless options[:nmi_configuration].match(/^([A-Z]\d+)+$/)
+        raise "NMI Configuration #{options[:nmi_configuration]} is invalid" unless options[:nmi_configuration] =~ /^([A-Z]\d+)+$/
         options[:nmi_configuration].scan(/([A-Z]\d+)/).flatten.group_by { |x| x.match(/[A-Z](\d+)/)[1].to_i }.each do |meter, registers|
           @meters ||= []
-          @meters << AEMO::NMI::Meter.new({ nem12_meter: meter, registers: registers.join() })
+          @meters << AEMO::NMI::Meter.new(nem12_meter: meter, registers: registers.join)
         end
       end
 
@@ -162,7 +162,7 @@ module AEMO
 
       unless options[:mdm_data_streaming_identifier].nil?
         raise ArgumentError, 'MDM Data Streaming Identifier is invalid' unless options[:mdm_data_streaming_identifier].is_a?(String)
-        raise ArgumentError, 'MDM Data Streaming Identifier is invalid' unless options[:mdm_data_streaming_identifier].match(/^[A-Z0-9]+$/)
+        raise ArgumentError, 'MDM Data Streaming Identifier is invalid' unless options[:mdm_data_streaming_identifier] =~ /^[A-Z0-9]+$/
         @mdm_data_streaming_identifier = options[:mdm_data_streaming_identifier]
       end
 
@@ -175,6 +175,8 @@ module AEMO
         raise ArgumentError, '' unless options[:interval_length].is_a?(Numeric)
         @interval_length = options[:interval_length]
       end
+
+      self
     end
 
     # A function to validate the instance's nmi value
@@ -196,8 +198,8 @@ module AEMO
     # @param [String] register_id
     # @param [Hash] options
     # @return [self]
-    def update_register_details(register_id, options = {})
-      register = @meters.map { |meter| meter.registers }.select { |register| register.register_id == register_id }
+    def update_register_details(register_id, _options = {})
+      register = @meters.map(&:registers).select { |r| r.register_id == register_id }
       return self if register.nil?
     end
 
@@ -305,7 +307,7 @@ module AEMO
     #
     # @return [String]
     def friendly_address
-      warn "[DEPRECATION] `friendly_address` is deprecated. Please use `address.to_s` instead"
+      warn '[DEPRECATION] `friendly_address` is deprecated. Please use `address.to_s` instead'
       @address.to_s
     end
 
@@ -402,11 +404,11 @@ module AEMO
       raise 'start cannot be after finish' if start > finish
       possible_values = TNI_CODES[@tni]
                         .reject { |x| start > DateTime.parse(x['ToDate']) || finish < DateTime.parse(x['FromDate']) }
-                        # .map { |x| { 'start' => x['FromDate'], 'finish' => x['ToDate'], 'value' => x['Value'].to_f } }
+      # .map { |x| { 'start' => x['FromDate'], 'finish' => x['ToDate'], 'value' => x['Value'].to_f } }
       return [] if possible_values.empty?
       possible_values.map { |x| x['mlf_data']['loss_factors'] }
-        .flatten
-        .reject{ |x| start > DateTime.parse(x['finish']) || finish < DateTime.parse(x['start']) }
+                     .flatten
+                     .reject { |x| start > DateTime.parse(x['finish']) || finish < DateTime.parse(x['start']) }
     end
   end
 end

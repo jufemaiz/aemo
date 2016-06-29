@@ -4,10 +4,17 @@ describe AEMO::NMI::Address do
   describe 'Class Methods' do
     describe '.parse_msats_hash' do
       describe 'simple address' do
-        before(:each) { @address = {"StructuredAddress"=>{"House"=>{"HouseNumber"=>"19", "HouseNumberSuffix"=>"A"}, "Street"=>{"StreetName"=>"GREENFIELD", "StreetType"=>"ST"}},
-                                    "SuburbOrPlaceOrLocality"=>"BANKSMEADOW",
-                                    "StateOrTerritory"=>"NSW",
-                                    "PostCode"=>"2019"}}
+        before(:each) do
+          @address = {
+            'StructuredAddress' => {
+              'House' => { 'HouseNumber' => '19', 'HouseNumberSuffix' => 'A' },
+              'Street' => { 'StreetName' => 'GREENFIELD', 'StreetType' => 'ST' }
+            },
+            'SuburbOrPlaceOrLocality' => 'BANKSMEADOW',
+            'StateOrTerritory' => 'NSW',
+            'PostCode' => '2019'
+          }
+        end
         it 'returns AEMO::NMI::Address' do
           expect(AEMO::NMI::Address.parse_msats_hash(@address)).to be_a(AEMO::NMI::Address)
         end
@@ -17,13 +24,19 @@ describe AEMO::NMI::Address do
         end
       end
       describe 'complex address' do
-        before(:each) { @address = {
-                                     "StructuredAddress"=>{"BuildingOrPropertyName"=>"ONE CENTRAL PARK - RETAIL BLOC", "LocationDescriptor"=>"HL RETAIL", "House"=>{"HouseNumber"=>"28"}, "Street"=>{"StreetName"=>"BROADWAY"}},
-                                     "SuburbOrPlaceOrLocality"=>"CHIPPENDALE",
-                                     "StateOrTerritory"=>"NSW",
-                                     "PostCode"=>"2008"
-                                   }
-                      }
+        before(:each) do
+          @address = {
+            'StructuredAddress' => {
+              'BuildingOrPropertyName' => 'ONE CENTRAL PARK - RETAIL BLOC',
+              'LocationDescriptor' => 'HL RETAIL',
+              'House' => { 'HouseNumber' => '28' },
+              'Street' => { 'StreetName' => 'BROADWAY' }
+            },
+            'SuburbOrPlaceOrLocality' => 'CHIPPENDALE',
+            'StateOrTerritory' => 'NSW',
+            'PostCode' => '2008'
+          }
+        end
 
         it 'returns AEMO::NMI::Address' do
           expect(AEMO::NMI::Address.parse_msats_hash(@address)).to be_a(AEMO::NMI::Address)

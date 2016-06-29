@@ -9,8 +9,6 @@ require 'aemo/nem12.rb'
 require 'aemo/nem12/header.rb'
 require 'aemo/nem12/nmi_data_details.rb'
 require 'aemo/nmi.rb'
-require 'aemo/nmi/meter.rb'
-require 'aemo/nmi/register.rb'
 require 'aemo/msats.rb'
 require 'aemo/version.rb'
 
