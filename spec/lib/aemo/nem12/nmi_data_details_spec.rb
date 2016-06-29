@@ -18,8 +18,8 @@ describe AEMO::NEM12::NMIDataDetails do
 
   describe 'Instance Methods' do
     describe '#initialize' do
-      it 'successfully creates a new AEMO::NEM12::Header with correct data' do
-        expect(AEMO::NEM12::NMIDataDetails.new().class).to eq(AEMO::NEM12::NMIDataDetails)
+      it 'successfully creates a new AEMO::NEM12::NMIDataDetails with correct data' do
+        expect(AEMO::NEM12::NMIDataDetails.new('4001234567').class).to eq(AEMO::NEM12::NMIDataDetails)
       end
       it 'raises error if file_created_at is not valid' do
         expect {AEMO::NEM12::NMIDataDetails.new(nil)}.to raise_error(ArgumentError)
