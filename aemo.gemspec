@@ -29,7 +29,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'activesupport', '~> 4.2', '>= 4.2.0'
 
   # Development Dependencies
-  s.add_development_dependency 'bundler', '~> 1.12', '>= 1.12.5'
+  # s.add_development_dependency 'bundler', '~> 1.12', '>= 1.12.5'
   s.add_development_dependency 'listen', '~> 3.0', '= 3.0.8'
   s.add_development_dependency 'rspec', '~> 3.4', '>= 3.4.0'
   s.add_development_dependency 'rdoc', '~> 4.2', '>= 4.2.2'
