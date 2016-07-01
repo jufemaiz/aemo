@@ -43,4 +43,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'guard-yard', '~> 2.1', '>= 2.1.3'
   s.add_development_dependency 'webmock', '~> 2.1', '>= 2.1.0'
   s.add_development_dependency 'rubocop', '~> 0.41', '>= 0.41.1'
+  s.add_development_dependency 'timecop', '~> 0.8', '>= 0.8.1'
 end

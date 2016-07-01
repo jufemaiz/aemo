@@ -193,7 +193,9 @@ describe AEMO::NMI do
       expect(@nmi.dlf).to eq('BL0A')
     end
     it 'has a DLF value' do
-      expect(@nmi.dlfc_value.class).to eq(Float)
+      Timecop.freeze('2016-06-01T00:00:00+1000') do
+        expect(@nmi.dlfc_value.class).to eq(Float)
+      end
     end
   end
 
@@ -203,11 +205,14 @@ describe AEMO::NMI do
       @nmi.dlf = 'BL0A'
       @nmi.tni = 'NGN2'
     end
+
     it 'has a valid TNI Code' do
       expect(@nmi.tni).to eq('NGN2')
     end
     it 'has a TNI value' do
-      expect(@nmi.tni_value.class).to eq(Float)
+      Timecop.freeze('2016-06-01T00:00:00+1000') do
+        expect(@nmi.tni_value(DateTime.now).class).to eq(Float)
+      end
     end
   end
 

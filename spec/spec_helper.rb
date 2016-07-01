@@ -2,6 +2,7 @@ require 'coveralls'
 require 'simplecov'
 require 'pry'
 require 'webmock/rspec'
+require 'timecop'
 require 'aemo'
 
 WebMock.disable_net_connect!(allow_localhost: true)

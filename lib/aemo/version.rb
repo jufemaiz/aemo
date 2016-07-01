@@ -22,7 +22,7 @@
 # @author Joel Courtney <euphemize@gmail.com>
 module AEMO
   # aemo version
-  VERSION = '0.1.32'.freeze
+  VERSION = '0.1.33'.freeze
 
   # aemo version split amongst different revisions
   MAJOR_VERSION, MINOR_VERSION, REVISION = VERSION.split('.').map(&:to_i)

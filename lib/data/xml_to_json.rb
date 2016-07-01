@@ -12,8 +12,10 @@ require 'active_support/all'
 # Let's get the CSV Data first
 
 # TNI to MLF
-CSV.open(File.join(@path, 'tni-mlf-codes.csv'), headers: true, converters: :numeric).each do |row|
+file_contents = File.read(File.join(@path, 'tni-mlf-codes.csv')).encode('UTF-8', 'binary', invalid: :replace, undef: :replace, replace: '')
+CSV.parse(file_contents, headers: true, converters: :numeric).each do |row|
   @mlf_data[row['TNI']] ||= { location: row['Location'], voltage: row['Voltage'], loss_factors: [] }
+  @mlf_data[row['TNI']][:loss_factors] << { start: DateTime.parse('2016-07-01T00:00:00+1000'), finish: DateTime.parse('2017-07-01T00:00:00+1000'), value: row['FY17'] }
   @mlf_data[row['TNI']][:loss_factors] << { start: DateTime.parse('2015-07-01T00:00:00+1000'), finish: DateTime.parse('2016-07-01T00:00:00+1000'), value: row['FY16'] }
   @mlf_data[row['TNI']][:loss_factors] << { start: DateTime.parse('2014-07-01T00:00:00+1000'), finish: DateTime.parse('2015-07-01T00:00:00+1000'), value: row['FY15'] }
   @mlf_data[row['TNI']][:loss_factors] << { start: DateTime.parse('2013-07-01T00:00:00+1000'), finish: DateTime.parse('2014-07-01T00:00:00+1000'), value: row['FY14'] }

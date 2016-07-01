@@ -504,7 +504,7 @@ module AEMO
         row
       end).map do |row|
         row.join(', ')
-      end.join('\n')
+      end.join("\n")
     end
 
     # @param [String] path_to_file the path to a file
@@ -517,7 +517,7 @@ module AEMO
     # @param [Boolean] strict
     # @return [Array<AEMO::NEM12>] An array of NEM12 objects
     def self.parse_nem12(contents, strict = false)
-      file_contents = contents.tr('\r', '\n').tr('\n\n', '\n').split('\n').delete_if(&:empty?)
+      file_contents = contents.tr("\r", "\n").tr("\n\n", "\n").split("\n").delete_if(&:empty?)
       raise ArgumentError, 'First row should be have a RecordIndicator of 100 and be of type Header Record' unless file_contents.first.parse_csv[0] == '100'
 
       nem12s = []
