@@ -15,10 +15,10 @@ require 'active_support/all'
 file_contents = File.read(File.join(@path, 'tni-mlf-codes.csv')).encode('UTF-8', 'binary', invalid: :replace, undef: :replace, replace: '')
 CSV.parse(file_contents, headers: true, converters: :numeric).each do |row|
   @mlf_data[row['TNI']] ||= { location: row['Location'], voltage: row['Voltage'], loss_factors: [] }
-  @mlf_data[row['TNI']][:loss_factors] << { start: DateTime.parse('2016-07-01T00:00:00+1000'), finish: DateTime.parse('2017-07-01T00:00:00+1000'), value: row['FY17'] }
-  @mlf_data[row['TNI']][:loss_factors] << { start: DateTime.parse('2015-07-01T00:00:00+1000'), finish: DateTime.parse('2016-07-01T00:00:00+1000'), value: row['FY16'] }
-  @mlf_data[row['TNI']][:loss_factors] << { start: DateTime.parse('2014-07-01T00:00:00+1000'), finish: DateTime.parse('2015-07-01T00:00:00+1000'), value: row['FY15'] }
-  @mlf_data[row['TNI']][:loss_factors] << { start: DateTime.parse('2013-07-01T00:00:00+1000'), finish: DateTime.parse('2014-07-01T00:00:00+1000'), value: row['FY14'] }
+  row.headers.select{|x| x =~ %r{^FY\d{2}$}}.sort.reverse.each do |fin_year|
+    year = "20#{fin_year.match(/FY(\d{2})/)[1]}".to_i
+    @mlf_data[row['TNI']][:loss_factors] << { start: DateTime.parse("#{year - 1}-07-01T00:00:00+1000"), finish: DateTime.parse("#{year}-07-01T00:00:00+1000"), value: row[fin_year] }
+  end
 end
 
 # TNI to MLF
