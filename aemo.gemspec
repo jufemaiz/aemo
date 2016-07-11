@@ -12,6 +12,7 @@ Gem::Specification.new do |s|
   s.authors       = ['Joel Courtney', 'Stuart Auld', 'Neil Parikh']
   s.email         = ['jcourtney@cozero.com.au', 'sauld@cozero.com.au', 'nparikh@cozero.com.au']
   s.homepage      = 'https://github.com/jufemaiz/aemo'
+  s.documentation = 'http://www.rubydoc.info/gems/aemo'
   s.license       = 'MIT'
   s.files         = Dir['lib/**/*', 'spec/**/*', 'bin/*']
   s.executables   = s.files.grep(%r{^bin/}) { |f| File.basename(f) }
