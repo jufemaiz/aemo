@@ -18,48 +18,70 @@ module AEMO
     }.freeze
 
     attr_accessor :region
+    attr_reader :aemo_market_node
 
-    def initialize(region)
-      raise ArgumentError, "Region '#{region}' is not valid." unless valid_region?(region)
-      @region = region
-      @current_trading = []
-      @current_dispatch = []
+    class << self
+      def all
+        REGIONS.keys.map { |k| AEMO::Region.new(k) }
+      end
     end
 
+    # Create a new instance of AEMO::Region
+    #
+    # @param [String] region State
+    # @return [self]
+    def initialize(region)
+      raise ArgumentError, "Region '#{region}' is not valid." unless valid_region?(region)
+      @region = region.upcase
+      @full_name = REGIONS[@region]
+      @current_trading = []
+      @current_dispatch = []
+      @aemo_market_node = if %w(NSW QLD SA TAS VIC).include?(@region)
+                            AEMO::Market::Node.new(region)
+                          elsif @region == 'ACT'
+                            AEMO::Market::Node.new('NSW')
+                          end
+    end
+
+    # Abbreviation method
+    #
+    # @return [String]
     def abbr
       @region
     end
 
+    # @return [String]
     def to_s
       @region
     end
 
+    # @return [String]
     def fullname
       REGIONS[@region]
     end
 
+    # Return the current dispatch data
+    #
+    # @return [Array<AEMO::Market::Interval>]
     def current_dispatch
-      if @current_dispatch.empty? || @current_dispatch.last.datetime != (Time.now - Time.now.to_i % 300)
-        @current_dispatch = AEMO::Market.current_dispatch(@region)
-      end
-      @current_dispatch
+      @aemo_market_node.current_dispatch
     end
 
+    # Return the current trading data
+    #
+    # @return [Array<AEMO::Market::Interval>]
     def current_trading
-      if @current_trading.empty? || @current_trading.reject { |i| i.period_type != 'TRADE' }.last.datetime != (Time.now - Time.now.to_i % 300)
-        @current_trading = AEMO::Market.current_trading(@region)
-      end
-      @current_trading
-    end
-
-    def self.all
-      REGIONS.keys.map { |k| AEMO::Region.new(k) }
+      @aemo_market_node.current_trading
     end
 
     protected
 
+    # Validates a region
+    #
+    # @param [String] region
+    # @return [Boolean]
     def valid_region?(region)
-      REGIONS.keys.include?(region)
+      REGIONS.keys.include?(region.upcase)
     end
   end
 end

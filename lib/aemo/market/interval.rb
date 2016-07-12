@@ -13,6 +13,8 @@ module AEMO
 
       attr_accessor :datetime, :region, :total_demand, :rrp, :period_type
 
+      # Create a new instance of an Interval
+      # 
       # @param [Time] datetime
       # @param [Hash] options Hash of optional data values
       # @return [AEMO::Market::Interval]

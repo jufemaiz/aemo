@@ -7,6 +7,10 @@ Makes working with AEMO data more pleasant.
 [![Code Climate](https://codeclimate.com/github/jufemaiz/aemo/badges/gpa.svg)](https://codeclimate.com/github/jufemaiz/aemo)
 [![Coverage Status](https://coveralls.io/repos/github/jufemaiz/aemo/badge.svg?branch=master)](https://coveralls.io/github/jufemaiz/aemo?branch=master)
 
+# Documentation
+
+http://www.rubydoc.info/gems/aemo
+
 # Installation
 
 ## Manually from RubyGems.org ###

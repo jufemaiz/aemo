@@ -179,6 +179,12 @@ describe AEMO::NMI do
         nmi.address = AEMO::NMI::Address.new(house_number: 10, street_name: 'GEORGE', street_type: 'ST', suburb_or_place_or_locality: 'SYDNEY', post_code: '2000', state_or_territory: 'NSW')
         expect(nmi.friendly_address).to eq('10 GEORGE ST, SYDNEY NSW 2000')
       end
+
+      it 'should return a friendly address if the address is a nested hash' do
+        nmi = AEMO::NMI.new('4001234567')
+        nmi.address = { house: { number: '1', suffix: 'B' }, street: 'Bob', street_type: 'Street', }
+        expect(nmi.friendly_address).to eq('1 B, Bob, Street')
+      end
     end
 
     describe '#current_daily_load' do

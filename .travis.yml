@@ -21,3 +21,6 @@ install:
   - bundle install
 script:
   - rspec
+addons:
+  code_climate:
+    repo_token: 20981d9b6c53ed895076e87fd8f8d5782800824f86eb501bfccb525dab7deca1

@@ -546,7 +546,7 @@ module AEMO
         row
       end).map do |row|
         row.join(', ')
-      end.join('\n')
+      end.join("\n")
     end
 
     #

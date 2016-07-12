@@ -405,7 +405,6 @@ module AEMO
       raise 'start cannot be after finish' if start > finish
       possible_values = TNI_CODES[@tni]
                         .reject { |x| start > DateTime.parse(x['ToDate']) || finish < DateTime.parse(x['FromDate']) }
-      # .map { |x| { 'start' => x['FromDate'], 'finish' => x['ToDate'], 'value' => x['Value'].to_f } }
       return [] if possible_values.empty?
       possible_values.map { |x| x['mlf_data']['loss_factors'] }
                      .flatten

@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe AEMO::Market::Interval do
-  describe 'AEMO::Market::Interval contstants' do
+  describe 'AEMO::Market::Interval constants' do
     it 'has INTERVALS' do
       expect(AEMO::Market::Interval::INTERVALS)
         .to eq(trading: 'Trading', dispatch: 'Dispatch')
