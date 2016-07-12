@@ -34,9 +34,9 @@ describe AEMO::NEM12 do
   end
 
   describe '#parse_nem12_200' do
-    before(:each) do
-      @nem12 = AEMO::NEM12.parse_nem12_100('100,NEM12,201603010000,CNRGYMDP,NEMMCO', strict: true)
-    end
+    # before(:each) do
+    #   @nem12 = AEMO::NEM12.parse_nem12_100('100,NEM12,201603010000,CNRGYMDP,NEMMCO', strict: true)
+    # end
   end
 
   describe '#parse_nem12_300' do
