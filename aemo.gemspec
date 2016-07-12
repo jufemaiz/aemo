@@ -6,7 +6,7 @@ Gem::Specification.new do |s|
   s.name          = 'aemo'
   s.version       = AEMO::VERSION
   s.platform      = Gem::Platform::RUBY
-  s.date          = '2016-06-30'
+  s.date          = '2016-07-12'
   s.summary       = 'Gem providing functionality for the Australian Energy Market Operator data'
   s.description   = 'Gem providing functionality for the Australian Energy Market Operator data. Supports NMIs, NEM12, MSATS Web Services and more'
   s.authors       = ['Joel Courtney', 'Stuart Auld', 'Neil Parikh']
