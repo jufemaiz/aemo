@@ -1,6 +1,6 @@
 # AEMO Gem Changelog
 
-## 0.1.35
+## 0.1.36
 
 * Minor change to AEMO::NMI::NMI_ALLOCATIONS for a 'State' to be an instance of AEMO::Region
 
