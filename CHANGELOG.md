@@ -1,5 +1,9 @@
 # AEMO Gem Changelog
 
+## 0.1.34
+
+* Added AEMO::Market::Node to deal with Region v Node differences
+
 ## 0.1.33
 
 * Rubocop lint bugfix (AEMO::NEM12.parse_nem12 not breaking up rows correctly)
