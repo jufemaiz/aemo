@@ -23,7 +23,7 @@ module AEMO
       'ACTEWP' => {
         title: 'Actew Distribution Ltd and Jemena Networks (ACT) Pty Ltd',
         friendly_title: 'ACTEWAgl',
-        state: 'ACT',
+        state: AEMO::Region.new('ACT'),
         type: 'electricity',
         includes: [
           /^(NGGG[A-HJ-NP-VX-Z\d][A-HJ-NP-Z\d]{5})$/,
@@ -35,7 +35,7 @@ module AEMO
       'CNRGYP' => {
         title: 'Essential Energy',
         friendly_title: 'Essential Energy',
-        state: 'NSW',
+        state: AEMO::Region.new('NSW'),
         type: 'electricity',
         includes: [
           /^(NAAA[A-HJ-NP-VX-Z\d][A-HJ-NP-Z\d]{5})$/,
@@ -53,7 +53,7 @@ module AEMO
       'ENERGYAP' => {
         title: 'Ausgrid',
         friendly_title: 'Ausgrid',
-        state: 'NSW',
+        state: AEMO::Region.new('NSW'),
         type: 'electricity',
         includes: [
           /^(NCCC[A-HJ-NP-VX-Z\d][A-HJ-NP-Z\d]{5})$/,
@@ -65,7 +65,7 @@ module AEMO
       'INTEGP' => {
         title: 'Endeavour Energy',
         friendly_title: 'Endeavour Energy',
-        state: 'NSW',
+        state: AEMO::Region.new('NSW'),
         type: 'electricity',
         includes: [
           /^(NEEE[A-HJ-NP-VX-Z\d][A-HJ-NP-Z\d]{5})$/,
@@ -77,7 +77,7 @@ module AEMO
       'TRANSGP' => {
         title: 'TransGrid',
         friendly_title: 'TransGrid',
-        state: 'NSW',
+        state: AEMO::Region.new('NSW'),
         type: 'electricity',
         includes: [
           /^(NTTT[A-HJ-NP-VX-Z\d][A-HJ-NP-Z\d]{5})$/,
@@ -89,7 +89,7 @@ module AEMO
       'SNOWY' => {
         title: 'Snowy Hydro Ltd',
         friendly_title: 'Snowy Hydro',
-        state: 'NSW',
+        state: AEMO::Region.new('NSW'),
         type: 'electricity',
         includes: [
           /^(4708109\d{3})$/
@@ -100,7 +100,7 @@ module AEMO
       'NT_RESERVED' => {
         title: 'Northern Territory Reserved Block',
         friendly_title: 'Northern Territory Reserved Block',
-        state: 'NT',
+        state: AEMO::Region.new('NT'),
         type: 'electricity',
         includes: [
           /^(250\d{7})$/
@@ -111,7 +111,7 @@ module AEMO
       'ERGONETP' => {
         title: 'Ergon Energy Corporation',
         friendly_title: 'Ergon Energy',
-        state: 'QLD',
+        state: AEMO::Region.new('QLD'),
         type: 'electricity',
         includes: [
           /^(QAAA[A-HJ-NP-VX-Z\d][A-HJ-NP-Z\d]{5})$/,
@@ -128,7 +128,7 @@ module AEMO
       'ENERGEXP' => {
         title: 'ENERGEX Limited',
         friendly_title: 'Energex',
-        state: 'QLD',
+        state: AEMO::Region.new('QLD'),
         type: 'electricity',
         includes: [
           /^(QB\d{2}[A-HJ-NP-VX-Z\d][A-HJ-NP-Z\d]{5})$/,
@@ -140,7 +140,7 @@ module AEMO
       'PLINKP' => {
         title: 'Qld Electricity Transmission Corp (Powerlink)',
         friendly_title: 'Powerlink',
-        state: 'QLD',
+        state: AEMO::Region.new('QLD'),
         type: 'electricity',
         includes: [
           /^(Q[A-HJ-NP-Z\d]{3}W[A-HJ-NP-Z\d]{5})$/,
@@ -152,7 +152,7 @@ module AEMO
       'UMPLP' => {
         title: 'SA Power Networks',
         friendly_title: 'SA Power Networks',
-        state: 'SA',
+        state: AEMO::Region.new('SA'),
         type: 'electricity',
         includes: [
           /^(SAAA[A-HJ-NP-VX-Z\d][A-HJ-NP-Z\d]{5})$/,
@@ -165,7 +165,7 @@ module AEMO
       'ETSATP' => {
         title: 'ElectraNet SA',
         friendly_title: 'ElectraNet SA',
-        state: 'SA',
+        state: AEMO::Region.new('SA'),
         type: 'electricity',
         includes: [
           /^(S[A-HJ-NP-Z\d]{3}W[A-HJ-NP-Z\d]{5})$/,
@@ -177,7 +177,7 @@ module AEMO
       'AURORAP' => {
         title: 'TasNetworks',
         friendly_title: 'TasNetworks',
-        state: 'TAS',
+        state: AEMO::Region.new('TAS'),
         type: 'electricity',
         includes: [
           /^(T000000(([0-4]\d{3})|(500[01])))$/,
@@ -190,7 +190,7 @@ module AEMO
       'TRANSEND' => {
         title: 'TasNetworks',
         friendly_title: 'TasNetworks',
-        state: 'TAS',
+        state: AEMO::Region.new('TAS'),
         type: 'electricity',
         includes: [
           /^(T[A-HJ-NP-Z\d]{3}W[A-HJ-NP-Z\d]{5})$/
@@ -201,7 +201,7 @@ module AEMO
       'CITIPP' => {
         title: 'CitiPower',
         friendly_title: 'CitiPower',
-        state: 'VIC',
+        state: AEMO::Region.new('VIC'),
         type: 'electricity',
         includes: [
           /^(VAAA[A-HJ-NP-VX-Z\d][A-HJ-NP-Z\d]{5})$/,
@@ -213,7 +213,7 @@ module AEMO
       'EASTERN' => {
         title: 'SP AusNet',
         friendly_title: 'SP AusNet DNSP',
-        state: 'VIC',
+        state: AEMO::Region.new('VIC'),
         type: 'electricity',
         includes: [
           /^(VBBB[A-HJ-NP-VX-Z\d][A-HJ-NP-Z\d]{5})$/,
@@ -225,7 +225,7 @@ module AEMO
       'POWCP' => {
         title: 'PowerCor Australia',
         friendly_title: 'PowerCor',
-        state: 'VIC',
+        state: AEMO::Region.new('VIC'),
         type: 'electricity',
         includes: [
           /^(VCCC[A-HJ-NP-VX-Z\d][A-HJ-NP-Z\d]{5})$/,
@@ -237,7 +237,7 @@ module AEMO
       'SOLARISP' => {
         title: 'Jemena  Electricity Networks (VIC)',
         friendly_title: 'Jemena',
-        state: 'VIC',
+        state: AEMO::Region.new('VIC'),
         type: 'electricity',
         includes: [
           /^(VDDD[A-HJ-NP-VX-Z\d][A-HJ-NP-Z\d]{5})$/,
@@ -249,7 +249,7 @@ module AEMO
       'UNITED' => {
         title: 'United Energy Distribution',
         friendly_title: 'United Energy',
-        state: 'VIC',
+        state: AEMO::Region.new('VIC'),
         type: 'electricity',
         includes: [
           /^(VEEE[A-HJ-NP-VX-Z\d][A-HJ-NP-Z\d]{5})$/,
@@ -261,7 +261,7 @@ module AEMO
       'GPUPP' => {
         title: 'SP AusNet TNSP',
         friendly_title: 'SP AusNet TNSP',
-        state: 'VIC',
+        state: AEMO::Region.new('VIC'),
         type: 'electricity',
         includes: [
           /^(V[A-HJ-NP-Z\d]{3}W[A-HJ-NP-Z\d]{5})$/,
@@ -273,7 +273,7 @@ module AEMO
       'WESTERNPOWER' => {
         title: 'Western Power',
         friendly_title: 'Western Power',
-        state: 'WA',
+        state: AEMO::Region.new('WA'),
         type: 'electricity',
         includes: [
           /^(WAAA[A-HJ-NP-VX-Z\d][A-HJ-NP-Z\d]{5})$/,
@@ -287,7 +287,7 @@ module AEMO
       'HORIZONPOWER' => {
         title: 'Horizon Power',
         friendly_title: 'Horizon Power',
-        state: 'WA',
+        state: AEMO::Region.new('WA'),
         type: 'electricity',
         includes: [
           /^(8021\d{6})$/
@@ -298,7 +298,7 @@ module AEMO
       'GAS_NSW' => {
         title: 'GAS NSW',
         friendly_title: 'GAS NSW',
-        state: 'NSW',
+        state: AEMO::Region.new('NSW'),
         type: 'gas',
         includes: [
           /^(52\d{8})$/
@@ -309,7 +309,7 @@ module AEMO
       'GAS_VIC' => {
         title: 'GAS VIC',
         friendly_title: 'GAS VIC',
-        state: 'VIC',
+        state: AEMO::Region.new('VIC'),
         type: 'gas',
         includes: [
           /^(53\d{8})$/
@@ -320,7 +320,7 @@ module AEMO
       'GAS_QLD' => {
         title: 'GAS QLD',
         friendly_title: 'GAS QLD',
-        state: 'QLD',
+        state: AEMO::Region.new('QLD'),
         type: 'gas',
         includes: [
           /^(54\d{8})$/
@@ -331,7 +331,7 @@ module AEMO
       'GAS_SA' => {
         title: 'GAS SA',
         friendly_title: 'GAS SA',
-        state: 'SA',
+        state: AEMO::Region.new('SA'),
         type: 'gas',
         includes: [
           /^(55\d{8})$/
@@ -342,7 +342,7 @@ module AEMO
       'GAS_WA' => {
         title: 'GAS WA',
         friendly_title: 'GAS WA',
-        state: 'WA',
+        state: AEMO::Region.new('WA'),
         type: 'gas',
         includes: [
           /^(56\d{8})$/
@@ -353,7 +353,7 @@ module AEMO
       'GAS_TAS' => {
         title: 'GAS TAS',
         friendly_title: 'GAS TAS',
-        state: 'TAS',
+        state: AEMO::Region.new('TAS'),
         type: 'gas',
         includes: [
           /^(57\d{8})$/
@@ -364,7 +364,7 @@ module AEMO
       'FEDAIRPORTS' => {
         title: 'Federal Airports Corporation (Sydney Airport)',
         friendly_title: 'Sydney Airport',
-        state: 'NSW',
+        state: AEMO::Region.new('NSW'),
         type: 'electricity',
         includes: [
           /^(NJJJNR[A-HJ-NP-Z\d]{4})$/

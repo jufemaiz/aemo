@@ -1,5 +1,9 @@
 # AEMO Gem Changelog
 
+## 0.1.35
+
+* Minor change to AEMO::NMI::NMI_ALLOCATIONS for a 'State' to be an instance of AEMO::Region
+
 ## 0.1.34
 
 * Added AEMO::Market::Node to deal with Region v Node differences
