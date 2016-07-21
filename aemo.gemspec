@@ -6,7 +6,7 @@ Gem::Specification.new do |s|
   s.name          = 'aemo'
   s.version       = AEMO::VERSION
   s.platform      = Gem::Platform::RUBY
-  s.date          = '2016-07-12'
+  s.date          = '2016-07-21'
   s.summary       = 'Gem providing functionality for the Australian Energy Market Operator data'
   s.description   = 'Gem providing functionality for the Australian Energy Market Operator data. Supports NMIs, NEM12, MSATS Web Services and more'
   s.authors       = ['Joel Courtney', 'Stuart Auld', 'Neil Parikh']
@@ -26,7 +26,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'rubyzip',   '~> 1.1', '>= 1.1.7'
   s.add_dependency 'multi_xml', '~> 0.5',   '>= 0.5.2'
   s.add_dependency 'httparty',  '~> 0.13',  '>= 0.13.1'
-  s.add_dependency 'activesupport', '~> 4.2', '>= 4.2.0'
+  s.add_dependency 'activesupport', '>= 4.0.0', '< 5.1'
 
   # Development Dependencies
   # s.add_development_dependency 'bundler', '~> 1.12', '>= 1.12.5'

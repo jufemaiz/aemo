@@ -1,8 +1,8 @@
 PATH
   remote: .
   specs:
-    aemo (0.1.35)
-      activesupport (~> 4.2, >= 4.2.0)
+    aemo (0.1.37)
+      activesupport (>= 4.0.0, < 5.1)
       httparty (~> 0.13, >= 0.13.1)
       json (~> 1.8)
       multi_xml (~> 0.5, >= 0.5.2)
