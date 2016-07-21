@@ -33,6 +33,8 @@ module AEMO
       @mdm_data_streaming_identifier = nil
       @unit_of_measurement = nil
       @interval_length = nil
+      #
+      @interval_data = []
 
       # Atttribute Capabilities
       attr_accessor :nmi,
@@ -43,7 +45,8 @@ module AEMO
                     :meter_serial_number,
                     :unit_of_measurement,
                     :interval_length,
-                    :next_scheduled_read_date
+                    :next_scheduled_read_date,
+                    :interval_data
 
       class << self
         # Provides a helper to create the NEM12::Header from a CSV (as per NEM12 specification)
@@ -51,15 +54,11 @@ module AEMO
         # @param [String] csv_string The CSV String in format
         # @return [AEMO::NEM12::NMIDataDetails]
         def parse_csv(csv_string)
-          # Make sure you're working with a String
-          raise ArgumentError, 'CSV string is not a string' unless csv_string.is_a?(String)
-          # Make sure it validates
-          unless csv_string =~ /^(200),([A-Z0-9]{10}),([A-HJ-MP-WYZ0-9]{1,240}),([A-HJ-MP-WYZ0-9]{0,10}),([A-HJ-MP-WYZ]\d+),(N\d+),([A-Z0-9]{1,12})?,([A-Z]{1,5}),(1|5|10|15|30),(\d{8})?$/i
-            raise ArgumentError, "CSV string '#{csv_string}' does not meet specification"
-          end
-
+          # Validate
+          AEMO.validate_string_pattern(:csv_string, csv_string, /^(200),([A-Z0-9]{10}),([A-HJ-MP-WYZ0-9]{1,240}),([A-HJ-MP-WYZ0-9]{0,10}),([A-HJ-MP-WYZ]\d+),(N\d+),([A-Z0-9]{1,12})?,([A-Z]{1,5}),(1|5|10|15|30),(\d{8})?$/i)
+          # Split the data
           data = CSV.parse_line(csv_string)
-
+          # Create the NMIDataDetails object
           nmi = AEMO::NMI.new(data[1], nmi_configuration: data[2])
           options = {
             register_id: data[3],
@@ -107,35 +106,28 @@ module AEMO
         end
 
         unless options[:register_id].nil?
-          unless options[:register_id].is_a?(String) && options[:register_id] =~ /^[A-Z]?\d+$/
-            raise ArgumentError 'register_id is not valid'
-          end
+          validate_string_pattern(:register_id, options[:register_id], /^[A-Z]?\d+$/)
           @register_id = options[:register_id]
         end
 
         unless options[:suffix].nil?
-          unless options[:suffix].is_a?(String) && options[:suffix] =~ /^[A-Z]?\d+$/
-            raise ArgumentError 'suffix is not valid'
-          end
+          validate_string_pattern(:suffix, options[:suffix], /^[A-Z]?\d+$/)
           @suffix = options[:suffix]
         end
 
         unless options[:mdm_data_streaming_identifier].nil?
-          unless options[:mdm_data_streaming_identifier].is_a?(String) && options[:mdm_data_streaming_identifier] =~ /^N\d+$/
-            raise ArgumentError 'mdm_data_streaming_identifier is not valid'
-          end
+          validate_string_pattern(:mdm_data_streaming_identifier, options[:mdm_data_streaming_identifier], /^N\d+$/)
           @mdm_data_streaming_identifier = options[:mdm_data_streaming_identifier]
         end
 
         unless options[:meter_serial_number].nil?
-          raise ArgumentError 'meter_serial_number is not valid' unless options[:meter_serial_number].is_a?(String)
+          validate_string_pattern(:meter_serial_number, options[:meter_serial_number], /^.*$/)
           @meter_serial_number = options[:meter_serial_number]
         end
 
         if options[:unit_of_measurement].is_a?(AEMO::NMI::UnitOfMeasurement)
           @unit_of_measurement = options[:unit_of_measurement]
         elsif !options[:unit_of_measurement].nil?
-          puts "options[:unit_of_measurement]: #{options[:unit_of_measurement]}"
           unless AEMO::NMI::UnitOfMeasurement.valid?(options[:unit_of_measurement])
             raise ArgumentError 'unit_of_measurement is not valid'
           end
@@ -155,6 +147,19 @@ module AEMO
           @next_scheduled_read_date = options[:next_scheduled_read_date]
         end
       end
+
+      # Description of method
+      #
+      # @param [String] csv_string
+      # @return [AEMO::NEM12::Interval::Data]
+      def parse_interval_data(csv_string)
+
+      end
+
+      def parse_event_data()
+
+      end
+
 
       # Helper method to an array
       #
@@ -205,6 +210,11 @@ module AEMO
       # @return [String]
       def to_json
         to_h.to_json
+      end
+
+      #
+      def validate_string_pattern(key, string, pattern)
+        AEMO.validate_string_pattern(key, string, pattern)
       end
     end
   end

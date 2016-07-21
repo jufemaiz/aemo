@@ -268,10 +268,9 @@ module AEMO
 
     @file_contents    = nil
     @header           = nil
-    @nmi_data_details = []
+    @nmi_data_details = nil
 
-    attr_accessor :nmi, :file_contents, :header, :nmi_data_details, :nmi
-    attr_reader   :data_details, :interval_data, :interval_events
+    attr_accessor :file_contents, :header, :nmi_data_details
 
     class << self
       # Parses the header record
@@ -312,16 +311,19 @@ module AEMO
       # @param [Boolean] strict
       # @return [Array<AEMO::NEM12>] An array of NEM12 objects
       def parse_nem12(contents, strict = false)
-        file_contents = contents.tr('\r', '\n').tr('\n\n', '\n').split('\n').delete_if(&:empty?)
-        raise ArgumentError, 'First row should be have a RecordIndicator of 100 and be of type Header Record' unless file_contents.first.parse_csv[0] == '100'
+        file_contents = contents.tr("\r", "\n").tr("\n\n", "\n").split("\n").delete_if(&:empty?)
+        header = AEMO::NEM12::Header.parse_csv(file_contents.first)
 
         nem12s = []
-        AEMO::NEM12.parse_nem12_100(file_contents.first, strict: strict)
-        file_contents.each do |line|
+        lines = []
+        # group by 200 values and use parse_csv
+        file_contents.to_enum.each do |line|
+          next if line[0..2].to_i == 100
+          if file_contents.peek[0..2].to_i
+
           case line[0..2].to_i
           when 200
-            nem12s << AEMO::NEM12.new('')
-            nem12s.last.parse_nem12_200(line)
+            nem12s << AEMO::NEM12::NMIDataDetails.parse_csv(line)
           when 300
             nem12s.last.parse_nem12_300(line)
           when 400
@@ -338,60 +340,23 @@ module AEMO
     end
 
     # Initialize a NEM12 file
-    def initialize(nmi, options = {})
-      @nmi              = AEMO::NMI.new(nmi) unless nmi.empty?
-      @data_details     = []
-      @interval_data    = []
-      @interval_events  = []
-      options.keys.each do |key|
-        send 'key=', options[key]
-      end
+    #
+    # @param [AEMO::NEM12::Header] header
+    # @param [Hash] :options
+    # @option options [String] :file_contents
+    # @option options [AEMO::NEM12::NMIDataDetails] :nmi_data_details
+    # @return [AEMO::NEM12]
+    def initialize(header, options = {})
+      @header = header
+      @file_contents = options[:file_contents] unless options[:file_contents].nil?
+      @nmi_data_details = options[:nmi_data_details] unless options[:nmi_data_details].nil?
     end
 
     # Returns the NMI Identifier or nil
-    def nmi_identifier
-      @nmi.nil? ? nil : @nmi.nmi
-    end
-
-    # Parses the NMI Data Details
-    # @param [String] line A single line in string format
-    # @return [Hash] the line parsed into a hash of information
-    def parse_nem12_200(line, _options = {})
-      csv = line.parse_csv
-
-      raise ArgumentError, 'RecordIndicator is not 200'     if csv[0] != '200'
-      raise ArgumentError, 'NMI is not valid'               unless AEMO::NMI.valid_nmi?(csv[1])
-      raise ArgumentError, 'NMIConfiguration is not valid'  if csv[2].match(/.{1,240}/).nil?
-      if !csv[3].nil? && csv[3].match(/.{1,10}/).nil?
-        raise ArgumentError, 'RegisterID is not valid'
-      end
-      raise ArgumentError, 'NMISuffix is not valid' if csv[4].match(/[A-HJ-NP-Z][1-9A-HJ-NP-Z]/).nil?
-      if !csv[5].nil? && !csv[5].empty? && !csv[5].match(/^\s*$/)
-        raise ArgumentError, 'MDMDataStreamIdentifier is not valid' if csv[5].match(/[A-Z0-9]{2}/).nil?
-      end
-      if !csv[6].nil? && !csv[6].empty? && !csv[6].match(/^\s*$/)
-        raise ArgumentError, 'MeterSerialNumber is not valid' if csv[6].match(/[A-Z0-9]{2}/).nil?
-      end
-      raise ArgumentError, 'UOM is not valid'               if csv[7].upcase.match(/[A-Z0-9]{2}/).nil?
-      raise ArgumentError, 'UOM is not valid'               unless UOM.keys.map(&:upcase).include?(csv[7].upcase)
-      raise ArgumentError, 'IntervalLength is not valid'    unless %w(1 5 10 15 30).include?(csv[8])
-      # raise ArgumentError, 'NextScheduledReadDate is not valid' if csv[9].match(/\d{8}/).nil? || csv[9] != Time.parse('#{csv[9]}').strftime('%Y%m%d')
-
-      @nmi = AEMO::NMI.new(csv[1])
-
-      # Push onto the stack
-      @data_details << {
-        record_indicator: csv[0].to_i,
-        nmi: csv[1],
-        nmi_configuration: csv[2],
-        register_id: csv[3],
-        nmi_suffix: csv[4],
-        mdm_data_streaming_identifier: csv[5],
-        meter_serial_nubmer: csv[6],
-        uom: csv[7].upcase,
-        interval_length: csv[8].to_i,
-        next_scheduled_read_date: csv[9]
-      }
+    #
+    # @return [AEMO::NMI]
+    def nmi
+      @nmi_data_details.nil? ? nil : @nmi_data_details.nmi
     end
 
     # @param [String] line A single line in string format
@@ -524,6 +489,8 @@ module AEMO
       flag_to_s.empty? ? nil : flag_to_s.join(' - ')
     end
 
+    # Returns the current AEMO::NEM12 as a normalised Array
+    #
     # @return [Array] array of a NEM12 file a given Meter + Data Stream for easy reading
     def to_a
       @interval_data.map do |d|
@@ -538,33 +505,43 @@ module AEMO
       end
     end
 
+    # Returns the current AEMO::NEM12 in normalised CSV format
+    #
     # @return [Array] CSV of a NEM12 file a given Meter + Data Stream for easy reading
     def to_csv
-      headers = %w(nmi suffix units datetime value flags)
-      ([headers] + to_a.map do |row|
-        row[3] = row[3].strftime('%Y%m%d%H%M%S%z')
-        row
-      end).map do |row|
-        row.join(', ')
-      end.join("\n")
+      data = [%w(nmi suffix units datetime value flags)]
+      data << to_a.map { |row| row[3] = row[3].strftime('%Y%m%d%H%M%S%z'); row }
+      data.map { |row| row.join(', ') }.join("\n")
     end
 
-    #
+    # Returns the current AEMO::NEM12 in JSON
     #
     # @return [String]
     def to_json
+      {
+        header: @header.to_h,
+        nmi_data_details: @nmi_data_details.to_h
+      }.to_json
     end
 
-    #
+    # Returns the current AEMO::NEM12 in XML
     #
     # @return [String]
     def to_xml
+      {
+        header: @header.to_h,
+        nmi_data_details: @nmi_data_details.to_h
+      }.to_xml
     end
 
-    #
+    # Returns the current AEMO::NEM12 as a NEM12 File
     #
     # @return [String]
     def to_nem12
+      [
+        @header.to_nem12,
+        @nmi_data_details.to_nem12
+      ].join("\n")
     end
   end
 end
