@@ -9,6 +9,12 @@ AllCops:
   ExtraDetails: true
   # TargetRubyVersion: 2.3
 
+Style/StringLiterals:
+  EnforcedStyle: single_quotes
+  SupportedStyles:
+    - single_quotes
+    - double_quotes
+
 # Metrics/AbcSize:
 # # Target: 15
 #   Max: 175

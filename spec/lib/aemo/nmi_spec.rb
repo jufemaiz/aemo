@@ -75,7 +75,7 @@ describe AEMO::NMI do
         expect(AEMO::NMI.new('NM10000000')).to be_a(AEMO::NMI)
       end
       it 'should return a valid NMI with MSATS' do
-        expect(AEMO::NMI.new('NM10000000', { msats_detail: {} })).to be_a(AEMO::NMI)
+        expect(AEMO::NMI.new('NM10000000', msats_detail: {})).to be_a(AEMO::NMI)
       end
     end
     context 'invalid' do
@@ -151,6 +151,11 @@ describe AEMO::NMI do
       nmi.address = { number: '1', street: 'Bob', street_type: 'Street' }
       expect(nmi.friendly_address).to eq('1, Bob, Street')
     end
+    it 'should return a friendly address if the address is a nested hash' do
+      nmi = AEMO::NMI.new('4001234567')
+      nmi.address = { house: { number: '1', suffix: 'B' }, street: 'Bob', street_type: 'Street', }
+      expect(nmi.friendly_address).to eq('1 B, Bob, Street')
+    end
   end
 
   describe '#current_daily_load' do
@@ -163,7 +168,7 @@ describe AEMO::NMI do
   describe '#current_annual_load' do
     it 'should return zero for no data' do
       @nmi = AEMO::NMI.new('4001234567')
-      expect(@nmi.current_daily_load).to eq(0)
+      expect(@nmi.current_annual_load).to eq(0)
     end
   end
 
@@ -193,7 +198,14 @@ describe AEMO::NMI do
       expect(@nmi.dlf).to eq('BL0A')
     end
     it 'has a DLF value' do
-      expect(@nmi.dlfc_value.class).to eq(Float)
+      Timecop.freeze('2016-06-01T00:00:00+1000') do
+        expect(@nmi.dlfc_value.class).to eq(Float)
+      end
+    end
+    it 'has DLF values' do
+      Timecop.freeze('2016-06-01T00:00:00+1000') do
+        expect(@nmi.dlfc_values.class).to eq(Array)
+      end
     end
   end
 
@@ -203,11 +215,19 @@ describe AEMO::NMI do
       @nmi.dlf = 'BL0A'
       @nmi.tni = 'NGN2'
     end
+
     it 'has a valid TNI Code' do
       expect(@nmi.tni).to eq('NGN2')
     end
     it 'has a TNI value' do
-      expect(@nmi.tni_value.class).to eq(Float)
+      Timecop.freeze('2016-06-01T00:00:00+1000') do
+        expect(@nmi.tni_value(DateTime.now).class).to eq(Float)
+      end
+    end
+    it 'has TNI values' do
+      Timecop.freeze('2016-06-01T00:00:00+1000') do
+        expect(@nmi.tni_values.class).to eq(Array)
+      end
     end
   end
 

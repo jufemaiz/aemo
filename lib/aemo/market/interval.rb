@@ -13,8 +13,10 @@ module AEMO
 
       attr_accessor :datetime, :region, :total_demand, :rrp, :period_type
 
-      # @param datetime [Time]
-      # @param options [Hash] Hash of optional data values
+      # Create a new instance of an Interval
+      # 
+      # @param [Time] datetime
+      # @param [Hash] options Hash of optional data values
       # @return [AEMO::Market::Interval]
       def initialize(datetime, options = {})
         @datetime     = Time.parse("#{datetime} +1000")
@@ -28,7 +30,7 @@ module AEMO
 
       # All AEMO Data operates in Australian Eastern Standard Time
       # All AEMO Data aggregates to the trailing edge of the period (this makes it difficult to do daily aggregations :( )
-      # @param trailing_edge [Boolean] selection of either the trailing edge of the period or the rising edge of the period for the date time
+      # @param [Boolean] trailing_edge selection of either the trailing edge of the period or the rising edge of the period for the date time
       # @return [Time] a time object of the trailing edge of the interval
       def datetime(trailing_edge = true)
         t = @datetime
