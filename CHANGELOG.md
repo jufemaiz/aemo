@@ -1,5 +1,13 @@
 # AEMO Gem Changelog
 
+## 0.1.38
+
+* AEMO::NMI::DLF_CODES updates for FY17.
+
+## 0.1.37
+
+* Gem updates.
+
 ## 0.1.36
 
 * Minor change to AEMO::NMI::NMI_ALLOCATIONS for a 'State' to be an instance of AEMO::Region
