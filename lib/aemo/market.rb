@@ -64,7 +64,7 @@ module AEMO
 
         month = sprintf('%02d', month)
 
-        response = get "/mms.GRAPHS/data/DATA#{year}#{month}_#{region}1.csv"
+        response = HTTParty.get("http://aemo.com.au/aemo/data/nem/priceanddemand/PRICE_AND_DEMAND_#{year}#{month}_#{region}1.csv")
         values = parse_response(response)
         values
       end
