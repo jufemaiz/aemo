@@ -1,5 +1,19 @@
 # AEMO Gem Changelog
 
+## 0.1.39
+
+* AEMO went and changed their data schema. Need to point historical requests
+at something like:
+http://aemo.com.au/aemo/data/nem/priceanddemand/PRICE_AND_DEMAND_201601_QLD1.csv
+
+## 0.1.38
+
+* AEMO::NMI::DLF_CODES updates for FY17.
+
+## 0.1.37
+
+* Gem updates.
+
 ## 0.1.36
 
 * Minor change to AEMO::NMI::NMI_ALLOCATIONS for a 'State' to be an instance of AEMO::Region

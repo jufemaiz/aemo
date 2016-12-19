@@ -299,8 +299,8 @@ module AEMO
       if options[:strict] && (csv[2].match(/\d{12}/).nil? || csv[2] != Time.parse("#{csv[2]}00").strftime('%Y%m%d%H%M'))
         raise ArgumentError, 'DateTime is not valid'
       end
-      raise ArgumentError, 'FromParticispant is not valid'  if csv[3].match(/.{1,10}/).nil?
-      raise ArgumentError, 'ToParticispant is not valid'    if csv[4].match(/.{1,10}/).nil?
+      raise ArgumentError, 'FromParticipant is not valid'  if csv[3].match(/.{1,10}/).nil?
+      raise ArgumentError, 'ToParticipant is not valid'    if csv[4].match(/.{1,10}/).nil?
 
       {
         record_indicator: csv[0].to_i,

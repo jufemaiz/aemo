@@ -21,6 +21,14 @@ RSpec.configure do |config|
     csv_headers = { 'Content-Type' => 'text/csv' }
     xml_headers = { 'Content-Type' => 'text/xml' }
 
+    # Updated Market Data
+    stub_request(:get, 'http://aemo.com.au/aemo/data/nem/priceanddemand/PRICE_AND_DEMAND_201501_NSW1.csv')
+      .with(headers: { 'Accept' => '*/*', 'User-Agent' => 'Ruby' })
+      .to_return(status: 200, body: File.new('spec/fixtures/Market/DATA201501_NSW1.csv'), headers: csv_headers)
+    stub_request(:get, 'http://aemo.com.au/aemo/data/nem/priceanddemand/PRICE_AND_DEMAND_201502_NSW1.csv')
+      .with(headers: { 'Accept' => '*/*', 'User-Agent' => 'Ruby' })
+      .to_return(status: 200, body: File.new('spec/fixtures/Market/DATA201502_NSW1.csv'), headers: csv_headers)
+
     # Market Data
     stub_request(:get, 'http://www.nemweb.com.au/mms.GRAPHS/GRAPHS/GRAPH_5NSW1.csv')
       .with(headers: { 'Accept' => '*/*', 'User-Agent' => 'Ruby' })
