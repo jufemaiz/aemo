@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'csv'
 require 'json'
 require 'time'
@@ -486,8 +488,9 @@ module AEMO
     #
     # @return [Hash] MSATS NMI Detail data
     def raw_msats_nmi_detail(options = {})
-      raise ArgumentError,
-            'MSATS has no authentication credentials' unless AEMO::MSATS.can_authenticate?
+      unless AEMO::MSATS.can_authenticate?
+        raise ArgumentError, 'MSATS has no authentication credentials'
+      end
       AEMO::MSATS.nmi_detail(@nmi, options)
     end
 
@@ -523,7 +526,7 @@ module AEMO
       unless @msats_detail['MeterRegister'].nil?
         meters = @msats_detail['MeterRegister']['Meter']
         meters = [meters] if meters.is_a?(Hash)
-        meters.select { |x| !x['Status'].nil? }.each do |meter|
+        meters.reject { |x| x['Status'].nil? }.each do |meter|
           @meters << OpenStruct.new(
             status: meter['Status'],
             installation_type_code: meter['InstallationTypeCode'],

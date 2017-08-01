@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'httparty'
 require 'aemo'
 # require 'zip'
@@ -93,7 +95,7 @@ module AEMO
       # @param [Integer] delivery_point_identifier Delivery Point Identifier
       # @return [Hash] The response
       def nmi_discovery_by_delivery_point_identifier(jurisdiction_code, delivery_point_identifier, options = {})
-        raise ArgumentError, 'jurisdiction_code is not valid' unless %w(ACT NEM NSW QLD SA VIC TAS).include?(jurisdiction_code)
+        raise ArgumentError, 'jurisdiction_code is not valid' unless %w[ACT NEM NSW QLD SA VIC TAS].include?(jurisdiction_code)
         raise ArgumentError, 'delivery_point_identifier is not valid' unless delivery_point_identifier.respond_to?('to_i')
         raise ArgumentError, 'delivery_point_identifier is not valid' if delivery_point_identifier.to_i < 10_000_000 || delivery_point_identifier.to_i > 99_999_999
 
@@ -117,7 +119,7 @@ module AEMO
       # @param [Integer] meter_serial_number The meter's serial number
       # @return [Hash] The response
       def nmi_discovery_by_meter_serial_number(jurisdiction_code, meter_serial_number, options = {})
-        raise ArgumentError, 'jurisdiction_code is not valid' unless %w(ACT NEM NSW QLD SA VIC TAS).include?(jurisdiction_code)
+        raise ArgumentError, 'jurisdiction_code is not valid' unless %w[ACT NEM NSW QLD SA VIC TAS].include?(jurisdiction_code)
 
         query = {
           transactionId:  transaction_id,
@@ -139,7 +141,7 @@ module AEMO
       # @param [Integer] meter_serial_number The meter's serial number
       # @return [Hash] The response
       def nmi_discovery_by_address(jurisdiction_code, options = {})
-        raise ArgumentError, 'jurisdiction_code is not valid' unless %w(ACT NEM NSW QLD SA VIC TAS).include?(jurisdiction_code)
+        raise ArgumentError, 'jurisdiction_code is not valid' unless %w[ACT NEM NSW QLD SA VIC TAS].include?(jurisdiction_code)
 
         options[:building_or_property_name] ||= nil
         options[:location_descriptor] ||= nil

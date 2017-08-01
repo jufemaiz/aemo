@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 require 'nokogiri'
 require 'json'
 require 'csv'
 require 'active_support/all'
 
 @path  = Dir.pwd
-@files = Dir.entries(@path).reject { |f| %w(. ..).include?(f) }
+@files = Dir.entries(@path).reject { |f| %w[. ..].include?(f) }
 
 @mlf_data = {}
 @dlf_data = {}
@@ -12,17 +14,26 @@ require 'active_support/all'
 # Let's get the CSV Data first
 
 # TNI to MLF
-file_contents = File.read(File.join(@path, 'tni-mlf-codes.csv')).encode('UTF-8', 'binary', invalid: :replace, undef: :replace, replace: '')
+file_contents = File.read(File.join(@path, 'tni-mlf-codes.csv'))
+                    .encode('UTF-8', 'binary', invalid: :replace,
+                                               undef: :replace, replace: '')
 CSV.parse(file_contents, headers: true, converters: :numeric).each do |row|
-  @mlf_data[row['TNI']] ||= { location: row['Location'], voltage: row['Voltage'], loss_factors: [] }
-  row.headers.select{|x| x =~ %r{^FY\d{2}$}}.sort.reverse.each do |fin_year|
+  @mlf_data[row['TNI']] ||= { location: row['Location'],
+                              voltage: row['Voltage'],
+                              loss_factors: [] }
+  row.headers.select { |x| x =~ /^FY\d{2}$/ }.sort.reverse.each do |fin_year|
     year = "20#{fin_year.match(/FY(\d{2})/)[1]}".to_i
-    @mlf_data[row['TNI']][:loss_factors] << { start: DateTime.parse("#{year - 1}-07-01T00:00:00+1000"), finish: DateTime.parse("#{year}-07-01T00:00:00+1000"), value: row[fin_year] }
+    @mlf_data[row['TNI']][:loss_factors] << {
+      start: DateTime.parse("#{year - 1}-07-01T00:00:00+1000"),
+      finish: DateTime.parse("#{year}-07-01T00:00:00+1000"),
+      value: row[fin_year]
+    }
   end
 end
 
 # TNI to MLF
-CSV.open(File.join(@path, 'aemo-dlf-dnsp.csv'), headers: true, converters: :numeric).each do |row|
+CSV.open(File.join(@path, 'aemo-dlf-dnsp.csv'),
+         headers: true, converters: :numeric).each do |row|
   @dlf_data[row['dlf_code']] ||= row['nsp_code']
 end
 

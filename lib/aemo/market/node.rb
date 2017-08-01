@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module AEMO
   module Market
     # AEMO::Market::Interval
@@ -6,7 +8,7 @@ module AEMO
     # @abstract
     # @since 0.1.0
     class Node
-      IDENTIFIERS = %w(NSW QLD SA TAS VIC)
+      IDENTIFIERS = %w[NSW QLD SA TAS VIC].freeze
 
       attr_accessor :identifier
 
@@ -31,7 +33,7 @@ module AEMO
       #
       # @return [Array<AEMO::Market::Interval>]
       def current_trading
-        if @current_trading.empty? || @current_trading.reject { |i| i.period_type != 'TRADE' }.last.datetime != (Time.now - Time.now.to_i % 300)
+        if @current_trading.empty? || @current_trading.select { |i| i.period_type == 'TRADE' }.last.datetime != (Time.now - Time.now.to_i % 300)
           @current_trading = AEMO::Market.current_trading(@identifier)
         end
         @current_trading

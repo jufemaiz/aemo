@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module AEMO
   # AEMO::Region
   #
@@ -36,7 +38,7 @@ module AEMO
       @full_name = REGIONS[@region]
       @current_trading = []
       @current_dispatch = []
-      @aemo_market_node = if %w(NSW QLD SA TAS VIC).include?(@region)
+      @aemo_market_node = if %w[NSW QLD SA TAS VIC].include?(@region)
                             AEMO::Market::Node.new(region)
                           elsif @region == 'ACT'
                             AEMO::Market::Node.new('NSW')

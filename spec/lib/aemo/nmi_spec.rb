@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 require 'json'
 
@@ -153,7 +155,7 @@ describe AEMO::NMI do
     end
     it 'should return a friendly address if the address is a nested hash' do
       nmi = AEMO::NMI.new('4001234567')
-      nmi.address = { house: { number: '1', suffix: 'B' }, street: 'Bob', street_type: 'Street', }
+      nmi.address = { house: { number: '1', suffix: 'B' }, street: 'Bob', street_type: 'Street' }
       expect(nmi.friendly_address).to eq('1 B, Bob, Street')
     end
   end

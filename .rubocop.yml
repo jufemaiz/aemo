@@ -37,3 +37,7 @@ Metrics/LineLength:
 # Metrics/PerceivedComplexity:
 # # Target 7
 #   Max: 29
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/**/*'
+    - 'aemo.gemspec'
