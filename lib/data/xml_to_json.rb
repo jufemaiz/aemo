@@ -38,11 +38,14 @@ CSV.open(File.join(@path, 'aemo-dlf-dnsp.csv'),
 end
 
 # Now to create the DLF and TNI output JSON files for use
-@files.select { |x| ['aemo-tni.xml', 'aemo-dlf.xml'].include?(x) }.each do |file|
+@files.select { |x| ['aemo-tni.xml', 'aemo-dlf.xml'].include?(x) }
+      .each do |file|
   output_file = file.gsub('.xml', '.json')
   output_data = {}
   open_file = File.open(File.join(@path, file))
-  xml = Nokogiri::XML(open_file) { |c| c.options = Nokogiri::XML::ParseOptions::NOBLANKS }
+  xml = Nokogiri::XML(open_file) do |c|
+    c.options = Nokogiri::XML::ParseOptions::NOBLANKS
+  end
   open_file.close
 
   xml.xpath('//Row').each do |row|
@@ -58,10 +61,12 @@ end
       output_data_instance[:mlf_data] = {}
       unless @mlf_data[code].nil?
         output_data_instance[:mlf_data] = @mlf_data[code].deep_dup
-        output_data_instance[:mlf_data][:loss_factors] = output_data_instance[:mlf_data][:loss_factors].reject do |x|
-          DateTime.parse(output_data_instance['ToDate']) < x[:start] || DateTime.parse(output_data_instance['FromDate']) >= x[:finish]
+        output_data_instance[:mlf_data][:loss_factors].reject! do |x|
+          DateTime.parse(output_data_instance['ToDate']) < x[:start] ||
+            DateTime.parse(output_data_instance['FromDate']) >= x[:finish]
         end
-        puts "output_data_instance[:mlf_data][:loss_factors]: #{output_data_instance[:mlf_data][:loss_factors].inspect}"
+        puts 'output_data_instance[:mlf_data][:loss_factors]: ' \
+             "#{output_data_instance[:mlf_data][:loss_factors].inspect}"
       end
     elsif file =~ /dlf/
       output_data_instance[:nsp_code] = @dlf_data[code]

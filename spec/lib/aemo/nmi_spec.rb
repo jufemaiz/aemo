@@ -92,6 +92,7 @@ describe AEMO::NMI do
       end
     end
   end
+
   describe '#valid_nmi?' do
     it 'should validate nmi' do
       json.each do |nmi|
