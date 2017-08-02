@@ -457,7 +457,7 @@ module AEMO
         meters.select { |x| x['Status'].nil? }.each do |registers|
           m = @meters.find { |x| x.serial_number == registers['SerialNumber'] }
           m.registers << AEMO::Register.from_hash(
-            registers.dig('RegisterConfiguration', 'Register')
+            registers['RegisterConfiguration']['Register']
           )
         end
       end
@@ -579,7 +579,8 @@ module AEMO
     # @return [nil, float] the distribution loss factor value
     def dlfc_value(datetime = DateTime.now)
       if @dlf.nil?
-        raise 'No DLF set, ensure that you have set the value either via the update_from_msats! function or manually'
+        raise 'No DLF set, ensure that you have set the value either via the' \
+              'update_from_msats! function or manually'
       end
       raise 'DLF is invalid' unless DLF_CODES.keys.include?(@dlf)
       raise 'Invalid date' unless [DateTime, Time].include?(datetime.class)
