@@ -66,5 +66,11 @@ describe AEMO::NEM12 do
   end
 
   describe '#flag_to_s' do
+    it 'converts the flags to a string' do
+      flag = { quality_flag: 'S', method_flag: 11, reason_code: 53 }
+      nem12 = AEMO::NEM12.new('NEEE000010')
+      expect(nem12.flag_to_s(flag))
+        .to eq 'Substituted Data - Check - Bees/Wasp In Meter Box'
+    end
   end
 end
