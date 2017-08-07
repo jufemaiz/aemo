@@ -7,7 +7,6 @@ PATH
       json (~> 1.8)
       multi_xml (~> 0.5, >= 0.5.2)
       nokogiri (~> 1.6, >= 1.6.8)
-      rubyzip (~> 1.2, >= 1.2.1)
 
 GEM
   remote: https://rubygems.org/
@@ -139,7 +138,6 @@ GEM
       ruby-progressbar (~> 1.7)
       unicode-display_width (~> 1.0, >= 1.0.1)
     ruby-progressbar (1.8.1)
-    rubyzip (1.2.1)
     safe_yaml (1.0.4)
     semver (1.0.1)
     shellany (0.0.1)

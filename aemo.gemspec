@@ -25,7 +25,7 @@ Gem::Specification.new do |s|
   # Production Dependencies
   s.add_dependency 'json',      '~> 1.8'
   s.add_dependency 'nokogiri',  '~> 1.6', '>= 1.6.8'
-  s.add_dependency 'rubyzip',   '~> 1.2', '>= 1.2.1'
+  # s.add_dependency 'rubyzip',   '~> 1.2', '>= 1.2.1'
   s.add_dependency 'multi_xml', '~> 0.5', '>= 0.5.2'
   s.add_dependency 'httparty',  '~> 0.13.0',  '>= 0.13.7'
   s.add_dependency 'activesupport', '~> 4.2', '>= 4.2.6'
