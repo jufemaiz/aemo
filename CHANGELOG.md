@@ -1,5 +1,17 @@
 # AEMO Gem Changelog
 
+## (TNI/MLF errata 2017-10-18)
+
+* NCAR FY17 listed as 1.0035 in the FY18 publication (we had 1.0016)
+* NCB1 has disappeared in FY18
+* NFNY FY17 listed as 1.0825 in the FY18 publication (we had 1.0157)
+* NLTS FY17 listed as 0.9897 in the FY18 publication (we had 1.0142)
+* NPH1 has disappeared in FY18
+* NSHN FY17 listed as 0.9904 in the FY18 publication (we had 1.0001)
+* SNPS has gone offline in FY18
+* SPPS has gone offline in FY18
+* A whole bunch of new generation added
+
 ## 0.1.39
 
 * AEMO went and changed their data schema. Need to point historical requests
