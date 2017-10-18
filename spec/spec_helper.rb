@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'coveralls'
 require 'simplecov'
 require 'webmock/rspec'
@@ -22,10 +24,10 @@ RSpec.configure do |config|
     xml_headers = { 'Content-Type' => 'text/xml' }
 
     # Updated Market Data
-    stub_request(:get, 'http://aemo.com.au/aemo/data/nem/priceanddemand/PRICE_AND_DEMAND_201501_NSW1.csv')
+    stub_request(:get, 'https://aemo.com.au/aemo/data/nem/priceanddemand/PRICE_AND_DEMAND_201501_NSW1.csv')
       .with(headers: { 'Accept' => '*/*', 'User-Agent' => 'Ruby' })
       .to_return(status: 200, body: File.new('spec/fixtures/Market/DATA201501_NSW1.csv'), headers: csv_headers)
-    stub_request(:get, 'http://aemo.com.au/aemo/data/nem/priceanddemand/PRICE_AND_DEMAND_201502_NSW1.csv')
+    stub_request(:get, 'https://aemo.com.au/aemo/data/nem/priceanddemand/PRICE_AND_DEMAND_201502_NSW1.csv')
       .with(headers: { 'Accept' => '*/*', 'User-Agent' => 'Ruby' })
       .to_return(status: 200, body: File.new('spec/fixtures/Market/DATA201502_NSW1.csv'), headers: csv_headers)
 

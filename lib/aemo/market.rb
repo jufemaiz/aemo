@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module AEMO
   # AEMO::Market
   #
@@ -13,7 +15,7 @@ module AEMO
       # Return the current dispatch dataset for a region
       #
       # @param [String, AEMO::Region] region AEMO::Region
-      # @return [Array<AEMO::Market::Interval>] an array of AEMO::Market::Intervals
+      # @return [Array<AEMO::Market::Interval>] the current dispatch data
       def current_dispatch(region)
         region = AEMO::Region.new(region) if region.is_a?(String)
 
@@ -25,7 +27,7 @@ module AEMO
       # Description of method
       #
       # @param [String, AEMO::Region] region AEMO::Region
-      # @return [Array<AEMO::Market::Interval>] an array of AEMO::Market::Intervals
+      # @return [Array<AEMO::Market::Interval>] the current trading data
       def current_trading(region)
         region = AEMO::Region.new(region) if region.is_a?(String)
 
@@ -44,16 +46,19 @@ module AEMO
         region = AEMO::Region.new(region) if region.is_a?(String)
 
         required_data = []
-        (start..finish).map { |d| { year: d.year, month: d.month } }.uniq.each do |period|
-          required_data += historic_trading(region, period[:year], period[:month])
+        (start..finish).map { |d| { year: d.year, month: d.month } }
+                       .uniq.each do |period|
+          required_data += historic_trading(region, period[:year],
+                                            period[:month])
         end
 
-        required_data.select { |values| values.datetime >= start && values.datetime <= finish }
+        required_data.select do |values|
+          values.datetime >= start && values.datetime <= finish
+        end
       end
 
       # Return an array of historic trading values for a Year, Month and Region
-      #   As per the historical data at
-      #   http://www.aemo.com.au/Electricity/Data/Price-and-Demand/Aggregated-Price-and-Demand-Data-Files/Aggregated-Price-and-Demand-2011-to-2016
+      #   As per the historical data from AEMO
       #
       # @param [String, AEMO::Region] region AEMO::Region
       # @param [Integer] year The year for the report from AEMO
@@ -62,11 +67,12 @@ module AEMO
       def historic_trading(region, year, month)
         region = AEMO::Region.new(region) if region.is_a?(String)
 
-        month = sprintf('%02d', month)
+        month = Kernel.format('%02d', month)
+        url = 'https://aemo.com.au/aemo/data/nem/priceanddemand/' \
+              "PRICE_AND_DEMAND_#{year}#{month}_#{region}1.csv"
 
-        response = HTTParty.get("http://aemo.com.au/aemo/data/nem/priceanddemand/PRICE_AND_DEMAND_#{year}#{month}_#{region}1.csv")
-        values = parse_response(response)
-        values
+        response = HTTParty.get(url)
+        parse_response(response)
       end
 
       protected

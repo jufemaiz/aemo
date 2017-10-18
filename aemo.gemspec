@@ -1,4 +1,6 @@
+# frozen_string_literal: true
 # encoding: UTF-8
+
 $LOAD_PATH.push File.expand_path('../lib', __FILE__)
 require 'aemo/version'
 
@@ -23,10 +25,10 @@ Gem::Specification.new do |s|
   # Production Dependencies
   s.add_dependency 'json',      '~> 1.8'
   s.add_dependency 'nokogiri',  '~> 1.6', '>= 1.6.8'
-  s.add_dependency 'rubyzip',   '~> 1.1', '>= 1.1.7'
-  s.add_dependency 'multi_xml', '~> 0.5',   '>= 0.5.2'
-  s.add_dependency 'httparty',  '~> 0.13',  '>= 0.13.1'
-  s.add_dependency 'activesupport', '>= 4.0.0', '< 5.1'
+  # s.add_dependency 'rubyzip',   '~> 1.2', '>= 1.2.1'
+  s.add_dependency 'multi_xml', '~> 0.5', '>= 0.5.2'
+  s.add_dependency 'httparty',  '~> 0.13.0',  '>= 0.13.7'
+  s.add_dependency 'activesupport', '~> 4.2', '>= 4.2.6'
 
   # Development Dependencies
   # s.add_development_dependency 'bundler', '~> 1.12', '>= 1.12.5'
@@ -42,6 +44,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'yard', '~> 0.8.7', '>= 0.8.7.6'
   s.add_development_dependency 'guard-yard', '~> 2.1', '>= 2.1.3'
   s.add_development_dependency 'webmock', '~> 2.1', '>= 2.1.0'
-  s.add_development_dependency 'rubocop', '~> 0.41', '>= 0.41.1'
+  s.add_development_dependency 'rubocop', '~> 0.41.0', '>= 0.41.2'
   s.add_development_dependency 'timecop', '~> 0.8', '>= 0.8.1'
 end

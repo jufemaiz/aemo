@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'csv'
 require 'time'
 
@@ -92,36 +94,36 @@ module AEMO
     }.freeze
 
     METHOD_FLAGS = {
-      11 => { type: %w(SUB), installation_type: [1, 2, 3, 4], short_descriptor: 'Check', description: '' },
-      12 => { type: %w(SUB), installation_type: [1, 2, 3, 4], short_descriptor: 'Calculated', description: '' },
-      13 => { type: %w(SUB), installation_type: [1, 2, 3, 4], short_descriptor: 'SCADA', description: '' },
-      14 => { type: %w(SUB), installation_type: [1, 2, 3, 4], short_descriptor: 'Like Day', description: '' },
-      15 => { type: %w(SUB), installation_type: [1, 2, 3, 4], short_descriptor: 'Average Like Day', description: '' },
-      16 => { type: %w(SUB), installation_type: [1, 2, 3, 4], short_descriptor: 'Agreed', description: '' },
-      17 => { type: %w(SUB), installation_type: [1, 2, 3, 4], short_descriptor: 'Linear', description: '' },
-      18 => { type: %w(SUB), installation_type: [1, 2, 3, 4], short_descriptor: 'Alternate', description: '' },
-      19 => { type: %w(SUB), installation_type: [1, 2, 3, 4], short_descriptor: 'Zero', description: '' },
-      51 => { type: %w(EST SUB), installation_type: 5, short_descriptor: 'Previous Year', description: '' },
-      52 => { type: %w(EST SUB), installation_type: 5, short_descriptor: 'Previous Read', description: '' },
-      53 => { type: %w(SUB), installation_type: 5, short_descriptor: 'Revision', description: '' },
-      54 => { type: %w(SUB), installation_type: 5, short_descriptor: 'Linear', description: '' },
-      55 => { type: %w(SUB), installation_type: 5, short_descriptor: 'Agreed', description: '' },
-      56 => { type: %w(EST SUB), installation_type: 5, short_descriptor: 'Prior to First Read - Agreed', description: '' },
-      57 => { type: %w(EST SUB), installation_type: 5, short_descriptor: 'Customer Class', description: '' },
-      58 => { type: %w(EST SUB), installation_type: 5, short_descriptor: 'Zero', description: '' },
-      61 => { type: %w(EST SUB), installation_type: 6, short_descriptor: 'Previous Year', description: '' },
-      62 => { type: %w(EST SUB), installation_type: 6, short_descriptor: 'Previous Read', description: '' },
-      63 => { type: %w(EST SUB), installation_type: 6, short_descriptor: 'Customer Class', description: '' },
-      64 => { type: %w(SUB), installation_type: 6, short_descriptor: 'Agreed', description: '' },
-      65 => { type: %w(EST), installation_type: 6, short_descriptor: 'ADL', description: '' },
-      66 => { type: %w(SUB), installation_type: 6, short_descriptor: 'Revision', description: '' },
-      67 => { type: %w(SUB), installation_type: 6, short_descriptor: 'Customer Read', description: '' },
-      68 => { type: %w(EST SUB), installation_type: 6, short_descriptor: 'Zero', description: '' },
-      71 => { type: %w(SUB), installation_type: 7, short_descriptor: 'Recalculation', description: '' },
-      72 => { type: %w(SUB), installation_type: 7, short_descriptor: 'Revised Table', description: '' },
-      73 => { type: %w(SUB), installation_type: 7, short_descriptor: 'Revised Algorithm', description: '' },
-      74 => { type: %w(SUB), installation_type: 7, short_descriptor: 'Agreed', description: '' },
-      75 => { type: %w(EST), installation_type: 7, short_descriptor: 'Existing Table', description: '' }
+      11 => { type: %w[SUB], installation_type: [1, 2, 3, 4], short_descriptor: 'Check', description: '' },
+      12 => { type: %w[SUB], installation_type: [1, 2, 3, 4], short_descriptor: 'Calculated', description: '' },
+      13 => { type: %w[SUB], installation_type: [1, 2, 3, 4], short_descriptor: 'SCADA', description: '' },
+      14 => { type: %w[SUB], installation_type: [1, 2, 3, 4], short_descriptor: 'Like Day', description: '' },
+      15 => { type: %w[SUB], installation_type: [1, 2, 3, 4], short_descriptor: 'Average Like Day', description: '' },
+      16 => { type: %w[SUB], installation_type: [1, 2, 3, 4], short_descriptor: 'Agreed', description: '' },
+      17 => { type: %w[SUB], installation_type: [1, 2, 3, 4], short_descriptor: 'Linear', description: '' },
+      18 => { type: %w[SUB], installation_type: [1, 2, 3, 4], short_descriptor: 'Alternate', description: '' },
+      19 => { type: %w[SUB], installation_type: [1, 2, 3, 4], short_descriptor: 'Zero', description: '' },
+      51 => { type: %w[EST SUB], installation_type: 5, short_descriptor: 'Previous Year', description: '' },
+      52 => { type: %w[EST SUB], installation_type: 5, short_descriptor: 'Previous Read', description: '' },
+      53 => { type: %w[SUB], installation_type: 5, short_descriptor: 'Revision', description: '' },
+      54 => { type: %w[SUB], installation_type: 5, short_descriptor: 'Linear', description: '' },
+      55 => { type: %w[SUB], installation_type: 5, short_descriptor: 'Agreed', description: '' },
+      56 => { type: %w[EST SUB], installation_type: 5, short_descriptor: 'Prior to First Read - Agreed', description: '' },
+      57 => { type: %w[EST SUB], installation_type: 5, short_descriptor: 'Customer Class', description: '' },
+      58 => { type: %w[EST SUB], installation_type: 5, short_descriptor: 'Zero', description: '' },
+      61 => { type: %w[EST SUB], installation_type: 6, short_descriptor: 'Previous Year', description: '' },
+      62 => { type: %w[EST SUB], installation_type: 6, short_descriptor: 'Previous Read', description: '' },
+      63 => { type: %w[EST SUB], installation_type: 6, short_descriptor: 'Customer Class', description: '' },
+      64 => { type: %w[SUB], installation_type: 6, short_descriptor: 'Agreed', description: '' },
+      65 => { type: %w[EST], installation_type: 6, short_descriptor: 'ADL', description: '' },
+      66 => { type: %w[SUB], installation_type: 6, short_descriptor: 'Revision', description: '' },
+      67 => { type: %w[SUB], installation_type: 6, short_descriptor: 'Customer Read', description: '' },
+      68 => { type: %w[EST SUB], installation_type: 6, short_descriptor: 'Zero', description: '' },
+      71 => { type: %w[SUB], installation_type: 7, short_descriptor: 'Recalculation', description: '' },
+      72 => { type: %w[SUB], installation_type: 7, short_descriptor: 'Revised Table', description: '' },
+      73 => { type: %w[SUB], installation_type: 7, short_descriptor: 'Revised Algorithm', description: '' },
+      74 => { type: %w[SUB], installation_type: 7, short_descriptor: 'Agreed', description: '' },
+      75 => { type: %w[EST], installation_type: 7, short_descriptor: 'Existing Table', description: '' }
     }.freeze
 
     REASON_CODES = {
@@ -332,7 +334,7 @@ module AEMO
       end
       raise ArgumentError, 'UOM is not valid'               if csv[7].upcase.match(/[A-Z0-9]{2}/).nil?
       raise ArgumentError, 'UOM is not valid'               unless UOM.keys.map(&:upcase).include?(csv[7].upcase)
-      raise ArgumentError, 'IntervalLength is not valid'    unless %w(1 5 10 15 30).include?(csv[8])
+      raise ArgumentError, 'IntervalLength is not valid'    unless %w[1 5 10 15 30].include?(csv[8])
       # raise ArgumentError, 'NextScheduledReadDate is not valid' if csv[9].match(/\d{8}/).nil? || csv[9] != Time.parse('#{csv[9]}').strftime('%Y%m%d')
 
       @nmi = AEMO::NMI.new(csv[1])
@@ -369,14 +371,14 @@ module AEMO
       raise ArgumentError, 'QualityMethod is not valid' unless csv[intervals_offset + 0].class == String
       raise ArgumentError, 'QualityMethod does not have valid length' unless [1, 3].include?(csv[intervals_offset + 0].length)
       raise ArgumentError, 'QualityMethod does not have valid QualityFlag' unless QUALITY_FLAGS.keys.include?(csv[intervals_offset + 0][0])
-      unless %w(A N V).include?(csv[intervals_offset + 0][0])
+      unless %w[A N V].include?(csv[intervals_offset + 0][0])
         raise ArgumentError, 'QualityMethod does not have valid length' unless csv[intervals_offset + 0].length == 3
         raise ArgumentError, 'QualityMethod does not have valid MethodFlag' unless METHOD_FLAGS.keys.include?(csv[intervals_offset + 0][1..2].to_i)
       end
-      unless %w(A N E).include?(csv[intervals_offset + 0][0])
+      unless %w[A N E].include?(csv[intervals_offset + 0][0])
         raise ArgumentError, 'ReasonCode is not valid' unless REASON_CODES.keys.include?(csv[intervals_offset + 1].to_i)
       end
-      if !csv[intervals_offset + 1].nil? && csv[intervals_offset + 1].to_i == 0
+      if !csv[intervals_offset + 1].nil? && csv[intervals_offset + 1].to_i.zero?
         raise ArgumentError, 'ReasonDescription is not valid' unless csv[intervals_offset + 2].class == String && !csv[intervals_offset + 2].empty?
       end
       if options[:strict]
@@ -429,7 +431,7 @@ module AEMO
       interval_events = []
 
       # Only need to update flags for EFSV
-      unless %w(A N).include?csv[3]
+      unless %w[A N].include? csv[3]
         number_of_intervals = 1440 / @data_details.last[:interval_length]
         interval_start_point = @interval_data.length - number_of_intervals
 
@@ -460,13 +462,11 @@ module AEMO
 
     # @param [String] line A single line in string format
     # @return [Hash] the line parsed into a hash of information
-    def parse_nem12_500(_line, _options = {})
-    end
+    def parse_nem12_500(_line, _options = {}); end
 
     # @param [String] line A single line in string format
     # @return [Hash] the line parsed into a hash of information
-    def parse_nem12_900(_line, _options = {})
-    end
+    def parse_nem12_900(_line, _options = {}); end
 
     # Turns the flag to a string
     #
@@ -498,7 +498,7 @@ module AEMO
 
     # @return [Array] CSV of a NEM12 file a given Meter + Data Stream for easy reading
     def to_csv
-      headers = %w(nmi suffix units datetime value flags)
+      headers = %w[nmi suffix units datetime value flags]
       ([headers] + to_a.map do |row|
         row[3] = row[3].strftime('%Y%m%d%H%M%S%z')
         row
