@@ -2,9 +2,8 @@
 
 require 'coveralls'
 require 'simplecov'
-require 'webmock/rspec'
-require 'pry'
 require 'timecop'
+require 'webmock/rspec'
 
 WebMock.disable_net_connect!(allow_localhost: true)
 SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter.new(
