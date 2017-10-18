@@ -1,6 +1,13 @@
 # AEMO Gem Changelog
 
-## (TNI/MLF errata 2017-10-18)
+## 0.1.40
+
+* Remove ZIP
+* Update loss factor data including finalised values according to FY18 data
+  available at:
+  http://www.aemo.org.au/Electricity/National-Electricity-Market-NEM/Security-and-reliability/Loss-factor-and-regional-boundaries
+
+### (TNI/MLF errata 2017-10-18)
 
 * NCAR FY17 listed as 1.0035 in the FY18 publication (we had 1.0016)
 * NCB1 has disappeared in FY18

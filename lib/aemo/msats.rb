@@ -1,10 +1,9 @@
 # frozen_string_literal: true
 
-require 'httparty'
 require 'aemo'
-# require 'zip'
-require 'nokogiri'
 require 'digest/sha1'
+require 'httparty'
+require 'nokogiri'
 
 module AEMO
   # AEMO::MSATS
