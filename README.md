@@ -13,6 +13,13 @@ http://www.rubydoc.info/gems/aemo
 
 # Installation
 
+## Ruby Versions Supported
+
+* ruby-head
+* 2.4 (.0, .1, .2)
+* 2.3 (.0, .1, .2, .3, .4, .5)
+* 2.2 (.5, .6, .7, .8)
+
 ## Manually from RubyGems.org ###
 
 ```sh
