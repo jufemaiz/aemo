@@ -1,5 +1,14 @@
 # AEMO Gem Changelog
 
+## 0.1.41
+
+* Dependency updates
+* Drop support for old versions of Ruby. Currently supported versions are:
+  * ruby-head
+  * 2.4 (.0, .1, .2)
+  * 2.3 (.0, .1, .2, .3, .4, .5)
+  * 2.2 (.5, .6, .7, .8)
+
 ## 0.1.40
 
 * Remove ZIP
