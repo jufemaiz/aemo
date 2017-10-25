@@ -4,7 +4,8 @@ Makes working with AEMO data more pleasant.
 [![Gem Version](https://badge.fury.io/rb/aemo.svg)](http://badge.fury.io/rb/aemo)
 [![Build Status](https://travis-ci.org/jufemaiz/aemo.svg?branch=master)](https://travis-ci.org/jufemaiz/aemo)
 [![Dependency Status](https://gemnasium.com/jufemaiz/aemo.svg)](https://gemnasium.com/jufemaiz/aemo)
-[![Code Climate](https://codeclimate.com/github/jufemaiz/aemo/badges/gpa.svg)](https://codeclimate.com/github/jufemaiz/aemo)
+[![Maintainability](https://api.codeclimate.com/v1/badges/f16f9df6762d9870cd2c/maintainability)](https://codeclimate.com/github/jufemaiz/aemo/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/f16f9df6762d9870cd2c/test_coverage)](https://codeclimate.com/github/jufemaiz/aemo/test_coverage)
 [![Coverage Status](https://coveralls.io/repos/github/jufemaiz/aemo/badge.svg?branch=master)](https://coveralls.io/github/jufemaiz/aemo?branch=master)
 
 # Documentation
