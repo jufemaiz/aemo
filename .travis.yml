@@ -1,3 +1,6 @@
+env:
+  global:
+    - CC_TEST_REPORTER_ID=20981d9b6c53ed895076e87fd8f8d5782800824f86eb501bfccb525dab7deca1
 language: ruby
 bundler_args: --retry=3 --jobs=3
 cache: bundler
@@ -23,8 +26,14 @@ matrix:
   fast_finish: true
 install:
   - bundle install
+before_script:
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+  - ./cc-test-reporter before-build
 script:
-  - rspec
+  - bundle exec rspec
+after_script:
+  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
 addons:
   code_climate:
     repo_token: 20981d9b6c53ed895076e87fd8f8d5782800824f86eb501bfccb525dab7deca1
