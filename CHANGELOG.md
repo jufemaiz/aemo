@@ -1,5 +1,9 @@
 # AEMO Gem Changelog
 
+## 0.1.42
+
+* Dependency updates
+
 ## 0.1.41
 
 * Dependency updates
