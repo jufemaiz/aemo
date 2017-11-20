@@ -321,18 +321,24 @@ module AEMO
 
       raise ArgumentError, 'RecordIndicator is not 200'     if csv[0] != '200'
       raise ArgumentError, 'NMI is not valid'               unless AEMO::NMI.valid_nmi?(csv[1])
-      raise ArgumentError, 'NMIConfiguration is not valid'  if csv[2].match(/.{1,240}/).nil?
+      if csv[2].nil? || csv[2].match(/.{1,240}/).nil?
+        raise ArgumentError, 'NMIConfiguration is not valid'
+      end
       if !csv[3].nil? && csv[3].match(/.{1,10}/).nil?
         raise ArgumentError, 'RegisterID is not valid'
       end
-      raise ArgumentError, 'NMISuffix is not valid' if csv[4].match(/[A-HJ-NP-Z][1-9A-HJ-NP-Z]/).nil?
+      if csv[4].nil? || csv[4].match(/[A-HJ-NP-Z][1-9A-HJ-NP-Z]/).nil?
+        raise ArgumentError, 'NMISuffix is not valid'
+      end
       if !csv[5].nil? && !csv[5].empty? && !csv[5].match(/^\s*$/)
         raise ArgumentError, 'MDMDataStreamIdentifier is not valid' if csv[5].match(/[A-Z0-9]{2}/).nil?
       end
       if !csv[6].nil? && !csv[6].empty? && !csv[6].match(/^\s*$/)
         raise ArgumentError, 'MeterSerialNumber is not valid' if csv[6].match(/[A-Z0-9]{2}/).nil?
       end
-      raise ArgumentError, 'UOM is not valid'               if csv[7].upcase.match(/[A-Z0-9]{2}/).nil?
+      if csv[7].nil? || csv[7].upcase.match(/[A-Z0-9]{2}/).nil?
+        raise ArgumentError, 'UOM is not valid'
+      end
       raise ArgumentError, 'UOM is not valid'               unless UOM.keys.map(&:upcase).include?(csv[7].upcase)
       raise ArgumentError, 'IntervalLength is not valid'    unless %w[1 5 10 15 30].include?(csv[8])
       # raise ArgumentError, 'NextScheduledReadDate is not valid' if csv[9].match(/\d{8}/).nil? || csv[9] != Time.parse('#{csv[9]}').strftime('%Y%m%d')
