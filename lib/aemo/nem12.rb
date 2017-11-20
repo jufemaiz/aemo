@@ -270,7 +270,6 @@ module AEMO
     @interval_data    = []
     @interval_events  = []
 
-    attr_accessor :nmi, :file_contents
     attr_reader   :data_details, :interval_data, :interval_events
     attr_accessor :file_contents, :header, :nmi_data_details, :nmi
 
@@ -280,7 +279,7 @@ module AEMO
       @data_details     = []
       @interval_data    = []
       @interval_events  = []
-      options.keys.each do |key|
+      options.each_key do |key|
         send 'key=', options[key]
       end
     end
