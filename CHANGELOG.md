@@ -1,5 +1,9 @@
 # AEMO Gem Changelog
 
+## 0.1.42
+
+* Dependency updates to support Rails 5.1
+
 ## 0.1.41
 
 * Dependency updates

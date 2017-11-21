@@ -23,11 +23,11 @@ Gem::Specification.new do |s|
   s.required_ruby_version = '>= 1.9.3'
 
   # Production Dependencies
-  s.add_dependency 'json',      '~> 2.1'
+  s.add_dependency 'json',      '>= 1.7.5'
   s.add_dependency 'nokogiri',  '~> 1.8', '>= 1.8.1'
   s.add_dependency 'multi_xml', '~> 0.6',   '>= 0.5.0'
   s.add_dependency 'httparty',  '~> 0.15',  '>= 0.15.6'
-  s.add_dependency 'activesupport', '>= 4.2.6', '< 5.1'
+  s.add_dependency 'activesupport', '>= 4.2.6', '< 5.2'
 
   # Development Dependencies
   s.add_development_dependency 'awesome_print', '~> 1.8', '>= 1.8.0'
