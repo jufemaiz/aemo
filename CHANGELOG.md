@@ -1,5 +1,9 @@
 # AEMO Gem Changelog
 
+## 0.1.44
+
+* [YARD vulnerability](https://rubysec.com/advisories/yard-CVE-2017-17042) update
+
 ## 0.1.42
 
 * Dependency updates to support Rails 5.1
