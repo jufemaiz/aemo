@@ -343,6 +343,8 @@ module AEMO
       if csv[4].nil? || csv[4].match(/[A-HJ-NP-Z][1-9A-HJ-NP-Z]/).nil?
         raise ArgumentError, 'NMISuffix is not valid'
       end
+      # check NMISuffix is applicable to NMI through the provided configuration
+      raise ArgumentError, 'NMISuffix not applicable to NMI' unless csv[2].include?(csv[4])
       if !csv[5].nil? && !csv[5].empty? && !csv[5].match(/^\s*$/)
         raise ArgumentError, 'MDMDataStreamIdentifier is not valid' if csv[5].match(/[A-Z0-9]{2}/).nil?
       end
