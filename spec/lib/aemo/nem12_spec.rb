@@ -35,6 +35,26 @@ describe AEMO::NEM12 do
     end
   end
 
+  describe '.parse_nem12_file' do
+    it 'should parse an odd file' do
+      Dir.entries(File.join(File.dirname(__FILE__), '..', '..', 'fixtures', 'NEM12-Errors', 'odd_files'))
+        .reject { |f| %w[. .. .DS_Store].include?(f)}
+        .each do |file|
+        expect(AEMO::NEM12.parse_nem12_file(fixture(File.join('NEM12-Errors', 'odd_files', file))).length).not_to eq(0)
+      end
+    end
+  end
+
+  describe '.parse_nem12_file' do
+    it 'should reject file' do
+      Dir.entries(File.join(File.dirname(__FILE__), '..', '..', 'fixtures', 'NEM12-Errors'))
+        .reject { |f| %w[. .. .DS_Store odd_files].include?(f)}
+        .each do |file|
+        expect { AEMO::NEM12.parse_nem12_file(fixture(File.join('NEM12-Errors', file))) }.to raise_error(ArgumentError)
+      end
+    end
+  end
+
   describe '#parse_nem12_100' do
     it 'should raise datetime error' do
       expect { AEMO::NEM12.parse_nem12_100('100,NEM12,666,CNRGYMDP,NEMMCO') }.to raise_error(ArgumentError)
