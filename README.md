@@ -7,6 +7,7 @@ Makes working with AEMO data more pleasant.
 [![Maintainability](https://api.codeclimate.com/v1/badges/f16f9df6762d9870cd2c/maintainability)](https://codeclimate.com/github/jufemaiz/aemo/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/f16f9df6762d9870cd2c/test_coverage)](https://codeclimate.com/github/jufemaiz/aemo/test_coverage)
 [![Coverage Status](https://coveralls.io/repos/github/jufemaiz/aemo/badge.svg?branch=master)](https://coveralls.io/github/jufemaiz/aemo?branch=master)
+[![Help Contribute to Open Source](https://www.codetriage.com/jufemaiz/aemo/badges/users.svg)](https://www.codetriage.com/jufemaiz/aemo)
 
 # Documentation
 
