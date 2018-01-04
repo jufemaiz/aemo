@@ -37,9 +37,7 @@ describe AEMO::NEM12 do
 
   describe '.parse_nem12_file' do
     it 'should reject file' do
-      Dir.entries(File.join(File.dirname(__FILE__), '..', '..', 'fixtures', 'NEM12-Errors'))
-        .reject { |f| %w[. .. .DS_Store].include?(f)}
-        .each do |file|
+      Dir.entries(File.join(File.dirname(__FILE__), '..', '..', 'fixtures', 'NEM12-Errors')).reject { |f| %w[. .. .DS_Store].include?(f) }.each do |file|
         expect { AEMO::NEM12.parse_nem12_file(fixture(File.join('NEM12-Errors', file))) }.to raise_error(ArgumentError)
       end
     end

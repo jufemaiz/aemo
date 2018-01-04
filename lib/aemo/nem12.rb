@@ -300,7 +300,7 @@ module AEMO
       # @return [Boolean]
       def valid_nem12_file?(file, strict = false)
         validate_nem12_file(file, strict)
-      rescue ArgumentError => e
+      rescue ArgumentError
         # Log something
         return false
       end
@@ -338,35 +338,27 @@ module AEMO
             raise ArgumentError, 'Multiple Header Reacords detected. Invalid File!'
           elsif record_indicator == 200
             nem12 = AEMO::NEM12.new('')
-            if cache
-              nem12s << nem12
-            end
+            nem12s << nem12 if cache
             nem12.parse_nem12_200(line)
             nmi_data_found = true
           elsif record_indicator == 900
-              footer_found = true
+            footer_found = true
           else
             raise ArgumentError, 'More records found past the End of File indicator' if footer_found
-            if [300, 400, 500].include?(record_indicator)
-              error_messages = {
-                300 => 'Interval data record provided but missing NMI data details',
-                400 => 'Interval event record provided but missing NMI data details',
-                500 => 'B2B details record provided but missing NMI data details'
-              }
-              raise ArgumentError, error_messages[record_indicator] unless nmi_data_found
-              nem12.send "parse_nem12_#{record_indicator}", line
-            else
-              raise ArgumentError, 'Unkown record indicator'
-            end
+            raise ArgumentError, 'Unkown record indicator' unless [300, 400, 500].include?(record_indicator)
+            error_messages = {
+              300 => 'Interval data record provided but missing NMI data details',
+              400 => 'Interval event record provided but missing NMI data details',
+              500 => 'B2B details record provided but missing NMI data details'
+            }
+            raise ArgumentError, error_messages[record_indicator] unless nmi_data_found
+            nem12.send "parse_nem12_#{record_indicator}", line
           end
         end
         raise ArgumentError, 'Missing End of File Indicator' unless footer_found
         # At this point the file is good.
-        if cache
-          return nem12s
-        else
-          return true
-        end
+        return nem12s if cache
+        true
       end
 
       # Parses the header record
