@@ -280,47 +280,8 @@ module AEMO
       # @param [String] path_to_file the path to a file
       # @return [Array<AEMO::NEM12>] NEM12 object
       def parse_nem12_file(path_to_file, strict = false)
-        nem12s = []
-        header_found = false
-        nmi_data_found = false
-        footer_found = false
-
-        File.open(path_to_file).each do |line|
-          record_indicator = line[0..2].to_i
-
-          if not header_found
-            raise ArgumentError, 'First row should be have a RecordIndicator of 100 and be of type Header Record' unless record_indicator == 100
-            AEMO::NEM12.parse_nem12_100(line, strict: strict)
-            header_found = true
-          elsif header_found and record_indicator == 100
-            raise ArgumentError, 'Multiple Header Reacords detected. Invalid File!'
-          elsif record_indicator == 200
-              nem12s << AEMO::NEM12.new('')
-              nem12s.last.parse_nem12_200(line)
-              nmi_data_found = true
-          elsif record_indicator == 900
-              footer_found = true
-          else
-            raise ArgumentError, 'More records found past the End of File indicator' unless not footer_found
-
-            case record_indicator
-            when 300
-              raise ArgumentError, 'Interval data record provided but missing NMI data details' unless nmi_data_found
-              nem12s.last.parse_nem12_300(line)
-            when 400
-              raise ArgumentError, 'Interval event record provided but missing NMI data details' unless nmi_data_found
-              nem12s.last.parse_nem12_400(line)
-            when 500
-              raise ArgumentError, 'B2B details record provided but missing NMI data details' unless nmi_data_found
-              nem12s.last.parse_nem12_500(line)
-            else
-              raise ArgumentError, 'Unkown record indicator'
-            end
-          end
-        end
-        raise ArgumentError, 'Missing End of File Indicator' unless footer_found
-        # Return the array of NEM12 groups
-        nem12s
+        file_object = StringIO.new(File.read(path_to_file))
+        parse_nem12_records(file_object, strict, cache = true)
       end
 
       # Parses a NEM12 string
@@ -330,27 +291,7 @@ module AEMO
       # @return [Array<AEMO::NEM12>] An array of NEM12 objects
       def parse_nem12(contents, strict = false)
         file_contents = contents.tr("\r", "\n").tr("\n\n", "\n").split("\n").delete_if(&:empty?)
-        raise ArgumentError, 'First row should be have a RecordIndicator of 100 and be of type Header Record' unless file_contents.first.parse_csv[0] == '100'
-
-        nem12s = []
-        AEMO::NEM12.parse_nem12_100(file_contents.first, strict: strict)
-        file_contents.each do |line|
-          case line[0..2].to_i
-          when 200
-            nem12s << AEMO::NEM12.new('')
-            nem12s.last.parse_nem12_200(line)
-          when 300
-            nem12s.last.parse_nem12_300(line)
-          when 400
-            nem12s.last.parse_nem12_400(line)
-            when 500
-              nem12s.last.parse_nem12_500(line)
-            when 900
-              nem12s.last.parse_nem12_900(line)
-          end
-        end
-        # Return the array of NEM12 groups
-        nem12s
+        parse_nem12_records(StringIO.new(file_contents), strict, cache = true)
       end
 
       # Test if a NEM12 file being provided via a StringIO is valid
@@ -372,6 +313,19 @@ module AEMO
       # @return [Boolean]
       # @raise [ArgumentError] if there are any issues with the file
       def validate_nem12_file(file, strict = false)
+        parse_nem12_records(file, strict, cache = false)
+      end
+
+      # Parses String IO object containing NEM12 records
+      #
+      # @param [StringIO] file object NEM12 records as a string IO object
+      # @param [Boolean] strict
+      # @param [Boolean] cache, cre
+      # @raise [ArgumentError] if there are any issues with the file
+      # @return [Array <AEMO::NEM12>] An Array of NEM12 objets if cache is true
+      # @return [Boolean] return true no caching took place
+      def parse_nem12_records(file, strict = false, cache = true)
+        nem12s = []
         nem12 = nil
         header_found = false
         nmi_data_found = false
@@ -379,21 +333,22 @@ module AEMO
 
         file.each_line do |line|
           record_indicator = line[0..2].to_i
-
-          if not header_found
+          if !header_found
             raise ArgumentError, 'First row should be have a RecordIndicator of 100 and be of type Header Record' unless record_indicator == 100
             AEMO::NEM12.parse_nem12_100(line, strict: strict)
             header_found = true
-          elsif header_found and record_indicator == 100
+          elsif header_found && record_indicator == 100
             raise ArgumentError, 'Multiple Header Reacords detected. Invalid File!'
           elsif record_indicator == 200
-              nem12 = AEMO::NEM12.new('')
-              nem12.parse_nem12_200(line)
-              nmi_data_found = true
+            nem12 = AEMO::NEM12.new('')
+            # if caching then save each record
+            nem12s << nem12 if cache
+            nem12.parse_nem12_200(line)
+            nmi_data_found = true
           elsif record_indicator == 900
               footer_found = true
           else
-            raise ArgumentError, 'More records found past the End of File indicator' unless not footer_found
+            raise ArgumentError, 'More records found past the End of File indicator' if footer_found
             case record_indicator
             when 300
               raise ArgumentError, 'Interval data record provided but missing NMI data details' unless nmi_data_found
@@ -411,7 +366,11 @@ module AEMO
         end
         raise ArgumentError, 'Missing End of File Indicator' unless footer_found
         # At this point the file is good.
-        true
+        if cache
+          nem12s
+        else
+          true
+        end
       end
 
       # Parses the header record
