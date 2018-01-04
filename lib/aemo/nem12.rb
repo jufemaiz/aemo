@@ -270,12 +270,177 @@ module AEMO
     @interval_data    = []
     @interval_events  = []
 
-    @@from_participant = nil
-    @@to_participant = nil
-
     attr_reader   :data_details, :interval_data, :interval_events
     attr_accessor :file_contents, :header, :nmi_data_details, :nmi
 
+    # !@group Class Methods
+    class << self
+      # Parses a NEM12 file
+      #
+      # @param [String] path_to_file the path to a file
+      # @return [Array<AEMO::NEM12>] NEM12 object
+      def parse_nem12_file(path_to_file, strict = false)
+        nem12s = []
+        header_found = false
+        nmi_data_found = false
+        footer_found = false
+
+        File.open(path_to_file).each do |line|
+          record_indicator = line[0..2].to_i
+
+          if not header_found
+            raise ArgumentError, 'First row should be have a RecordIndicator of 100 and be of type Header Record' unless record_indicator == 100
+            AEMO::NEM12.parse_nem12_100(line, strict: strict)
+            header_found = true
+          elsif header_found and record_indicator == 100
+            raise ArgumentError, 'Multiple Header Reacords detected. Invalid File!'
+          elsif record_indicator == 200
+              nem12s << AEMO::NEM12.new('')
+              nem12s.last.parse_nem12_200(line)
+              nmi_data_found = true
+          elsif record_indicator == 900
+              footer_found = true
+          else
+            raise ArgumentError, 'More records found past the End of File indicator' unless not footer_found
+
+            case record_indicator
+            when 300
+              raise ArgumentError, 'Interval data record provided but missing NMI data details' unless nmi_data_found
+              nem12s.last.parse_nem12_300(line)
+            when 400
+              raise ArgumentError, 'Interval event record provided but missing NMI data details' unless nmi_data_found
+              nem12s.last.parse_nem12_400(line)
+            when 500
+              raise ArgumentError, 'B2B details record provided but missing NMI data details' unless nmi_data_found
+              nem12s.last.parse_nem12_500(line)
+            else
+              raise ArgumentError, 'Unkown record indicator'
+            end
+          end
+        end
+        raise ArgumentError, 'Missing End of File Indicator' unless footer_found
+        # Return the array of NEM12 groups
+        nem12s
+      end
+
+      # Parses a NEM12 string
+      #
+      # @param [String] contents the path to a file
+      # @param [Boolean] strict
+      # @return [Array<AEMO::NEM12>] An array of NEM12 objects
+      def parse_nem12(contents, strict = false)
+        file_contents = contents.tr("\r", "\n").tr("\n\n", "\n").split("\n").delete_if(&:empty?)
+        raise ArgumentError, 'First row should be have a RecordIndicator of 100 and be of type Header Record' unless file_contents.first.parse_csv[0] == '100'
+
+        nem12s = []
+        AEMO::NEM12.parse_nem12_100(file_contents.first, strict: strict)
+        file_contents.each do |line|
+          case line[0..2].to_i
+          when 200
+            nem12s << AEMO::NEM12.new('')
+            nem12s.last.parse_nem12_200(line)
+          when 300
+            nem12s.last.parse_nem12_300(line)
+          when 400
+            nem12s.last.parse_nem12_400(line)
+            when 500
+              nem12s.last.parse_nem12_500(line)
+            when 900
+              nem12s.last.parse_nem12_900(line)
+          end
+        end
+        # Return the array of NEM12 groups
+        nem12s
+      end
+
+      # Test if a NEM12 file being provided via a StringIO is valid
+      #
+      # @param [StringIO] file
+      # @param [Boolean] strict (defaults to true)
+      # @return [Boolean]
+      def valid_nem12_file?(file, strict = false)
+        validate_nem12_file(file, strict)
+      rescue ArgumentError => e
+        # Log something
+        return false
+      end
+
+      # Validates a nem12 file based on a StringIO
+      #
+      # @param [StringIO] file the StringIO for a file
+      # @param [Boolean] strict
+      # @return [Boolean]
+      # @raise [ArgumentError] if there are any issues with the file
+      def validate_nem12_file(file, strict = false)
+        nem12 = nil
+        header_found = false
+        nmi_data_found = false
+        footer_found = false
+
+        file.each_line do |line|
+          record_indicator = line[0..2].to_i
+
+          if not header_found
+            raise ArgumentError, 'First row should be have a RecordIndicator of 100 and be of type Header Record' unless record_indicator == 100
+            AEMO::NEM12.parse_nem12_100(line, strict: strict)
+            header_found = true
+          elsif header_found and record_indicator == 100
+            raise ArgumentError, 'Multiple Header Reacords detected. Invalid File!'
+          elsif record_indicator == 200
+              nem12 = AEMO::NEM12.new('')
+              nem12.parse_nem12_200(line)
+              nmi_data_found = true
+          elsif record_indicator == 900
+              footer_found = true
+          else
+            raise ArgumentError, 'More records found past the End of File indicator' unless not footer_found
+            case record_indicator
+            when 300
+              raise ArgumentError, 'Interval data record provided but missing NMI data details' unless nmi_data_found
+              nem12.parse_nem12_300(line)
+            when 400
+              raise ArgumentError, 'Interval event record provided but missing NMI data details' unless nmi_data_found
+              nem12.parse_nem12_400(line)
+            when 500
+              raise ArgumentError, 'B2B details record provided but missing NMI data details' unless nmi_data_found
+              nem12.parse_nem12_500(line)
+            else
+              raise ArgumentError, 'Unkown record indicator'
+            end
+          end
+        end
+        raise ArgumentError, 'Missing End of File Indicator' unless footer_found
+        # At this point the file is good.
+        true
+      end
+
+      # Parses the header record
+      #
+      # @param [String] line A single line in string format
+      # @return [Hash] the line parsed into a hash of information
+      def parse_nem12_100(line, options = {})
+        csv = line.parse_csv
+
+        raise ArgumentError, 'RecordIndicator is not 100'     if csv[0] != '100'
+        raise ArgumentError, 'VersionHeader is not NEM12'     if csv[1] != 'NEM12'
+        if options[:strict] && (csv[2].match(/\d{12}/).nil? || csv[2] != Time.parse("#{csv[2]}00").strftime('%Y%m%d%H%M'))
+          raise ArgumentError, 'DateTime is not valid'
+        end
+        raise ArgumentError, 'FromParticipant is not valid'  if csv[3].match(/.{1,10}/).nil?
+        raise ArgumentError, 'ToParticipant is not valid'    if csv[4].match(/.{1,10}/).nil?
+
+        {
+          record_indicator: csv[0].to_i,
+          version_header:   csv[1],
+          datetime:         Time.parse("#{csv[2]}+1000"),
+          from_participant: csv[3],
+          to_participant:   csv[4]
+        }
+      end
+    end
+    # !@endgroup
+
+    # !@group Instance Methods
     # Initialize a NEM12 file
     def initialize(nmi, options = {})
       @nmi              = AEMO::NMI.new(nmi) unless nmi.empty?
@@ -290,40 +455,6 @@ module AEMO
     # Returns the NMI Identifier or nil
     def nmi_identifier
       @nmi.nil? ? nil : @nmi.nmi
-    end
-
-    def from_participant
-      @@from_participant
-    end
-
-    def to_participant
-      @@to_participant
-    end
-
-    # Parses the header record
-    # @param [String] line A single line in string format
-    # @return [Hash] the line parsed into a hash of information
-    def self.parse_nem12_100(line, options = {})
-      csv = line.parse_csv
-
-      raise ArgumentError, 'RecordIndicator is not 100'     if csv[0] != '100'
-      raise ArgumentError, 'VersionHeader is not NEM12'     if csv[1] != 'NEM12'
-      if options[:strict] && (csv[2].match(/\d{12}/).nil? || csv[2] != Time.parse("#{csv[2]}00").strftime('%Y%m%d%H%M'))
-        raise ArgumentError, 'DateTime is not valid'
-      end
-      raise ArgumentError, 'FromParticipant is not valid'  if csv[3].match(/.{1,10}/).nil?
-      raise ArgumentError, 'ToParticipant is not valid'    if csv[4].match(/.{1,10}/).nil?
-
-      @@from_participant = csv[3]
-      @@to_participant = csv[4]
-
-      {
-        record_indicator: csv[0].to_i,
-        version_header:   csv[1],
-        datetime:         Time.parse("#{csv[2]}+1000"),
-        from_participant: csv[3],
-        to_participant:   csv[4]
-      }
     end
 
     # Parses the NMI Data Details
@@ -383,9 +514,9 @@ module AEMO
       raise TypeError, 'Expected NMI Data Details to exist with IntervalLength specified' if @data_details.last.nil? || @data_details.last[:interval_length].nil?
       number_of_intervals = 1440.div(@data_details.last[:interval_length])
 
-      #  vefify that all intervals are present in the file
+      # vefify that all intervals are present in the file
       # each record has fixed non empty fields [RecordIndicator, IntervalDate, ..., QualityMethod, ReasonCode, ReasonDescription, UpdateDateTime, MSATSLoadDateTime]
-      # Some of the fields are not mandatory and they might be nil. However given interval length, the expected total length of the record can be determined
+      # Some of the fields are not mandatory and may be nil. However given interval length, the expected total length of the record can be determined
       expected_length = number_of_intervals + 7
       raise ArgumentError, 'Unexpected number of interval records' unless expected_length == csv.length
 
@@ -402,11 +533,6 @@ module AEMO
       unless %w[A N V].include?(csv[intervals_offset + 0][0])
         raise ArgumentError, 'QualityMethod does not have valid length' unless csv[intervals_offset + 0].length == 3
         raise ArgumentError, 'QualityMethod does not have valid MethodFlag' unless METHOD_FLAGS.keys.include?(csv[intervals_offset + 0][1..2].to_i)
-
-        if @@from_participant == @@to_participant && METHOD_FLAGS[csv[intervals_offset + 0][1..2].to_i][:installation_type] == 5
-          raise ArgumentError, 'Missing Register Id' if @data_details[:register].nil?
-        end
-
       end
       unless %w[A N E].include?(csv[intervals_offset + 0][0])
         raise ArgumentError, 'ReasonCode is not valid' unless REASON_CODES.keys.include?(csv[intervals_offset + 1].to_i)
@@ -415,11 +541,10 @@ module AEMO
         raise ArgumentError, 'ReasonDescription is not valid' unless csv[intervals_offset + 2].class == String && !csv[intervals_offset + 2].empty?
       end
 
-      if csv[intervals_offset + 3].match(/\d{14}/).nil? || csv[intervals_offset + 3] != Time.parse(csv[intervals_offset + 3].to_s).strftime('%Y%m%d%H%M%S')
-        raise ArgumentError, 'UpdateDateTime is not valid' unless csv[intervals_offset + 0][0] != 'N'
-      end
-
       if options[:strict]
+        if csv[intervals_offset + 3].match(/\d{14}/).nil? || csv[intervals_offset + 3] != Time.parse(csv[intervals_offset + 3].to_s).strftime('%Y%m%d%H%M%S')
+          raise ArgumentError, 'UpdateDateTime is not valid' unless csv[intervals_offset + 0][0] != 'N'
+        end
         if !csv[intervals_offset + 4].nil? && csv[intervals_offset + 4].match(/\d{14}/).nil? || csv[intervals_offset + 4] != Time.parse(csv[intervals_offset + 4].to_s).strftime('%Y%m%d%H%M%S')
           raise ArgumentError, 'MSATSLoadDateTime is not valid'
         end
@@ -541,79 +666,6 @@ module AEMO
         row.join(', ')
       end.join("\n")
     end
-
-    # @param [String] path_to_file the path to a file
-    # @return [Array<AEMO::NEM12>] NEM12 object
-    def self.parse_nem12_file(path_to_file, strict = false)
-      nem12s = []
-      header_found = false
-      nmi_data_found = false
-      footer_found = false
-
-      File.open(path_to_file).each do |line|
-        record_indicator = line[0..2].to_i
-
-        if not header_found
-          raise ArgumentError, 'First row should be have a RecordIndicator of 100 and be of type Header Record' unless record_indicator == 100
-          AEMO::NEM12.parse_nem12_100(line, strict: strict)
-          header_found = true
-        elsif header_found and record_indicator == 100
-          raise ArgumentError, 'Multiple Header Reacords detected. Invalid File!'
-        elsif record_indicator == 200
-            nem12s << AEMO::NEM12.new('')
-            nem12s.last.parse_nem12_200(line)
-            nmi_data_found = true
-        elsif record_indicator == 900
-            footer_found = true
-        else
-          raise ArgumentError, 'More records found past the End of File indicator' unless not footer_found
-
-          case record_indicator
-          when 300
-            raise ArgumentError, 'Interval data record provided but missing NMI data details' unless nmi_data_found
-            nem12s.last.parse_nem12_300(line)
-          when 400
-            raise ArgumentError, 'Interval event record provided but missing NMI data details' unless nmi_data_found
-            nem12s.last.parse_nem12_400(line)
-          when 500
-            raise ArgumentError, 'B2B details record provided but missing NMI data details' unless nmi_data_found
-            nem12s.last.parse_nem12_500(line)
-          else
-            raise ArgumentError, 'Unkown record indicator'
-          end
-        end
-      end
-      # Return the array of NEM12 groups
-      raise ArgumentError, 'Missing End of File Indicator' unless footer_found
-      nem12s
-    end
-
-    # @param [String] contents the path to a file
-    # @param [Boolean] strict
-    # @return [Array<AEMO::NEM12>] An array of NEM12 objects
-    def self.parse_nem12(contents, strict = false)
-      file_contents = contents.tr("\r", "\n").tr("\n\n", "\n").split("\n").delete_if(&:empty?)
-      raise ArgumentError, 'First row should be have a RecordIndicator of 100 and be of type Header Record' unless file_contents.first.parse_csv[0] == '100'
-
-      nem12s = []
-      AEMO::NEM12.parse_nem12_100(file_contents.first, strict: strict)
-      file_contents.each do |line|
-        case line[0..2].to_i
-        when 200
-          nem12s << AEMO::NEM12.new('')
-          nem12s.last.parse_nem12_200(line)
-        when 300
-          nem12s.last.parse_nem12_300(line)
-        when 400
-          nem12s.last.parse_nem12_400(line)
-          # when 500
-          #   nem12s.last.parse_nem12_500(line)
-          # when 900
-          #   nem12s.last.parse_nem12_900(line)
-        end
-      end
-      # Return the array of NEM12 groups
-      nem12s
-    end
+    # !@endgroup
   end
 end

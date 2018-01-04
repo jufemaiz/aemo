@@ -83,4 +83,36 @@ describe AEMO::NEM12 do
         .to eq 'Substituted Data - Check - Bees/Wasp In Meter Box'
     end
   end
+
+  describe '.validate_nem12_file' do
+    it 'should return true' do
+      Dir.entries(File.join(File.dirname(__FILE__), '..', '..', 'fixtures', 'NEM12')).reject { |f| %w[. .. .DS_Store].include?(f) }.each do |file|
+        string_object = StringIO.new(File.read(fixture(File.join('NEM12', file))))
+        expect(AEMO::NEM12.validate_nem12_file(string_object)).to be true
+      end
+    end
+
+    it 'should raise an error' do
+      Dir.entries(File.join(File.dirname(__FILE__), '..', '..', 'fixtures', 'NEM12-Errors')).reject { |f| %w[. .. .DS_Store].include?(f) }.each do |file|
+        string_object = StringIO.new(File.read(fixture(File.join('NEM12-Errors', file))))
+        expect { AEMO::NEM12.validate_nem12_file(string_object) }.to raise_error(ArgumentError)
+      end
+    end
+  end
+
+  describe '.valid_nem12_file?' do
+    it 'should return true' do
+      Dir.entries(File.join(File.dirname(__FILE__), '..', '..', 'fixtures', 'NEM12')).reject { |f| %w[. .. .DS_Store].include?(f) }.each do |file|
+        string_object = StringIO.new(File.read(fixture(File.join('NEM12', file))))
+        expect(AEMO::NEM12.valid_nem12_file?(string_object)).to be true
+      end
+    end
+
+    it 'should return false' do
+      Dir.entries(File.join(File.dirname(__FILE__), '..', '..', 'fixtures', 'NEM12-Errors')).reject { |f| %w[. .. .DS_Store].include?(f) }.each do |file|
+        string_object = StringIO.new(File.read(fixture(File.join('NEM12-Errors', file))))
+        expect(AEMO::NEM12.valid_nem12_file?(string_object)).to be false
+      end
+    end
+  end
 end
