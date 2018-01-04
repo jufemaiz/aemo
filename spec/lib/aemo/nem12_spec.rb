@@ -84,6 +84,29 @@ describe AEMO::NEM12 do
     end
   end
 
+  describe '.parse_nem12_records' do
+    it 'should parse records' do
+      Dir.entries(File.join(File.dirname(__FILE__), '..', '..', 'fixtures', 'NEM12')).reject { |f| %w[. .. .DS_Store].include?(f) }.each do |file|
+        string_object = StringIO.new(File.read(fixture(File.join('NEM12', file))))
+        expect(AEMO::NEM12.parse_nem12_records(string_object).length).not_to eq(0)
+      end
+    end
+
+    it 'should return true' do
+      Dir.entries(File.join(File.dirname(__FILE__), '..', '..', 'fixtures', 'NEM12')).reject { |f| %w[. .. .DS_Store].include?(f) }.each do |file|
+        string_object = StringIO.new(File.read(fixture(File.join('NEM12', file))))
+        expect(AEMO::NEM12.parse_nem12_records(string_object, false, false)).to be true
+      end
+    end
+
+    it 'should raise an error' do
+      Dir.entries(File.join(File.dirname(__FILE__), '..', '..', 'fixtures', 'NEM12-Errors')).reject { |f| %w[. .. .DS_Store].include?(f) }.each do |file|
+        string_object = StringIO.new(File.read(fixture(File.join('NEM12-Errors', file))))
+        expect { AEMO::NEM12.parse_nem12_records(string_object) }.to raise_error(ArgumentError)
+      end
+    end
+  end
+
   describe '.validate_nem12_file' do
     it 'should return true' do
       Dir.entries(File.join(File.dirname(__FILE__), '..', '..', 'fixtures', 'NEM12')).reject { |f| %w[. .. .DS_Store].include?(f) }.each do |file|

@@ -280,8 +280,7 @@ module AEMO
       # @param [String] path_to_file the path to a file
       # @return [Array<AEMO::NEM12>] NEM12 object
       def parse_nem12_file(path_to_file, strict = false)
-        file_object = StringIO.new(File.read(path_to_file))
-        parse_nem12_records(file_object, strict, cache = true)
+        parse_nem12_records(StringIO.new(File.read(path_to_file)), strict)
       end
 
       # Parses a NEM12 string
@@ -291,7 +290,7 @@ module AEMO
       # @return [Array<AEMO::NEM12>] An array of NEM12 objects
       def parse_nem12(contents, strict = false)
         file_contents = contents.tr("\r", "\n").tr("\n\n", "\n").split("\n").delete_if(&:empty?)
-        parse_nem12_records(StringIO.new(file_contents), strict, cache = true)
+        parse_nem12_records(StringIO.new(file_contents), strict)
       end
 
       # Test if a NEM12 file being provided via a StringIO is valid
@@ -306,30 +305,28 @@ module AEMO
         return false
       end
 
-      # Validates a nem12 file based on a StringIO
+      # Validates a NEM12 file based on a StringIO
       #
       # @param [StringIO] file the StringIO for a file
       # @param [Boolean] strict
       # @return [Boolean]
       # @raise [ArgumentError] if there are any issues with the file
       def validate_nem12_file(file, strict = false)
-        parse_nem12_records(file, strict, cache = false)
+        parse_nem12_records(file, strict, false)
       end
 
       # Parses String IO object containing NEM12 records
       #
       # @param [StringIO] file object NEM12 records as a string IO object
       # @param [Boolean] strict
-      # @param [Boolean] cache, cre
+      # @param [Boolean] cache for all records created by default
       # @raise [ArgumentError] if there are any issues with the file
-      # @return [Array <AEMO::NEM12>] An Array of NEM12 objets if cache is true
-      # @return [Boolean] return true no caching took place
+      # @return [Array <AEMO::NEM12>] An Array of NEM12 objets if cached
+      # @return [Boolean] return true when no caching took place
       def parse_nem12_records(file, strict = false, cache = true)
         nem12s = []
         nem12 = nil
-        header_found = false
-        nmi_data_found = false
-        footer_found = false
+        header_found = nmi_data_found = footer_found = false
 
         file.each_line do |line|
           record_indicator = line[0..2].to_i
@@ -341,24 +338,23 @@ module AEMO
             raise ArgumentError, 'Multiple Header Reacords detected. Invalid File!'
           elsif record_indicator == 200
             nem12 = AEMO::NEM12.new('')
-            # if caching then save each record
-            nem12s << nem12 if cache
+            if cache
+              nem12s << nem12
+            end
             nem12.parse_nem12_200(line)
             nmi_data_found = true
           elsif record_indicator == 900
               footer_found = true
           else
             raise ArgumentError, 'More records found past the End of File indicator' if footer_found
-            case record_indicator
-            when 300
-              raise ArgumentError, 'Interval data record provided but missing NMI data details' unless nmi_data_found
-              nem12.parse_nem12_300(line)
-            when 400
-              raise ArgumentError, 'Interval event record provided but missing NMI data details' unless nmi_data_found
-              nem12.parse_nem12_400(line)
-            when 500
-              raise ArgumentError, 'B2B details record provided but missing NMI data details' unless nmi_data_found
-              nem12.parse_nem12_500(line)
+            if [300, 400, 500].include?(record_indicator)
+              error_messages = {
+                300 => 'Interval data record provided but missing NMI data details',
+                400 => 'Interval event record provided but missing NMI data details',
+                500 => 'B2B details record provided but missing NMI data details'
+              }
+              raise ArgumentError, error_messages[record_indicator] unless nmi_data_found
+              nem12.send "parse_nem12_#{record_indicator}", line
             else
               raise ArgumentError, 'Unkown record indicator'
             end
@@ -367,9 +363,9 @@ module AEMO
         raise ArgumentError, 'Missing End of File Indicator' unless footer_found
         # At this point the file is good.
         if cache
-          nem12s
+          return nem12s
         else
-          true
+          return true
         end
       end
 
