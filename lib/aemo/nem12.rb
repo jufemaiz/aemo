@@ -543,7 +543,7 @@ module AEMO
 
       if options[:strict]
         if csv[intervals_offset + 3].match(/\d{14}/).nil? || csv[intervals_offset + 3] != Time.parse(csv[intervals_offset + 3].to_s).strftime('%Y%m%d%H%M%S')
-          raise ArgumentError, 'UpdateDateTime is not valid' unless csv[intervals_offset + 0][0] != 'N'
+          raise ArgumentError, 'UpdateDateTime is not valid'
         end
         if !csv[intervals_offset + 4].nil? && csv[intervals_offset + 4].match(/\d{14}/).nil? || csv[intervals_offset + 4] != Time.parse(csv[intervals_offset + 4].to_s).strftime('%Y%m%d%H%M%S')
           raise ArgumentError, 'MSATSLoadDateTime is not valid'
