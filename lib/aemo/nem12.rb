@@ -335,7 +335,7 @@ module AEMO
             AEMO::NEM12.parse_nem12_100(line, strict: strict)
             header_found = true
           elsif header_found && record_indicator == 100
-            raise ArgumentError, 'Multiple Header Reacords detected. Invalid File!'
+            raise ArgumentError, 'Multiple Header Records detected. Invalid File!'
           elsif record_indicator == 200
             nem12 = AEMO::NEM12.new('')
             nem12s << nem12 if cache

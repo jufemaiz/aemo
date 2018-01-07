@@ -103,6 +103,14 @@ describe AEMO::NEM12 do
         expect { AEMO::NEM12.parse_nem12_records(string_object) }.to raise_error(ArgumentError)
       end
     end
+
+    it 'should raise Multiple Header Records error' do
+      string_object = StringIO.new
+      string_object.puts '100,NEM12,666,CNRGYMDP,NEMMCO'
+      string_object.puts '100,NEM12,666,CNRGYMDP,NEMMCO'
+      string_object.puts '900'
+      expect { AEMO::NEM12.parse_nem12_records(string_object) }.to raise_error(ArgumentError)
+    end
   end
 
   describe '.validate_nem12_file' do
