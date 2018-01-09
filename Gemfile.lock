@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    aemo (0.1.43)
+    aemo (0.1.44)
       activesupport (>= 4.2.6, < 5.2)
       httparty (~> 0.15, >= 0.15.6)
       json (>= 1.7.5)
@@ -86,7 +86,7 @@ GEM
     method_source (0.9.0)
     mime-types (2.99.3)
     mini_portile2 (2.3.0)
-    minitest (5.11.0)
+    minitest (5.11.1)
     multi_json (1.12.2)
     multi_xml (0.6.0)
     multipart-post (2.0.0)

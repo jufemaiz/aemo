@@ -144,4 +144,43 @@ describe AEMO::NEM12 do
       end
     end
   end
+
+  describe '#to_a' do
+    it 'should return an empty array' do
+      nem12 = AEMO::NEM12.new('')
+      expect(nem12.to_a.length).to eq(0)
+    end
+
+    it 'should return a non-empty array' do
+      test_file = Dir.entries(File.join(File.dirname(__FILE__), '..', '..', 'fixtures', 'NEM12')).reject { |f| %w[. .. .DS_Store].include?(f) }[0]
+      nem12s = AEMO::NEM12.parse_nem12_file(fixture(File.join('NEM12', test_file)))
+      expect(nem12s.length).not_to eq(0)
+      nem12s.each do |nem12|
+        expect(nem12.to_a.length).not_to eq(0)
+      end
+    end
+  end
+
+  describe '#to_csv' do
+    it 'should  atsring containing only headers' do
+      nem12 = AEMO::NEM12.new('')
+      nem12_csv = nem12.to_csv.tr(' ', '').split("\n")
+      headers = %w[nmi suffix units datetime value flags]
+      expect(nem12_csv.length).to eq(1)
+      expect(nem12_csv[0].parse_csv.length).to eq(headers.length)
+      expect(nem12_csv[0].parse_csv).to eq(headers)
+    end
+
+    it 'should return a csv string with more than one record' do
+      test_file = Dir.entries(File.join(File.dirname(__FILE__), '..', '..', 'fixtures', 'NEM12')).reject { |f| %w[. .. .DS_Store].include?(f) }[0]
+      nem12s = AEMO::NEM12.parse_nem12_file(fixture(File.join('NEM12', test_file)))
+      nem12s.each do |nem12|
+        nem12_csv = nem12.to_csv.tr(' ', '').split("\n")
+        headers = %w[nmi suffix units datetime value flags]
+        expect(nem12_csv.length).not_to eq(1)
+        expect(nem12_csv[0].parse_csv.length).to eq(headers.length)
+        expect(nem12_csv[0].parse_csv).to eq(headers)
+      end
+    end
+  end
 end
