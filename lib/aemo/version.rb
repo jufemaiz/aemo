@@ -24,7 +24,7 @@
 # @author Joel Courtney <euphemize@gmail.com>
 module AEMO
   # aemo version
-  VERSION = '0.1.44'
+  VERSION = '0.1.45'
 
   # aemo version split amongst different revisions
   MAJOR_VERSION, MINOR_VERSION, REVISION = VERSION.split('.').map(&:to_i)
