@@ -1,5 +1,10 @@
 # AEMO Gem Changelog
 
+## 0.2.0
+
+* Default NEM12 parsing to use strict validation
+* Only enforce validation of NMIConfiguration in strict mode
+
 ## 0.1.44
 
 * [YARD vulnerability](https://rubysec.com/advisories/yard-CVE-2017-17042) update

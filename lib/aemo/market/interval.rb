@@ -13,7 +13,8 @@ module AEMO
         dispatch: 'Dispatch'
       }.freeze
 
-      attr_accessor :datetime, :region, :total_demand, :rrp, :period_type
+      attr_accessor :region, :total_demand, :rrp, :period_type
+      attr_writer :datetime
 
       # Create a new instance of an Interval
       #
