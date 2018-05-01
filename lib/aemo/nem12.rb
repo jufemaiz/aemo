@@ -315,12 +315,12 @@ module AEMO
     # Parses the NMI Data Details
     # @param [String] line A single line in string format
     # @return [Hash] the line parsed into a hash of information
-    def parse_nem12_200(line, _options = {})
+    def parse_nem12_200(line, options = {})
       csv = line.parse_csv
 
       raise ArgumentError, 'RecordIndicator is not 200'     if csv[0] != '200'
       raise ArgumentError, 'NMI is not valid'               unless AEMO::NMI.valid_nmi?(csv[1])
-      if csv[2].nil? || csv[2].match(/.{1,240}/).nil?
+      if options[:strict] && (csv[2].nil? || csv[2].match(/.{1,240}/).nil?)
         raise ArgumentError, 'NMIConfiguration is not valid'
       end
       if !csv[3].nil? && csv[3].match(/.{1,10}/).nil?
@@ -514,14 +514,14 @@ module AEMO
 
     # @param [String] path_to_file the path to a file
     # @return [Array<AEMO::NEM12>] NEM12 object
-    def self.parse_nem12_file(path_to_file, strict = false)
+    def self.parse_nem12_file(path_to_file, strict = true)
       parse_nem12(File.read(path_to_file), strict)
     end
 
     # @param [String] contents the path to a file
     # @param [Boolean] strict
     # @return [Array<AEMO::NEM12>] An array of NEM12 objects
-    def self.parse_nem12(contents, strict = false)
+    def self.parse_nem12(contents, strict = true)
       file_contents = contents.tr("\r", "\n").tr("\n\n", "\n").split("\n").delete_if(&:empty?)
       raise ArgumentError, 'First row should be have a RecordIndicator of 100 and be of type Header Record' unless file_contents.first.parse_csv[0] == '100'
 
@@ -531,7 +531,7 @@ module AEMO
         case line[0..2].to_i
         when 200
           nem12s << AEMO::NEM12.new('')
-          nem12s.last.parse_nem12_200(line)
+          nem12s.last.parse_nem12_200(line, strict: strict)
         when 300
           nem12s.last.parse_nem12_300(line)
         when 400

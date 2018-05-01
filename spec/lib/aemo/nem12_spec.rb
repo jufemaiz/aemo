@@ -48,9 +48,19 @@ describe AEMO::NEM12 do
   end
 
   describe '#parse_nem12_200' do
-    # before(:each) do
-    #   @nem12 = AEMO::NEM12.parse_nem12_100('100,NEM12,201603010000,CNRGYMDP,NEMMCO', strict: true)
-    # end
+    context 'non-strict mode' do
+      it 'should not raise validation warning with bad NMI configuration' do
+        expect(AEMO::NEM12.parse_nem12_file(fixture(File.join('NEM12-Errors', 'NEM12#DerpyNMIConfig#CNRGYMDP#NEMMCO.csv')), false))
+          .to be_truthy
+      end
+    end
+
+    context 'strict mode (default)' do
+      it 'should raise validation warning with bad NMI configuration' do
+        expect { AEMO::NEM12.parse_nem12_file(fixture(File.join('NEM12-Errors', 'NEM12#DerpyNMIConfig#CNRGYMDP#NEMMCO.csv'))) }
+          .to raise_error(ArgumentError, 'NMIConfiguration is not valid')
+      end
+    end
   end
 
   describe '#parse_nem12_300' do
