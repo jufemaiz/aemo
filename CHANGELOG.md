@@ -5,6 +5,10 @@
 * Default NEM12 parsing to use strict validation
 * Only enforce validation of NMIConfiguration in strict mode
 
+## 0.1.45
+
+* [Nokogiri vulnerability](https://rubysec.com/advisories/nokogiri-CVE-2017-15412) update
+
 ## 0.1.44
 
 * [YARD vulnerability](https://rubysec.com/advisories/yard-CVE-2017-17042) update
