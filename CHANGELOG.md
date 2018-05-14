@@ -1,5 +1,9 @@
 # AEMO Gem Changelog
 
+## 0.2.1
+
+* Loss factors for FY18
+
 ## 0.2.0
 
 * Default NEM12 parsing to use strict validation

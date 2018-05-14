@@ -18,9 +18,10 @@ http://www.rubydoc.info/gems/aemo
 ## Ruby Versions Supported
 
 * ruby-head
-* 2.5 (.0)
-* 2.4 (.0, .1, .2, .3)
-* 2.3 (.0, .1, .2, .3, .4, .5, .6)
+* 2.6 (.0-preview1)
+* 2.5 (.0, .1)
+* 2.4 (.0, .1, .2, .3, .4)
+* 2.3 (.0, .1, .2, .3, .4, .5, .6, .7)
 * 2.2 (.5, .6, .7, .8, .9)
 
 ## Manually from RubyGems.org ###
@@ -40,7 +41,9 @@ gem 'aemo'
 
 ## Market Information
 
-Access to AEMO Market Information from www.nemweb.com.au/mms.GRAPHS/GRAPHS/GRAPH_5#NSW1.csv or www.nemweb.com.au/mms.GRAPHS/GRAPHS/GRAPH_30#NSW1.csv
+Access to AEMO Market Information from the
+[AEMO Data Dashboard](https://www.aemo.com.au/Electricity/National-Electricity-Market-NEM/Data-dashboard).
+
 
 ### Regions
 
@@ -423,3 +426,24 @@ AEMO::MSATS.nmi_detail(nmi, options = {})
 
 * :type
 * :reason
+
+# Maintenance
+
+## Updating loss factors
+
+1.  Connect to AEMO via VPN (tip: be a market participant in order to unlock
+    this step)
+1.  Log in to [MSATS](https://msats.prod.nemnet.net.au/)
+1.  Navigate to Reports and Alerts » CATS » C1 - Data Replication
+    Resynchronisation Report - Data Replication Resynchronisation Report (C1)
+1.  Export both the CATS_DLF_CODES and CATS_TNI_CODES tables (from 1-Jan-1970 to
+    the current date, both with 30,000 max rows)
+1.  Wait...
+1.  Wait some more...
+1.  Navigate to Participant Outbox (you have new messages link)
+1.  Get the file!
+1.  `cd lib/data && ruby xml_to_json.rb`
+1.  Add tests for your new FY to spec/lib/aemo/nmi_spec.rb
+1.  `rspec` - note that AEMO can retroactively change factors so if there is an
+    old failing test double check the json to make sure it's not AEMO's fault.
+1.  Commit, push & [create a pull request](http://github.com/jufemaiz/aemo/pull/new)
