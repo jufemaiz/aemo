@@ -240,7 +240,7 @@ describe AEMO::NMI do
 
       valid_dlfc_values.each do |t|
         Timecop.freeze(t[:datetime]) do
-          expect(@nmi.dlfc_value(DateTime.now)).to eq t[:value]
+          expect(@nmi.dlfc_value(Time.now)).to eq t[:value]
         end
       end
     end
@@ -258,7 +258,7 @@ describe AEMO::NMI do
     end
     it 'has a TNI value' do
       Timecop.freeze('2016-06-01T00:00:00+1000') do
-        expect(@nmi.tni_value(DateTime.now).class).to eq(Float)
+        expect(@nmi.tni_value(Time.now).class).to eq(Float)
       end
     end
     it 'has TNI values' do
@@ -277,7 +277,7 @@ describe AEMO::NMI do
 
       valid_tni_values.each do |t|
         Timecop.freeze(t[:datetime]) do
-          expect(@nmi.tni_value(DateTime.now)).to eq t[:value]
+          expect(@nmi.tni_value(Time.now)).to eq t[:value]
         end
       end
     end
