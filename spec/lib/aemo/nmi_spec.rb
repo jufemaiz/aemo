@@ -9,11 +9,6 @@ describe AEMO::NMI do
   # ---
   # CLASS CONSTANTS
   # ---
-  describe '::NMI_ALLOCATIONS' do
-    it 'should be a hash' do
-      expect(AEMO::NMI::NMI_ALLOCATIONS.class).to eq(Hash)
-    end
-  end
   describe '::TNI_CODES' do
     it 'should be a hash' do
       expect(AEMO::NMI::TNI_CODES.class).to eq(Hash)
@@ -57,14 +52,25 @@ describe AEMO::NMI do
     end
   end
 
-  describe '.network?(nmi)' do
+  describe '.network(nmi)' do
     it 'should return a network for an allocated NMI' do
       network = AEMO::NMI.network('NCCCC00000')
-      expect(network.to_a[0].last[:title]).to eq('Ausgrid')
+      expect(network.title).to eq('Ausgrid')
     end
     it 'should return NIL for an unallocated NMI' do
       network = AEMO::NMI.network('ZZZZZZZZZZZZ')
       expect(network).to eq(nil)
+    end
+  end
+
+  describe '.allocation(nmi)' do
+    it 'should return an Allocation for a NMI' do
+      allocation = AEMO::NMI.allocation('NCCCC00000')
+      expect(allocation.title).to eq('Ausgrid')
+    end
+    it 'should return NIL for an unallocated NMI' do
+      allocation = AEMO::NMI.allocation('ZZZZZZZZZZZZ')
+      expect(allocation).to eq(nil)
     end
   end
 
@@ -131,7 +137,9 @@ describe AEMO::NMI do
     it 'should return a network for a valid NMI' do
       json.each do |nmi|
         a_nmi = AEMO::NMI.new(nmi['nmi'])
-        expect(a_nmi.network.class).to eq(Hash) unless a_nmi.network.nil?
+        next if a_nmi.network.nil?
+        expect(a_nmi.network).to be_a AEMO::NMI::Allocation
+        expect(a_nmi.allocation).to be_a AEMO::NMI::Allocation
       end
     end
     # Negative test cases
