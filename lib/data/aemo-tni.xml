@@ -1,22 +1,22 @@
 <?xml version="1.0" ?>
-<ase:aseXML xmlns:ase="urn:aseXML:r31" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:aseXML:r31 http://www.nemmco.com.au/aseXML/schemas/r31/aseXML_r31.xsd">
+<ase:aseXML xmlns:ase="urn:aseXML:r35" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:aseXML:r35 http://www.nemmco.com.au/aseXML/schemas/r35/aseXML_r35.xsd">
   <Header>
     <From description="Australian Energy Market Operator Limited">NEMMCO</From>
     <To description="COzero Energy Retail Pty Ltd">COZEROER</To>
-    <MessageID>NEMMCO-MSG-548899582</MessageID>
-    <MessageDate>2015-02-03T14:32:18+10:00</MessageDate>
+    <MessageID>NEMMCO-MSG-728857069</MessageID>
+    <MessageDate>2018-05-14T09:48:30+10:00</MessageDate>
     <TransactionGroup>CATS</TransactionGroup>
     <Priority>Medium</Priority>
     <SecurityContext>NEMMCOBATCH</SecurityContext>
     <Market>NEM</Market>
   </Header>
   <Transactions>
-    <Transaction transactionID="CATS-548899582" transactionDate="2015-02-03T14:32:18+10:00" initiatingTransactionID="17854092">
+    <Transaction transactionID="CATS-728857069" transactionDate="2018-05-14T09:48:30+10:00" initiatingTransactionID="42281820">
       <ReplicationNotification version="r10">
         <ReplicationParameters>
           <TableName>CATS_TNI_CODES</TableName>
-          <CreationFromDate>2000-01-01T00:00:00+10:00</CreationFromDate>
-          <CreationToDate>2015-02-03T23:59:59+10:00</CreationToDate>
+          <CreationFromDate>1970-01-01T00:00:00+10:00</CreationFromDate>
+          <CreationToDate>2018-05-14T23:59:59+10:00</CreationToDate>
           <LastSequenceNumber>0</LastSequenceNumber>
           <MaximumRows>30000</MaximumRows>
         </ReplicationParameters>
@@ -972,6 +972,16 @@
     <Description> REGENTVILLE (132)</Description>
   </Row>
   <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
+    <SequenceNumber>96</SequenceNumber>
+    <CreationDate>1998-06-05T00:00:00+10:00</CreationDate>
+    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <RowStatus>A</RowStatus>
+    <FromDate>1998-06-05T00:00:00+10:00</FromDate>
+    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <Code>NRQD</Code>
+    <Description> NSW QLD INTERCONNECTOR</Description>
+  </Row>
+  <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
     <SequenceNumber>97</SequenceNumber>
     <CreationDate>1998-06-05T00:00:00+10:00</CreationDate>
     <MaintenanceDate>2008-06-27T13:30:25+10:00</MaintenanceDate>
@@ -1860,6 +1870,16 @@
     <ToDate>2010-03-01T00:00:00+10:00</ToDate>
     <Code>QMBS</Code>
     <Description> Moranbah South (132)</Description>
+  </Row>
+  <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
+    <SequenceNumber>188</SequenceNumber>
+    <CreationDate>1998-06-05T00:00:00+10:00</CreationDate>
+    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <RowStatus>A</RowStatus>
+    <FromDate>1998-06-05T00:00:00+10:00</FromDate>
+    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <Code>QMGB</Code>
+    <Description> Mudgeeraba (110)</Description>
   </Row>
   <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
     <SequenceNumber>189</SequenceNumber>
@@ -3562,6 +3582,16 @@
     <Description> RED CLIFFS TS-66 (AIEW)</Description>
   </Row>
   <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
+    <SequenceNumber>370</SequenceNumber>
+    <CreationDate>1998-06-05T00:00:00+10:00</CreationDate>
+    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <RowStatus>A</RowStatus>
+    <FromDate>1998-06-05T00:00:00+10:00</FromDate>
+    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <Code>VRSA</Code>
+    <Description> Vic - SA Interconnector</Description>
+  </Row>
+  <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
     <SequenceNumber>371</SequenceNumber>
     <CreationDate>1998-06-05T00:00:00+10:00</CreationDate>
     <MaintenanceDate>2008-06-27T13:30:55+10:00</MaintenanceDate>
@@ -3890,6 +3920,16 @@
     <ToDate>2010-03-01T00:00:00+10:00</ToDate>
     <Code>SHPS</Code>
     <Description>Hallet PS (275)</Description>
+  </Row>
+  <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
+    <SequenceNumber>408</SequenceNumber>
+    <CreationDate>1998-06-05T00:00:00+10:00</CreationDate>
+    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <RowStatus>A</RowStatus>
+    <FromDate>1998-06-05T00:00:00+10:00</FromDate>
+    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <Code>VMWG</Code>
+    <Description>Morwell Unit 1 to 3 Generation (11kV)</Description>
   </Row>
   <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
     <SequenceNumber>409</SequenceNumber>
@@ -6724,10 +6764,10 @@
   <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
     <SequenceNumber>692</SequenceNumber>
     <CreationDate>2010-03-01T09:33:16+10:00</CreationDate>
-    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <MaintenanceDate>2015-07-06T12:06:55+10:00</MaintenanceDate>
     <RowStatus>A</RowStatus>
     <FromDate>2010-03-02T00:00:00+10:00</FromDate>
-    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <ToDate>2015-06-30T00:00:00+10:00</ToDate>
     <Code>NBK1</Code>
     <Description>Broken Hill GT 22</Description>
   </Row>
@@ -6864,10 +6904,10 @@
   <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
     <SequenceNumber>706</SequenceNumber>
     <CreationDate>2010-03-01T09:39:27+10:00</CreationDate>
-    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <MaintenanceDate>2016-08-29T12:09:16+10:00</MaintenanceDate>
     <RowStatus>A</RowStatus>
     <FromDate>2010-03-02T00:00:00+10:00</FromDate>
-    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <ToDate>2016-02-01T00:00:00+10:00</ToDate>
     <Code>NCMA</Code>
     <Description>Cooma 132</Description>
   </Row>
@@ -7394,10 +7434,10 @@
   <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
     <SequenceNumber>759</SequenceNumber>
     <CreationDate>2010-03-01T10:07:11+10:00</CreationDate>
-    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <MaintenanceDate>2017-06-27T15:30:06+10:00</MaintenanceDate>
     <RowStatus>A</RowStatus>
     <FromDate>2010-03-02T00:00:00+10:00</FromDate>
-    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <ToDate>2017-02-20T00:00:00+10:00</ToDate>
     <Code>NMN1</Code>
     <Description>Munmorah 330</Description>
   </Row>
@@ -7444,10 +7484,10 @@
   <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
     <SequenceNumber>764</SequenceNumber>
     <CreationDate>2010-03-01T10:09:48+10:00</CreationDate>
-    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <MaintenanceDate>2015-05-15T14:59:55+10:00</MaintenanceDate>
     <RowStatus>A</RowStatus>
     <FromDate>2010-03-02T00:00:00+10:00</FromDate>
-    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <ToDate>2015-05-16T00:00:00+10:00</ToDate>
     <Code>NMPP</Code>
     <Description>Mt Piper 132</Description>
   </Row>
@@ -7604,10 +7644,10 @@
   <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
     <SequenceNumber>780</SequenceNumber>
     <CreationDate>2010-03-01T10:39:43+10:00</CreationDate>
-    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <MaintenanceDate>2016-03-21T14:17:07+10:00</MaintenanceDate>
     <RowStatus>A</RowStatus>
     <FromDate>2010-03-02T00:00:00+10:00</FromDate>
-    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <ToDate>2016-02-27T00:00:00+10:00</ToDate>
     <Code>NPH1</Code>
     <Description>Peakhurst 132</Description>
   </Row>
@@ -7694,10 +7734,10 @@
   <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
     <SequenceNumber>789</SequenceNumber>
     <CreationDate>2010-03-01T10:44:07+10:00</CreationDate>
-    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <MaintenanceDate>2016-05-20T14:35:26+10:00</MaintenanceDate>
     <RowStatus>A</RowStatus>
     <FromDate>2010-03-02T00:00:00+10:00</FromDate>
-    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <ToDate>2016-05-19T00:00:00+10:00</ToDate>
     <Code>NRED</Code>
     <Description>Redbank PS 132</Description>
   </Row>
@@ -7774,10 +7814,10 @@
   <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
     <SequenceNumber>797</SequenceNumber>
     <CreationDate>2010-03-01T10:47:38+10:00</CreationDate>
-    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <MaintenanceDate>2015-07-10T10:41:58+10:00</MaintenanceDate>
     <RowStatus>A</RowStatus>
     <FromDate>2010-03-02T00:00:00+10:00</FromDate>
-    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <ToDate>2015-06-30T00:00:00+10:00</ToDate>
     <Code>NSHL</Code>
     <Description>Kangaroo Valley - Bendeela (Shoalhaven) 330</Description>
   </Row>
@@ -8534,10 +8574,10 @@
   <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
     <SequenceNumber>873</SequenceNumber>
     <CreationDate>2010-03-01T12:08:25+10:00</CreationDate>
-    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <MaintenanceDate>2017-12-20T09:23:02+10:00</MaintenanceDate>
     <RowStatus>A</RowStatus>
     <FromDate>2010-03-02T00:00:00+10:00</FromDate>
-    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <ToDate>2017-12-21T00:00:00+10:00</ToDate>
     <Code>QEMS</Code>
     <Description>Kemmis 132</Description>
   </Row>
@@ -9444,10 +9484,10 @@
   <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
     <SequenceNumber>964</SequenceNumber>
     <CreationDate>2010-03-01T12:57:55+10:00</CreationDate>
-    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <MaintenanceDate>2016-02-11T13:53:22+10:00</MaintenanceDate>
     <RowStatus>A</RowStatus>
     <FromDate>2010-03-02T00:00:00+10:00</FromDate>
-    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <ToDate>2016-02-10T00:00:00+10:00</ToDate>
     <Code>QRMA</Code>
     <Description>Roma PS 132</Description>
   </Row>
@@ -10354,10 +10394,10 @@
   <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
     <SequenceNumber>1055</SequenceNumber>
     <CreationDate>2010-03-01T13:51:36+10:00</CreationDate>
-    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <MaintenanceDate>2016-09-01T11:40:30+10:00</MaintenanceDate>
     <RowStatus>A</RowStatus>
     <FromDate>2010-03-02T00:00:00+10:00</FromDate>
-    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <ToDate>2016-08-31T00:00:00+10:00</ToDate>
     <Code>SNPS</Code>
     <Description>Northern PS 275</Description>
   </Row>
@@ -10464,10 +10504,10 @@
   <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
     <SequenceNumber>1066</SequenceNumber>
     <CreationDate>2010-03-01T13:56:28+10:00</CreationDate>
-    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <MaintenanceDate>2016-09-01T13:28:47+10:00</MaintenanceDate>
     <RowStatus>A</RowStatus>
     <FromDate>2010-03-02T00:00:00+10:00</FromDate>
-    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <ToDate>2016-08-31T00:00:00+10:00</ToDate>
     <Code>SPPS</Code>
     <Description>Playford PS 275</Description>
   </Row>
@@ -12354,10 +12394,10 @@
   <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
     <SequenceNumber>1258</SequenceNumber>
     <CreationDate>2012-06-22T11:59:28+10:00</CreationDate>
-    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <MaintenanceDate>2016-08-29T12:09:46+10:00</MaintenanceDate>
     <RowStatus>A</RowStatus>
     <FromDate>2012-06-21T00:00:00+10:00</FromDate>
-    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <ToDate>2016-02-01T00:00:00+10:00</ToDate>
     <Code>NCM2</Code>
     <Description>Cooma 132  (SPI)</Description>
   </Row>
@@ -12464,10 +12504,10 @@
   <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
     <SequenceNumber>1270</SequenceNumber>
     <CreationDate>2013-07-16T14:12:42+10:00</CreationDate>
-    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <MaintenanceDate>2016-05-26T16:29:52+10:00</MaintenanceDate>
     <RowStatus>A</RowStatus>
     <FromDate>2013-07-16T00:00:00+10:00</FromDate>
-    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <ToDate>2016-05-26T00:00:00+10:00</ToDate>
     <Code>NWW7</Code>
     <Description>Wallerawang 66</Description>
   </Row>
@@ -12664,12 +12704,412 @@
   <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
     <SequenceNumber>1290</SequenceNumber>
     <CreationDate>2014-10-24T08:15:22+10:00</CreationDate>
-    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <MaintenanceDate>2016-03-21T14:15:42+10:00</MaintenanceDate>
     <RowStatus>A</RowStatus>
     <FromDate>2014-10-24T00:00:00+10:00</FromDate>
-    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <ToDate>2016-02-27T00:00:00+10:00</ToDate>
     <Code>NCB1</Code>
     <Description>Canterbury 132</Description>
+  </Row>
+  <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
+    <SequenceNumber>1291</SequenceNumber>
+    <CreationDate>2015-04-22T09:41:57+10:00</CreationDate>
+    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <RowStatus>A</RowStatus>
+    <FromDate>2015-04-22T00:00:00+10:00</FromDate>
+    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <Code>NBGN</Code>
+    <Description>Boggabri North 132</Description>
+  </Row>
+  <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
+    <SequenceNumber>1293</SequenceNumber>
+    <CreationDate>2015-06-25T09:00:03+10:00</CreationDate>
+    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <RowStatus>A</RowStatus>
+    <FromDate>2015-06-25T00:00:00+10:00</FromDate>
+    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <Code>NBCO</Code>
+    <Description>Boco Rock WF at Cooma 132</Description>
+  </Row>
+  <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
+    <SequenceNumber>1294</SequenceNumber>
+    <CreationDate>2015-06-25T09:14:45+10:00</CreationDate>
+    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <RowStatus>A</RowStatus>
+    <FromDate>2015-06-25T00:00:00+10:00</FromDate>
+    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <Code>NSHN</Code>
+    <Description>Kangaroo Valley - Bendeela (Shoalhaven) Generation</Description>
+  </Row>
+  <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
+    <SequenceNumber>1296</SequenceNumber>
+    <CreationDate>2015-07-20T11:15:16+10:00</CreationDate>
+    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <RowStatus>A</RowStatus>
+    <FromDate>2015-07-10T00:00:00+10:00</FromDate>
+    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <Code>QWST</Code>
+    <Description>Wandoan South (NW Surat) 275</Description>
+  </Row>
+  <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
+    <SequenceNumber>1297</SequenceNumber>
+    <CreationDate>2015-07-24T14:09:57+10:00</CreationDate>
+    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <RowStatus>A</RowStatus>
+    <FromDate>2014-07-01T00:00:00+10:00</FromDate>
+    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <Code>QMIS</Code>
+    <Description>ISO TNI FOR ERGON</Description>
+  </Row>
+  <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
+    <SequenceNumber>1298</SequenceNumber>
+    <CreationDate>2015-07-24T14:10:22+10:00</CreationDate>
+    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <RowStatus>A</RowStatus>
+    <FromDate>2014-07-01T00:00:00+10:00</FromDate>
+    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <Code>QRGN</Code>
+    <Description>ISO TNI FOR ERGON</Description>
+  </Row>
+  <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
+    <SequenceNumber>1299</SequenceNumber>
+    <CreationDate>2015-07-29T16:41:35+10:00</CreationDate>
+    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <RowStatus>A</RowStatus>
+    <FromDate>2015-07-30T00:00:00+10:00</FromDate>
+    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <Code>NQBY</Code>
+    <Description>Queanbeyan 132</Description>
+  </Row>
+  <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
+    <SequenceNumber>1301</SequenceNumber>
+    <CreationDate>2015-11-16T08:19:03+10:00</CreationDate>
+    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <RowStatus>A</RowStatus>
+    <FromDate>2016-01-05T00:00:00+10:00</FromDate>
+    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <Code>NAPP</Code>
+    <Description>Appin PS 66</Description>
+  </Row>
+  <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
+    <SequenceNumber>1302</SequenceNumber>
+    <CreationDate>2016-02-26T14:03:24+10:00</CreationDate>
+    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <RowStatus>A</RowStatus>
+    <FromDate>2016-02-28T00:00:00+10:00</FromDate>
+    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <Code>NKOG</Code>
+    <Description>Kogarah (11)</Description>
+  </Row>
+  <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
+    <SequenceNumber>1303</SequenceNumber>
+    <CreationDate>2016-02-26T14:04:40+10:00</CreationDate>
+    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <RowStatus>A</RowStatus>
+    <FromDate>2016-02-28T00:00:00+10:00</FromDate>
+    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <Code>NHVN</Code>
+    <Description>Hurstville North (11)</Description>
+  </Row>
+  <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
+    <SequenceNumber>1304</SequenceNumber>
+    <CreationDate>2016-03-15T12:47:42+10:00</CreationDate>
+    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <RowStatus>A</RowStatus>
+    <FromDate>2016-03-16T00:00:00+10:00</FromDate>
+    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <Code>SHDW</Code>
+    <Description>Horndale WF</Description>
+  </Row>
+  <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
+    <SequenceNumber>1305</SequenceNumber>
+    <CreationDate>2016-03-29T09:35:31+10:00</CreationDate>
+    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <RowStatus>A</RowStatus>
+    <FromDate>2016-03-30T00:00:00+10:00</FromDate>
+    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <Code>VART</Code>
+    <Description>Ararat Wind Farm</Description>
+  </Row>
+  <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
+    <SequenceNumber>1307</SequenceNumber>
+    <CreationDate>2016-05-26T16:25:28+10:00</CreationDate>
+    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <RowStatus>A</RowStatus>
+    <FromDate>2016-05-27T00:00:00+10:00</FromDate>
+    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <Code>NWW4</Code>
+    <Description>Wallerawang 66 (Essential Energy)</Description>
+  </Row>
+  <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
+    <SequenceNumber>1308</SequenceNumber>
+    <CreationDate>2016-09-08T09:40:10+10:00</CreationDate>
+    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <RowStatus>A</RowStatus>
+    <FromDate>2016-09-08T00:00:00+10:00</FromDate>
+    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <Code>VBT6</Code>
+    <Description>Brunswick 66 (CitiPower)</Description>
+  </Row>
+  <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
+    <SequenceNumber>1309</SequenceNumber>
+    <CreationDate>2016-10-06T08:07:30+10:00</CreationDate>
+    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <RowStatus>A</RowStatus>
+    <FromDate>2016-10-06T00:00:00+10:00</FromDate>
+    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <Code>VWEA</Code>
+    <Description>Wemen 66 (Ess Engy)</Description>
+  </Row>
+  <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
+    <SequenceNumber>1310</SequenceNumber>
+    <CreationDate>2016-11-14T14:18:47+10:00</CreationDate>
+    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <RowStatus>A</RowStatus>
+    <FromDate>2016-11-15T00:00:00+10:00</FromDate>
+    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <Code>NCRD</Code>
+    <Description>Croydon</Description>
+  </Row>
+  <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
+    <SequenceNumber>1311</SequenceNumber>
+    <CreationDate>2016-11-24T14:12:30+10:00</CreationDate>
+    <MaintenanceDate>2018-03-05T08:37:07+10:00</MaintenanceDate>
+    <RowStatus>A</RowStatus>
+    <FromDate>2016-11-25T00:00:00+10:00</FromDate>
+    <ToDate>2018-03-05T00:00:00+10:00</ToDate>
+    <Code>QLLV</Code>
+    <Description>Barcaldine Solar at Lilyvale (132)</Description>
+  </Row>
+  <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
+    <SequenceNumber>1312</SequenceNumber>
+    <CreationDate>2016-11-30T10:13:05+10:00</CreationDate>
+    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <RowStatus>A</RowStatus>
+    <FromDate>2016-12-01T00:00:00+10:00</FromDate>
+    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <Code>NMU3</Code>
+    <Description>Munmorah STS 33</Description>
+  </Row>
+  <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
+    <SequenceNumber>1313</SequenceNumber>
+    <CreationDate>2016-12-15T09:12:57+10:00</CreationDate>
+    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <RowStatus>A</RowStatus>
+    <FromDate>2016-12-16T00:00:00+10:00</FromDate>
+    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <Code>QMRV</Code>
+    <Description>Grosvenor PS at Moranbah 66</Description>
+  </Row>
+  <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
+    <SequenceNumber>1314</SequenceNumber>
+    <CreationDate>2017-05-11T14:41:09+10:00</CreationDate>
+    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <RowStatus>A</RowStatus>
+    <FromDate>2017-05-12T00:00:00+10:00</FromDate>
+    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <Code>NWRK</Code>
+    <Description>White Rock WF</Description>
+  </Row>
+  <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
+    <SequenceNumber>1315</SequenceNumber>
+    <CreationDate>2017-06-08T14:43:34+10:00</CreationDate>
+    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <RowStatus>A</RowStatus>
+    <FromDate>2017-06-09T00:00:00+10:00</FromDate>
+    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <Code>VDPT</Code>
+    <Description>Deer Park 66</Description>
+  </Row>
+  <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
+    <SequenceNumber>1316</SequenceNumber>
+    <CreationDate>2017-08-29T15:02:13+10:00</CreationDate>
+    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <RowStatus>A</RowStatus>
+    <FromDate>2017-08-30T00:00:00+10:00</FromDate>
+    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <Code>NWD1</Code>
+    <Description>Williamsdale (Ess Engy)</Description>
+  </Row>
+  <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
+    <SequenceNumber>1317</SequenceNumber>
+    <CreationDate>2017-09-04T10:25:41+10:00</CreationDate>
+    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <RowStatus>A</RowStatus>
+    <FromDate>2017-09-04T00:00:00+10:00</FromDate>
+    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <Code>AAXG</Code>
+    <Description>Angle Crossing</Description>
+  </Row>
+  <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
+    <SequenceNumber>1318</SequenceNumber>
+    <CreationDate>2017-09-04T10:26:24+10:00</CreationDate>
+    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <RowStatus>A</RowStatus>
+    <FromDate>2017-09-04T00:00:00+10:00</FromDate>
+    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <Code>ABCN</Code>
+    <Description>Belconnen</Description>
+  </Row>
+  <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
+    <SequenceNumber>1319</SequenceNumber>
+    <CreationDate>2017-09-04T10:26:55+10:00</CreationDate>
+    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <RowStatus>A</RowStatus>
+    <FromDate>2017-09-04T00:00:00+10:00</FromDate>
+    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <Code>ACTE</Code>
+    <Description>City East</Description>
+  </Row>
+  <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
+    <SequenceNumber>1321</SequenceNumber>
+    <CreationDate>2017-09-04T10:29:12+10:00</CreationDate>
+    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <RowStatus>A</RowStatus>
+    <FromDate>2017-09-04T00:00:00+10:00</FromDate>
+    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <Code>AELK</Code>
+    <Description>East Lake</Description>
+  </Row>
+  <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
+    <SequenceNumber>1322</SequenceNumber>
+    <CreationDate>2017-09-04T10:29:50+10:00</CreationDate>
+    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <RowStatus>A</RowStatus>
+    <FromDate>2017-09-04T00:00:00+10:00</FromDate>
+    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <Code>AGLM</Code>
+    <Description>Gilmore</Description>
+  </Row>
+  <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
+    <SequenceNumber>1323</SequenceNumber>
+    <CreationDate>2017-09-04T10:30:24+10:00</CreationDate>
+    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <RowStatus>A</RowStatus>
+    <FromDate>2017-09-04T00:00:00+10:00</FromDate>
+    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <Code>AGCK</Code>
+    <Description>Gold Creek</Description>
+  </Row>
+  <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
+    <SequenceNumber>1324</SequenceNumber>
+    <CreationDate>2017-09-04T10:31:00+10:00</CreationDate>
+    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <RowStatus>A</RowStatus>
+    <FromDate>2017-09-04T00:00:00+10:00</FromDate>
+    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <Code>ALTM</Code>
+    <Description>Latham</Description>
+  </Row>
+  <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
+    <SequenceNumber>1325</SequenceNumber>
+    <CreationDate>2017-09-04T10:31:32+10:00</CreationDate>
+    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <RowStatus>A</RowStatus>
+    <FromDate>2017-09-04T00:00:00+10:00</FromDate>
+    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <Code>ATLP</Code>
+    <Description>Telopia Park</Description>
+  </Row>
+  <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
+    <SequenceNumber>1326</SequenceNumber>
+    <CreationDate>2017-09-04T10:32:05+10:00</CreationDate>
+    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <RowStatus>A</RowStatus>
+    <FromDate>2017-09-04T00:00:00+10:00</FromDate>
+    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <Code>ATDR</Code>
+    <Description>Theodore</Description>
+  </Row>
+  <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
+    <SequenceNumber>1327</SequenceNumber>
+    <CreationDate>2017-09-04T10:32:36+10:00</CreationDate>
+    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <RowStatus>A</RowStatus>
+    <FromDate>2017-09-04T00:00:00+10:00</FromDate>
+    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <Code>AWSA</Code>
+    <Description>Wanniassa</Description>
+  </Row>
+  <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
+    <SequenceNumber>1328</SequenceNumber>
+    <CreationDate>2017-09-04T10:33:06+10:00</CreationDate>
+    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <RowStatus>A</RowStatus>
+    <FromDate>2017-09-04T00:00:00+10:00</FromDate>
+    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <Code>AWDN</Code>
+    <Description>Woden</Description>
+  </Row>
+  <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
+    <SequenceNumber>1329</SequenceNumber>
+    <CreationDate>2017-09-04T10:33:37+10:00</CreationDate>
+    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <RowStatus>A</RowStatus>
+    <FromDate>2017-09-04T00:00:00+10:00</FromDate>
+    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <Code>AAVT</Code>
+    <Description>ACT Virtual Transmission Node</Description>
+  </Row>
+  <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
+    <SequenceNumber>1330</SequenceNumber>
+    <CreationDate>2017-09-07T11:29:00+10:00</CreationDate>
+    <MaintenanceDate>2018-01-25T09:51:12+10:00</MaintenanceDate>
+    <RowStatus>A</RowStatus>
+    <FromDate>2017-09-08T00:00:00+10:00</FromDate>
+    <ToDate>2018-01-24T00:00:00+10:00</ToDate>
+    <Code>QROG</Code>
+    <Description>Kidston Solar SF</Description>
+  </Row>
+  <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
+    <SequenceNumber>1331</SequenceNumber>
+    <CreationDate>2017-09-18T12:44:29+10:00</CreationDate>
+    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <RowStatus>A</RowStatus>
+    <FromDate>2017-09-19T00:00:00+10:00</FromDate>
+    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <Code>NPG1</Code>
+    <Description>Parkes Solar Farm</Description>
+  </Row>
+  <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
+    <SequenceNumber>1332</SequenceNumber>
+    <CreationDate>2017-09-18T12:46:52+10:00</CreationDate>
+    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <RowStatus>A</RowStatus>
+    <FromDate>2017-09-19T00:00:00+10:00</FromDate>
+    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <Code>NGG1</Code>
+    <Description>Griffith Solar Farm</Description>
+  </Row>
+  <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
+    <SequenceNumber>1333</SequenceNumber>
+    <CreationDate>2017-09-18T12:48:11+10:00</CreationDate>
+    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <RowStatus>A</RowStatus>
+    <FromDate>2017-09-19T00:00:00+10:00</FromDate>
+    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <Code>QCBB</Code>
+    <Description>Columboola 132</Description>
+  </Row>
+  <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
+    <SequenceNumber>1334</SequenceNumber>
+    <CreationDate>2017-09-19T11:48:00+10:00</CreationDate>
+    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <RowStatus>A</RowStatus>
+    <FromDate>2017-09-20T00:00:00+10:00</FromDate>
+    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <Code>AMS1</Code>
+    <Description>Mugga Lane SF at Gilmore</Description>
+  </Row>
+  <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
+    <SequenceNumber>1335</SequenceNumber>
+    <CreationDate>2017-09-19T11:48:57+10:00</CreationDate>
+    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <RowStatus>A</RowStatus>
+    <FromDate>2017-09-20T00:00:00+10:00</FromDate>
+    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <Code>ARS1</Code>
+    <Description>Royalla Solar Farm at Theodore</Description>
   </Row>
   <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
     <SequenceNumber>3585</SequenceNumber>
@@ -12834,10 +13274,10 @@
   <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
     <SequenceNumber>4939</SequenceNumber>
     <CreationDate>2013-04-23T14:25:28+10:00</CreationDate>
-    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <MaintenanceDate>2016-05-31T11:21:36+10:00</MaintenanceDate>
     <RowStatus>A</RowStatus>
     <FromDate>2013-04-23T00:00:00+10:00</FromDate>
-    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <ToDate>2016-06-30T00:00:00+10:00</ToDate>
     <Code>VSOM</Code>
     <Description>South Morang - Somerton PS 66</Description>
   </Row>
@@ -13061,8 +13501,468 @@
     <Code>NMNP</Code>
     <Description>Munmorah 33</Description>
   </Row>
+  <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
+    <SequenceNumber>6103</SequenceNumber>
+    <CreationDate>2015-05-15T15:00:04+10:00</CreationDate>
+    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <RowStatus>I</RowStatus>
+    <FromDate>2015-05-17T00:00:00+10:00</FromDate>
+    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <Code>NMPP</Code>
+    <Description>Mt Piper 132</Description>
+  </Row>
+  <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
+    <SequenceNumber>6457</SequenceNumber>
+    <CreationDate>2015-06-25T08:53:47+10:00</CreationDate>
+    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <RowStatus>A</RowStatus>
+    <FromDate>2015-06-25T00:00:00+10:00</FromDate>
+    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <Code>SCND</Code>
+    <Description>Canunda WF at Snuggery 33</Description>
+  </Row>
+  <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
+    <SequenceNumber>6469</SequenceNumber>
+    <CreationDate>2015-07-06T12:06:55+10:00</CreationDate>
+    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <RowStatus>A</RowStatus>
+    <FromDate>2015-07-01T00:00:00+10:00</FromDate>
+    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <Code>NBK1</Code>
+    <Description>Broken Hill Solar at Broken Hill 22</Description>
+  </Row>
+  <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
+    <SequenceNumber>6473</SequenceNumber>
+    <CreationDate>2015-07-10T10:41:58+10:00</CreationDate>
+    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <RowStatus>I</RowStatus>
+    <FromDate>2015-07-01T00:00:00+10:00</FromDate>
+    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <Code>NSHL</Code>
+    <Description>Kangaroo Valley - Bendeela (Shoalhaven) 330</Description>
+  </Row>
+  <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
+    <SequenceNumber>6486</SequenceNumber>
+    <CreationDate>2015-08-04T11:02:08+10:00</CreationDate>
+    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <RowStatus>A</RowStatus>
+    <FromDate>2015-07-16T00:00:00+10:00</FromDate>
+    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <Code>SMUP</Code>
+    <Description>Munno Para 66</Description>
+  </Row>
+  <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
+    <SequenceNumber>6535</SequenceNumber>
+    <CreationDate>2015-09-18T15:58:30+10:00</CreationDate>
+    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <RowStatus>A</RowStatus>
+    <FromDate>2015-08-07T00:00:00+10:00</FromDate>
+    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <Code>NMR4</Code>
+    <Description>Moree Solar Farm at Moree 66</Description>
+  </Row>
+  <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
+    <SequenceNumber>6682</SequenceNumber>
+    <CreationDate>2016-02-11T13:53:22+10:00</CreationDate>
+    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <RowStatus>A</RowStatus>
+    <FromDate>2016-02-11T00:00:00+10:00</FromDate>
+    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <Code>QRMA</Code>
+    <Description>Roma PS at Columboola 132</Description>
+  </Row>
+  <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
+    <SequenceNumber>6725</SequenceNumber>
+    <CreationDate>2016-03-21T14:15:42+10:00</CreationDate>
+    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <RowStatus>I</RowStatus>
+    <FromDate>2016-02-28T00:00:00+10:00</FromDate>
+    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <Code>NCB1</Code>
+    <Description>Canterbury 132</Description>
+  </Row>
+  <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
+    <SequenceNumber>6726</SequenceNumber>
+    <CreationDate>2016-03-21T14:17:07+10:00</CreationDate>
+    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <RowStatus>I</RowStatus>
+    <FromDate>2016-02-28T00:00:00+10:00</FromDate>
+    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <Code>NPH1</Code>
+    <Description>Peakhurst 132</Description>
+  </Row>
+  <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
+    <SequenceNumber>6744</SequenceNumber>
+    <CreationDate>2016-04-19T14:45:13+10:00</CreationDate>
+    <MaintenanceDate>2016-08-22T14:22:58+10:00</MaintenanceDate>
+    <RowStatus>A</RowStatus>
+    <FromDate>2016-04-15T00:00:00+10:00</FromDate>
+    <ToDate>2016-08-22T00:00:00+10:00</ToDate>
+    <Code>TBBC</Code>
+    <Description>Bell Bay - Diesel Generation 110</Description>
+  </Row>
+  <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
+    <SequenceNumber>6758</SequenceNumber>
+    <CreationDate>2016-05-20T14:35:26+10:00</CreationDate>
+    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <RowStatus>I</RowStatus>
+    <FromDate>2016-05-20T00:00:00+10:00</FromDate>
+    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <Code>NRED</Code>
+    <Description>Redbank PS 132</Description>
+  </Row>
+  <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
+    <SequenceNumber>6760</SequenceNumber>
+    <CreationDate>2016-05-26T16:29:52+10:00</CreationDate>
+    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <RowStatus>A</RowStatus>
+    <FromDate>2016-05-27T00:00:00+10:00</FromDate>
+    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <Code>NWW7</Code>
+    <Description>Wallerawang 66 (Endeavour Energy)</Description>
+  </Row>
+  <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
+    <SequenceNumber>6762</SequenceNumber>
+    <CreationDate>2016-05-31T11:21:36+10:00</CreationDate>
+    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <RowStatus>A</RowStatus>
+    <FromDate>2016-07-01T00:00:00+10:00</FromDate>
+    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <Code>VSOM</Code>
+    <Description>Somerton PS at South Morang 66</Description>
+  </Row>
+  <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
+    <SequenceNumber>7155</SequenceNumber>
+    <CreationDate>2016-08-22T14:22:58+10:00</CreationDate>
+    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <RowStatus>I</RowStatus>
+    <FromDate>2016-08-23T00:00:00+10:00</FromDate>
+    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <Code>TBBC</Code>
+    <Description>Bell Bay - Diesel Generation 110</Description>
+  </Row>
+  <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
+    <SequenceNumber>7157</SequenceNumber>
+    <CreationDate>2016-08-29T12:09:16+10:00</CreationDate>
+    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <RowStatus>A</RowStatus>
+    <FromDate>2016-02-02T00:00:00+10:00</FromDate>
+    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <Code>NCMA</Code>
+    <Description>Cooma 66</Description>
+  </Row>
+  <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
+    <SequenceNumber>7158</SequenceNumber>
+    <CreationDate>2016-08-29T12:09:46+10:00</CreationDate>
+    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <RowStatus>A</RowStatus>
+    <FromDate>2016-02-02T00:00:00+10:00</FromDate>
+    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <Code>NCM2</Code>
+    <Description>Cooma 66 (SPI)</Description>
+  </Row>
+  <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
+    <SequenceNumber>7161</SequenceNumber>
+    <CreationDate>2016-09-01T11:40:30+10:00</CreationDate>
+    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <RowStatus>I</RowStatus>
+    <FromDate>2016-09-01T00:00:00+10:00</FromDate>
+    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <Code>SNPS</Code>
+    <Description>Northern PS 275</Description>
+  </Row>
+  <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
+    <SequenceNumber>7163</SequenceNumber>
+    <CreationDate>2016-09-01T13:28:47+10:00</CreationDate>
+    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <RowStatus>I</RowStatus>
+    <FromDate>2016-09-01T00:00:00+10:00</FromDate>
+    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <Code>SPPS</Code>
+    <Description>Playford PS 275</Description>
+  </Row>
+  <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
+    <SequenceNumber>7756</SequenceNumber>
+    <CreationDate>2017-06-27T15:30:06+10:00</CreationDate>
+    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <RowStatus>I</RowStatus>
+    <FromDate>2017-02-21T00:00:00+10:00</FromDate>
+    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <Code>NMN1</Code>
+    <Description>Munmorah 330</Description>
+  </Row>
+  <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
+    <SequenceNumber>7786</SequenceNumber>
+    <CreationDate>2017-09-04T15:04:39+10:00</CreationDate>
+    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <RowStatus>A</RowStatus>
+    <FromDate>2017-09-04T00:00:00+10:00</FromDate>
+    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <Code>ACVC</Code>
+    <Description>Civic</Description>
+  </Row>
+  <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
+    <SequenceNumber>7788</SequenceNumber>
+    <CreationDate>2017-10-02T08:07:51+10:00</CreationDate>
+    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <RowStatus>A</RowStatus>
+    <FromDate>2017-10-03T00:00:00+10:00</FromDate>
+    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <Code>SMTL</Code>
+    <Description>Hornsdale Battery Farm</Description>
+  </Row>
+  <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
+    <SequenceNumber>7791</SequenceNumber>
+    <CreationDate>2017-10-16T09:33:38+10:00</CreationDate>
+    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <RowStatus>A</RowStatus>
+    <FromDate>2017-10-17T00:00:00+10:00</FromDate>
+    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <Code>VHOG</Code>
+    <Description>Hosham 66 (Generation)</Description>
+  </Row>
+  <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
+    <SequenceNumber>7792</SequenceNumber>
+    <CreationDate>2017-10-23T14:13:04+10:00</CreationDate>
+    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <RowStatus>A</RowStatus>
+    <FromDate>2017-10-24T00:00:00+10:00</FromDate>
+    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <Code>NHD2</Code>
+    <Description>Holroyd Generation</Description>
+  </Row>
+  <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
+    <SequenceNumber>7815</SequenceNumber>
+    <CreationDate>2017-09-28T10:39:25+10:00</CreationDate>
+    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <RowStatus>A</RowStatus>
+    <FromDate>2017-10-04T00:00:00+10:00</FromDate>
+    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <Code>NLDT</Code>
+    <Description>Leichhardt Zone SS (Ausgrid)</Description>
+  </Row>
+  <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
+    <SequenceNumber>7816</SequenceNumber>
+    <CreationDate>2017-09-28T10:39:46+10:00</CreationDate>
+    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <RowStatus>I</RowStatus>
+    <FromDate>2017-09-29T00:00:00+10:00</FromDate>
+    <ToDate>2017-10-03T00:00:00+10:00</ToDate>
+    <Code>NLDT</Code>
+    <Description>Leichhardt Zone SS (Ausgrid)</Description>
+  </Row>
+  <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
+    <SequenceNumber>7837</SequenceNumber>
+    <CreationDate>2017-10-11T09:21:49+10:00</CreationDate>
+    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <RowStatus>A</RowStatus>
+    <FromDate>2017-10-11T00:00:00+10:00</FromDate>
+    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <Code>SPAG</Code>
+    <Description>Para 66 (Generation)</Description>
+  </Row>
+  <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
+    <SequenceNumber>7838</SequenceNumber>
+    <CreationDate>2017-10-11T09:22:35+10:00</CreationDate>
+    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <RowStatus>A</RowStatus>
+    <FromDate>2017-10-11T00:00:00+10:00</FromDate>
+    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <Code>SMVG</Code>
+    <Description>Morphett Vale East 66 (Generation)</Description>
+  </Row>
+  <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
+    <SequenceNumber>7839</SequenceNumber>
+    <CreationDate>2017-11-23T08:29:03+10:00</CreationDate>
+    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <RowStatus>A</RowStatus>
+    <FromDate>2017-11-23T00:00:00+10:00</FromDate>
+    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <Code>NSAP</Code>
+    <Description>Sapphire WF</Description>
+  </Row>
+  <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
+    <SequenceNumber>7840</SequenceNumber>
+    <CreationDate>2017-12-19T13:46:27+10:00</CreationDate>
+    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <RowStatus>A</RowStatus>
+    <FromDate>2017-12-19T00:00:00+10:00</FromDate>
+    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <Code>NWLS</Code>
+    <Description>Wellington (Dubbo Solar Hub) 132</Description>
+  </Row>
+  <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
+    <SequenceNumber>7841</SequenceNumber>
+    <CreationDate>2018-01-09T07:49:14+10:00</CreationDate>
+    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <RowStatus>A</RowStatus>
+    <FromDate>2018-01-08T00:00:00+10:00</FromDate>
+    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <Code>QCLA</Code>
+    <Description>Clare (Generation)</Description>
+  </Row>
+  <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
+    <SequenceNumber>7842</SequenceNumber>
+    <CreationDate>2018-01-09T08:07:15+10:00</CreationDate>
+    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <RowStatus>A</RowStatus>
+    <FromDate>2018-01-08T00:00:00+10:00</FromDate>
+    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <Code>NMLS</Code>
+    <Description>Manildra (Generation)</Description>
+  </Row>
+  <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
+    <SequenceNumber>7843</SequenceNumber>
+    <CreationDate>2018-01-31T08:47:53+10:00</CreationDate>
+    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <RowStatus>A</RowStatus>
+    <FromDate>2018-01-31T00:00:00+10:00</FromDate>
+    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <Code>NBKW</Code>
+    <Description>Broken Hill (Wind Farm)</Description>
+  </Row>
+  <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
+    <SequenceNumber>7844</SequenceNumber>
+    <CreationDate>2018-02-16T10:59:56+10:00</CreationDate>
+    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <RowStatus>A</RowStatus>
+    <FromDate>2018-02-20T00:00:00+10:00</FromDate>
+    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <Code>QBRS</Code>
+    <Description>Darling Downs Solar</Description>
+  </Row>
+  <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
+    <SequenceNumber>7845</SequenceNumber>
+    <CreationDate>2018-02-22T15:06:22+10:00</CreationDate>
+    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <RowStatus>A</RowStatus>
+    <FromDate>2018-02-23T00:00:00+10:00</FromDate>
+    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <Code>VKGS</Code>
+    <Description>Kerang Solar (66)</Description>
+  </Row>
+  <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
+    <SequenceNumber>7846</SequenceNumber>
+    <CreationDate>2018-03-14T15:12:58+10:00</CreationDate>
+    <MaintenanceDate>2018-03-21T08:28:04+10:00</MaintenanceDate>
+    <RowStatus>A</RowStatus>
+    <FromDate>2018-03-14T00:00:00+10:00</FromDate>
+    <ToDate>2018-03-20T00:00:00+10:00</ToDate>
+    <Code>QSLD</Code>
+    <Description>Springlands (33)</Description>
+  </Row>
+  <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
+    <SequenceNumber>7847</SequenceNumber>
+    <CreationDate>2018-03-21T08:24:53+10:00</CreationDate>
+    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <RowStatus>A</RowStatus>
+    <FromDate>2018-03-21T00:00:00+10:00</FromDate>
+    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <Code>QSLS</Code>
+    <Description>Whitsunday 33</Description>
+  </Row>
+  <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
+    <SequenceNumber>7848</SequenceNumber>
+    <CreationDate>2018-03-21T13:56:40+10:00</CreationDate>
+    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <RowStatus>A</RowStatus>
+    <FromDate>2018-03-18T00:00:00+10:00</FromDate>
+    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <Code>NRKD</Code>
+    <Description>Rockdale (Ausgrid)</Description>
+  </Row>
+  <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
+    <SequenceNumber>7849</SequenceNumber>
+    <CreationDate>2018-03-26T08:42:23+10:00</CreationDate>
+    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <RowStatus>A</RowStatus>
+    <FromDate>2018-03-27T00:00:00+10:00</FromDate>
+    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <Code>VTG6</Code>
+    <Description>Terang Generation</Description>
+  </Row>
+  <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
+    <SequenceNumber>7850</SequenceNumber>
+    <CreationDate>2018-04-06T09:31:13+10:00</CreationDate>
+    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <RowStatus>A</RowStatus>
+    <FromDate>2018-04-06T00:00:00+10:00</FromDate>
+    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <Code>SBEM</Code>
+    <Description>Emeroo</Description>
+  </Row>
+  <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
+    <SequenceNumber>7851</SequenceNumber>
+    <CreationDate>2018-04-10T14:30:09+10:00</CreationDate>
+    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <RowStatus>A</RowStatus>
+    <FromDate>2018-04-11T00:00:00+10:00</FromDate>
+    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <Code>SWGL</Code>
+    <Description>Willalo (275)</Description>
+  </Row>
+  <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
+    <SequenceNumber>7852</SequenceNumber>
+    <CreationDate>2018-04-17T08:49:13+10:00</CreationDate>
+    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <RowStatus>A</RowStatus>
+    <FromDate>2018-04-17T00:00:00+10:00</FromDate>
+    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <Code>NBOD</Code>
+    <Description>Bodangora</Description>
+  </Row>
+  <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
+    <SequenceNumber>7853</SequenceNumber>
+    <CreationDate>2018-04-24T11:33:17+10:00</CreationDate>
+    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <RowStatus>A</RowStatus>
+    <FromDate>2018-04-24T00:00:00+10:00</FromDate>
+    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <Code>SDAN</Code>
+    <Description>Dalrymple North - BESS</Description>
+  </Row>
+  <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
+    <SequenceNumber>7908</SequenceNumber>
+    <CreationDate>2017-12-20T09:23:02+10:00</CreationDate>
+    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <RowStatus>A</RowStatus>
+    <FromDate>2017-12-22T00:00:00+10:00</FromDate>
+    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <Code>QEMS</Code>
+    <Description>Kemmis 66</Description>
+  </Row>
+  <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
+    <SequenceNumber>8003</SequenceNumber>
+    <CreationDate>2018-01-25T09:51:12+10:00</CreationDate>
+    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <RowStatus>A</RowStatus>
+    <FromDate>2018-01-25T00:00:00+10:00</FromDate>
+    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <Code>QROG</Code>
+    <Description>Ross 132 (Generation)</Description>
+  </Row>
+  <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
+    <SequenceNumber>8112</SequenceNumber>
+    <CreationDate>2018-03-05T08:37:07+10:00</CreationDate>
+    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <RowStatus>A</RowStatus>
+    <FromDate>2018-03-06T00:00:00+10:00</FromDate>
+    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <Code>QLLV</Code>
+    <Description>Lilyvale (132)</Description>
+  </Row>
+  <Row xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ase:TransmissionNodeIdentifierRow">
+    <SequenceNumber>8302</SequenceNumber>
+    <CreationDate>2018-03-21T08:28:04+10:00</CreationDate>
+    <MaintenanceDate>9999-12-31T00:00:00+10:00</MaintenanceDate>
+    <RowStatus>A</RowStatus>
+    <FromDate>2018-03-21T00:00:00+10:00</FromDate>
+    <ToDate>9999-12-31T00:00:00+10:00</ToDate>
+    <Code>QSLD</Code>
+    <Description>Hamilton (33)</Description>
+  </Row>
 </ReplicationBlock>
-        <Event severity="Information"> 
+        <Event severity="Information">
           <Code>0</Code>
           <Explanation>Success</Explanation>
         </Event>

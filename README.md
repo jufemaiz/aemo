@@ -423,3 +423,19 @@ AEMO::MSATS.nmi_detail(nmi, options = {})
 
 * :type
 * :reason
+
+# Maintenance
+
+## Updating loss factors
+
+1. Connect to AEMO via VPN (tip: be a market participant in order to unlock this step)
+2. Log in to [MSATS](https://msats.prod.nemnet.net.au/)
+3. Navigate to Reports and Alerts » CATS » C1 - Data Replication Resynchronisation Report - Data Replication Resynchronisation Report (C1)
+4. Export both the CATS_DLF_CODES and CATS_TNI_CODES tables (from 1-Jan-1970 to the current date, both with 30,000 max rows)
+5. Wait
+6. Navigate to Participant Outbox (you have new messages link)
+7. Get the file!
+8. `cd lib/data && ruby xml_to_json.rb`
+9. Add tests for your new FY to spec/lib/aemo/nmi_spec.rb
+10. `rspec` - note that AEMO can retroactively change factors so if there is an old failing test double check the json to make sure it's not AEMO's fault.
+11. Commit, push & PR

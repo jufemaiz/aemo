@@ -210,6 +210,32 @@ describe AEMO::NMI do
         expect(@nmi.dlfc_values.class).to eq(Array)
       end
     end
+    it 'has historical values for DLF values' do
+      valid_dlfc_values = [
+        { datetime: '2003-06-01T00:00:00+1000', value: 1.0713 },
+        { datetime: '2004-06-01T00:00:00+1000', value: 1.0913 },
+        { datetime: '2005-06-01T00:00:00+1000', value: 1.0933 },
+        { datetime: '2006-06-01T00:00:00+1000', value: 1.0933 },
+        { datetime: '2007-06-01T00:00:00+1000', value: 1.1053 },
+        { datetime: '2008-06-01T00:00:00+1000', value: 1.103 },
+        { datetime: '2009-06-01T00:00:00+1000', value: 1.0961 },
+        { datetime: '2010-06-01T00:00:00+1000', value: 1.0918 },
+        { datetime: '2011-06-01T00:00:00+1000', value: 1.0996 },
+        { datetime: '2012-06-01T00:00:00+1000', value: 1.0941 },
+        { datetime: '2013-06-01T00:00:00+1000', value: 1.0996 },
+        { datetime: '2014-06-01T00:00:00+1000', value: 1.0912 },
+        { datetime: '2015-06-01T00:00:00+1000', value: 1.0924 },
+        { datetime: '2016-06-01T00:00:00+1000', value: 1.0869 },
+        { datetime: '2017-06-01T00:00:00+1000', value: 1.0815 },
+        { datetime: '2018-06-01T00:00:00+1000', value: 1.0795 }
+      ]
+
+      valid_dlfc_values.each do |t|
+        Timecop.freeze(t[:datetime]) do
+          expect(@nmi.dlfc_value(DateTime.now)).to eq t[:value]
+        end
+      end
+    end
   end
 
   describe 'transmission node identifiers and loss factors' do
@@ -230,6 +256,21 @@ describe AEMO::NMI do
     it 'has TNI values' do
       Timecop.freeze('2016-06-01T00:00:00+1000') do
         expect(@nmi.tni_values.class).to eq(Array)
+      end
+    end
+    it 'has historical values for TNI values' do
+      valid_tni_values = [
+        { datetime: '2014-06-01T00:00:00+1000', value: 1.0383 },
+        { datetime: '2015-06-01T00:00:00+1000', value: 1.0571 },
+        { datetime: '2016-06-01T00:00:00+1000', value: 1.036 },
+        { datetime: '2017-06-01T00:00:00+1000', value: 0.9879 },
+        { datetime: '2018-06-01T00:00:00+1000', value: 0.9592 }
+      ]
+
+      valid_tni_values.each do |t|
+        Timecop.freeze(t[:datetime]) do
+          expect(@nmi.tni_value(DateTime.now)).to eq t[:value]
+        end
       end
     end
   end
