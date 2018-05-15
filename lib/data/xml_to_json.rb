@@ -24,8 +24,8 @@ CSV.parse(file_contents, headers: true, converters: :numeric).each do |row|
   row.headers.select { |x| x =~ /^FY\d{2}$/ }.sort.reverse.each do |fin_year|
     year = "20#{fin_year.match(/FY(\d{2})/)[1]}".to_i
     @mlf_data[row['TNI']][:loss_factors] << {
-      start: DateTime.parse("#{year - 1}-07-01T00:00:00+1000"),
-      finish: DateTime.parse("#{year}-07-01T00:00:00+1000"),
+      start: Time.parse("#{year - 1}-07-01T00:00:00+1000"),
+      finish: Time.parse("#{year}-07-01T00:00:00+1000"),
       value: row[fin_year]
     }
   end
@@ -62,8 +62,8 @@ end
       unless @mlf_data[code].nil?
         output_data_instance[:mlf_data] = @mlf_data[code].deep_dup
         output_data_instance[:mlf_data][:loss_factors].reject! do |x|
-          DateTime.parse(output_data_instance['ToDate']) < x[:start] ||
-            DateTime.parse(output_data_instance['FromDate']) >= x[:finish]
+          Time.parse(output_data_instance['ToDate']) < x[:start] ||
+            Time.parse(output_data_instance['FromDate']) >= x[:finish]
         end
         puts 'output_data_instance[:mlf_data][:loss_factors]: ' \
              "#{output_data_instance[:mlf_data][:loss_factors].inspect}"

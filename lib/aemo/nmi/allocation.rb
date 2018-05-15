@@ -2,11 +2,18 @@
 
 module AEMO
   class NMI
+    # AEMO::NMI::Allocation
+    #
+    # @author Joel Courtney
+    # @author Stuart Auld
+    # @abstract An abstraction of NMI Allocation groups that kind of represents networks but not always.
+    # @since 0.3.0
     class Allocation
       # NMI_ALLOCATIONS as per AEMO Documentation at
       # hhttps://www.aemo.com.au/-/media/Files/Electricity/NEM/Retail_and_Metering/Metering-Procedures/NMI-Allocation-List.pdf
       # Last updated 2017-08-01
-      ALLOCATIONS = [{
+      ALLOCATIONS = [
+        {
           participant_id: 'ACTEWP',
           title: 'Actew Distribution Ltd and Jemena Networks (ACT) Pty Ltd',
           friendly_title: 'ACTEWAgl',
@@ -15,7 +22,8 @@ module AEMO
           includes: [/^(NGGG[A-HJ-NP-VX-Z\d][A-HJ-NP-Z\d]{5})$/,
                      /^(7001\d{6})$/],
           excludes: []
-      },{
+        },
+        {
           participant_id: 'CNRGYP',
           title: 'Essential Energy',
           friendly_title: 'Essential Energy',
@@ -30,7 +38,8 @@ module AEMO
                      /^(4204\d{6})$/,
                      /^(4407\d{6})$/],
           excludes: []
-        },{
+        },
+        {
           participant_id: 'ENERGYAP',
           title: 'Ausgrid',
           friendly_title: 'Ausgrid',
@@ -39,7 +48,8 @@ module AEMO
           includes: [/^(NCCC[A-HJ-NP-VX-Z\d][A-HJ-NP-Z\d]{5})$/,
                      /^(410[234]\d{6})$/],
           excludes: []
-        },{
+        },
+        {
           participant_id: 'INTEGP',
           title: 'Endeavour Energy',
           friendly_title: 'Endeavour Energy',
@@ -48,7 +58,8 @@ module AEMO
           includes: [/^(NEEE[A-HJ-NP-VX-Z\d][A-HJ-NP-Z\d]{5})$/,
                      /^(431\d{7})$/],
           excludes: []
-        },{
+        },
+        {
           participant_id: 'TRANSGP',
           title: 'TransGrid',
           friendly_title: 'TransGrid',
@@ -57,7 +68,8 @@ module AEMO
           includes: [/^(NTTT[A-HJ-NP-VX-Z\d][A-HJ-NP-Z\d]{5})$/,
                      /^(460810[0-8]\d{3})$/],
           excludes: []
-        },{
+        },
+        {
           participant_id: 'SNOWY',
           title: 'Snowy Hydro Ltd',
           friendly_title: 'Snowy Hydro',
@@ -65,7 +77,8 @@ module AEMO
           type: 'electricity',
           includes: [/^(4708109\d{3})$/],
           excludes: []
-        },{
+        },
+        {
           participant_id: 'NT_RESERVED',
           title: 'Northern Territory Reserved Block',
           friendly_title: 'Northern Territory Reserved Block',
@@ -73,7 +86,8 @@ module AEMO
           type: 'electricity',
           includes: [/^(250\d{7})$/],
           excludes: []
-        },{
+        },
+        {
           participant_id: 'ERGONETP',
           title: 'Ergon Energy Corporation',
           friendly_title: 'Ergon Energy',
@@ -87,7 +101,8 @@ module AEMO
                      /^(QGGG[A-HJ-NP-VX-Z\d][A-HJ-NP-Z\d]{5})$/,
                      /^(30\d{8})$/],
           excludes: []
-        },{
+        },
+        {
           participant_id: 'ENERGEXP',
           title: 'ENERGEX Limited',
           friendly_title: 'Energex',
@@ -96,7 +111,8 @@ module AEMO
           includes: [/^(QB\d{2}[A-HJ-NP-VX-Z\d][A-HJ-NP-Z\d]{5})$/,
                      /^(31\d{8})$/],
           excludes: []
-        },{
+        },
+        {
           participant_id: 'PLINKP',
           title: 'Qld Electricity Transmission Corp (Powerlink)',
           friendly_title: 'Powerlink',
@@ -105,7 +121,8 @@ module AEMO
           includes: [/^(Q[A-HJ-NP-Z\d]{3}W[A-HJ-NP-Z\d]{5})$/,
                      /^(320200\d{4})$/],
           excludes: []
-        },{
+        },
+        {
           participant_id: 'UMPLP',
           title: 'SA Power Networks',
           friendly_title: 'SA Power Networks',
@@ -115,7 +132,8 @@ module AEMO
                      /^(SASMPL[\d]{4})$/,
                      /^(200[12]\d{6})$/],
           excludes: []
-        },{
+        },
+        {
           participant_id: 'ETSATP',
           title: 'ElectraNet SA',
           friendly_title: 'ElectraNet SA',
@@ -124,7 +142,8 @@ module AEMO
           includes: [/^(S[A-HJ-NP-Z\d]{3}W[A-HJ-NP-Z\d]{5})$/,
                      /^(210200\d{4})$/],
           excludes: []
-        },{
+        },
+        {
           participant_id: 'AURORAP',
           title: 'TasNetworks',
           friendly_title: 'TasNetworks',
@@ -134,7 +153,8 @@ module AEMO
                      /^(8000\d{6})$/,
                      /^(8590[23]\d{5})$/],
           excludes: []
-        },{
+        },
+        {
           participant_id: 'TRANSEND',
           title: 'TasNetworks',
           friendly_title: 'TasNetworks',
@@ -142,7 +162,8 @@ module AEMO
           type: 'electricity',
           includes: [/^(T[A-HJ-NP-Z\d]{3}W[A-HJ-NP-Z\d]{5})$/],
           excludes: []
-        },{
+        },
+        {
           participant_id: 'CITIPP',
           title: 'CitiPower',
           friendly_title: 'CitiPower',
@@ -151,7 +172,8 @@ module AEMO
           includes: [/^(VAAA[A-HJ-NP-VX-Z\d][A-HJ-NP-Z\d]{5})$/,
                      /^(610[23]\d{6})$/],
           excludes: []
-        },{
+        },
+        {
           participant_id: 'EASTERN',
           title: 'SP AusNet',
           friendly_title: 'SP AusNet DNSP',
@@ -160,7 +182,8 @@ module AEMO
           includes: [/^(VBBB[A-HJ-NP-VX-Z\d][A-HJ-NP-Z\d]{5})$/,
                      /^(630[56]\d{6})$/],
           excludes: []
-        },{
+        },
+        {
           participant_id: 'POWCP',
           title: 'PowerCor Australia',
           friendly_title: 'PowerCor',
@@ -169,7 +192,8 @@ module AEMO
           includes: [/^(VCCC[A-HJ-NP-VX-Z\d][A-HJ-NP-Z\d]{5})$/,
                      /^(620[34]\d{6})$/],
           excludes: []
-        },{
+        },
+        {
           participant_id: 'SOLARISP',
           title: 'Jemena  Electricity Networks (VIC)',
           friendly_title: 'Jemena',
@@ -178,7 +202,8 @@ module AEMO
           includes: [/^(VDDD[A-HJ-NP-VX-Z\d][A-HJ-NP-Z\d]{5})$/,
                      /^(6001\d{6})$/],
           excludes: []
-        },{
+        },
+        {
           participant_id: 'UNITED',
           title: 'United Energy Distribution',
           friendly_title: 'United Energy',
@@ -187,7 +212,8 @@ module AEMO
           includes: [/^(VEEE[A-HJ-NP-VX-Z\d][A-HJ-NP-Z\d]{5})$/,
                      /^(640[78]\d{6})$/],
           excludes: []
-        },{
+        },
+        {
           participant_id: 'GPUPP',
           title: 'SP AusNet TNSP',
           friendly_title: 'SP AusNet TNSP',
@@ -196,7 +222,8 @@ module AEMO
           includes: [/^(V[A-HJ-NP-Z\d]{3}W[A-HJ-NP-Z\d]{5})$/,
                      /^(650900\d{4})$/],
           excludes: []
-        },{
+        },
+        {
           participant_id: 'WESTERNPOWER',
           title: 'Western Power',
           friendly_title: 'Western Power',
@@ -207,7 +234,8 @@ module AEMO
                      /^(801\d{7})$/,
                      /^(8020\d{6})$/],
           excludes: []
-        },{
+        },
+        {
           participant_id: 'HORIZONPOWER',
           title: 'Horizon Power',
           friendly_title: 'Horizon Power',
@@ -215,7 +243,8 @@ module AEMO
           type: 'electricity',
           includes: [/^(8021\d{6})$/],
           excludes: []
-        },{
+        },
+        {
           participant_id: 'GAS_NSW',
           title: 'GAS NSW',
           friendly_title: 'GAS NSW',
@@ -223,7 +252,8 @@ module AEMO
           type: 'gas',
           includes: [/^(52\d{8})$/],
           excludes: []
-        },{
+        },
+        {
           participant_id: 'GAS_VIC',
           title: 'GAS VIC',
           friendly_title: 'GAS VIC',
@@ -231,7 +261,8 @@ module AEMO
           type: 'gas',
           includes: [/^(53\d{8})$/],
           excludes: []
-        },{
+        },
+        {
           participant_id: 'GAS_QLD',
           title: 'GAS QLD',
           friendly_title: 'GAS QLD',
@@ -239,7 +270,8 @@ module AEMO
           type: 'gas',
           includes: [/^(54\d{8})$/],
           excludes: []
-        },{
+        },
+        {
           participant_id: 'GAS_SA',
           title: 'GAS SA',
           friendly_title: 'GAS SA',
@@ -247,7 +279,8 @@ module AEMO
           type: 'gas',
           includes: [/^(55\d{8})$/],
           excludes: []
-        },{
+        },
+        {
           participant_id: 'GAS_WA',
           title: 'GAS WA',
           friendly_title: 'GAS WA',
@@ -255,7 +288,8 @@ module AEMO
           type: 'gas',
           includes: [/^(56\d{8})$/],
           excludes: []
-        },{
+        },
+        {
           participant_id: 'GAS_TAS',
           title: 'GAS TAS',
           friendly_title: 'GAS TAS',
@@ -263,7 +297,8 @@ module AEMO
           type: 'gas',
           includes: [/^(57\d{8})$/],
           excludes: []
-        },{
+        },
+        {
           participant_id: 'FEDAIRPORTS',
           title: 'Federal Airports Corporation (Sydney Airport)',
           friendly_title: 'Sydney Airport',
@@ -271,7 +306,8 @@ module AEMO
           type: 'electricity',
           includes: [/^(NJJJNR[A-HJ-NP-Z\d]{4})$/],
           excludes: []
-        },{
+        },
+        {
           participant_id: 'EXEMPTNETWORKS',
           title: 'Exempt Networks - various',
           friendly_title: 'Exempt Networks - various',
@@ -279,7 +315,8 @@ module AEMO
           includes: [/^(NKKK[A-HJ-NP-VX-Z\d][A-HJ-NP-Z\d]{5})$/,
                      /^(7102\d{6})$/],
           excludes: []
-        },{
+        },
+        {
           participant_id: 'AEMORESERVED',
           title: 'AEMO Reserved',
           friendly_title: 'AEMO Reserved',
@@ -300,8 +337,8 @@ module AEMO
                     :title,
                     :type
 
-      alias :state :region
-      alias :state= :region=
+      alias state region
+      alias state= region=
 
       class << self
         include Enumerable
@@ -339,7 +376,7 @@ module AEMO
         end
       end
 
-      def initialize(title, type, opts={})
+      def initialize(title, type, opts = {})
         @title = title
         @type = parse_allocation_type(type)
         @identifier = opts.fetch(:identifier, title.upcase)
@@ -353,9 +390,7 @@ module AEMO
 
       def parse_allocation_type(type)
         type_sym = type.to_sym
-        unless SUPPORTED_TYPES.include? type_sym
-          raise AEMO::InvalidNMIAllocationType
-        end
+        raise AEMO::InvalidNMIAllocationType unless SUPPORTED_TYPES.include? type_sym
         type_sym
       rescue NoMethodError
         raise AEMO::InvalidNMIAllocationType

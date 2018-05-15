@@ -57,8 +57,6 @@ module AEMO
                   :meters, :roles, :data_streams
 
     class << self
-
-
       # A function to validate the NMI provided
       #
       # @param [String] nmi the nmi to be checked
@@ -87,7 +85,7 @@ module AEMO
         AEMO::NMI::Allocation.find_by_nmi(nmi)
       end
 
-      alias :allocation :network
+      alias allocation network
     end
 
     # Initialize a NMI file
@@ -100,9 +98,7 @@ module AEMO
     def initialize(nmi, options = {})
       raise ArgumentError, 'NMI is not a string' unless nmi.is_a?(String)
       raise ArgumentError, 'NMI is not 10 characters' unless nmi.length == 10
-      unless AEMO::NMI.valid_nmi?(nmi)
-        raise ArgumentError, 'NMI is not constructed with valid characters'
-      end
+      raise ArgumentError, 'NMI is not constructed with valid characters' unless AEMO::NMI.valid_nmi?(nmi)
 
       @nmi          = nmi
       @meters       = []
@@ -126,8 +122,8 @@ module AEMO
     def network
       AEMO::NMI.network(@nmi)
     end
-    
-    alias :allocation :network
+
+    alias allocation network
 
     # A function to calculate the checksum value for a given
     # National Meter Identifier
@@ -160,9 +156,7 @@ module AEMO
     #
     # @return [Hash] MSATS NMI Detail data
     def raw_msats_nmi_detail(options = {})
-      unless AEMO::MSATS.can_authenticate?
-        raise ArgumentError, 'MSATS has no authentication credentials'
-      end
+      raise ArgumentError, 'MSATS has no authentication credentials' unless AEMO::MSATS.can_authenticate?
       AEMO::MSATS.nmi_detail(@nmi, options)
     end
 
@@ -288,7 +282,7 @@ module AEMO
     # @param [DateTime, Time] datetime the date for the distribution loss factor
     #   value
     # @return [nil, float] the distribution loss factor value
-    def dlfc_value(datetime = DateTime.now)
+    def dlfc_value(datetime = Time.now)
       if @dlf.nil?
         raise 'No DLF set, ensure that you have set the value either via the' \
               'update_from_msats! function or manually'
@@ -296,8 +290,8 @@ module AEMO
       raise 'DLF is invalid' unless DLF_CODES.keys.include?(@dlf)
       raise 'Invalid date' unless [DateTime, Time].include?(datetime.class)
       possible_values = DLF_CODES[@dlf].select do |x|
-        DateTime.parse(x['FromDate']) <= datetime &&
-          DateTime.parse(x['ToDate']) >= datetime
+        Time.parse(x['FromDate']) <= datetime &&
+          Time.parse(x['ToDate']) >= datetime
       end
       if possible_values.empty?
         nil
@@ -311,13 +305,13 @@ module AEMO
     # @param [DateTime, Time] start the date for the distribution loss factor value
     # @param [DateTime, Time] finish the date for the distribution loss factor value
     # @return [Array(Hash)] array of hashes of start, finish and value
-    def dlfc_values(start = DateTime.now, finish = DateTime.now)
+    def dlfc_values(start = Time.now, finish = Time.now)
       raise 'No DLF set, ensure that you have set the value either via the update_from_msats! function or manually' if @dlf.nil?
       raise 'DLF is invalid' unless DLF_CODES.keys.include?(@dlf)
       raise 'Invalid start' unless [DateTime, Time].include?(start.class)
       raise 'Invalid finish' unless [DateTime, Time].include?(finish.class)
       raise 'start cannot be after finish' if start > finish
-      DLF_CODES[@dlf].reject { |x| start > DateTime.parse(x['ToDate']) || finish < DateTime.parse(x['FromDate']) }
+      DLF_CODES[@dlf].reject { |x| start > Time.parse(x['ToDate']) || finish < Time.parse(x['FromDate']) }
                      .map { |x| { 'start' => x['FromDate'], 'finish' => x['ToDate'], 'value' => x['Value'].to_f } }
     end
 
@@ -325,13 +319,13 @@ module AEMO
     #
     # @param [DateTime, Time] datetime the date for the distribution loss factor value
     # @return [nil, float] the transmission node identifier loss factor value
-    def tni_value(datetime = DateTime.now)
+    def tni_value(datetime = Time.now)
       raise 'No TNI set, ensure that you have set the value either via the update_from_msats! function or manually' if @tni.nil?
       raise 'TNI is invalid' unless TNI_CODES.keys.include?(@tni)
       raise 'Invalid date' unless [DateTime, Time].include?(datetime.class)
-      possible_values = TNI_CODES[@tni].select { |x| DateTime.parse(x['FromDate']) <= datetime && datetime <= DateTime.parse(x['ToDate']) }
+      possible_values = TNI_CODES[@tni].select { |x| Time.parse(x['FromDate']) <= datetime && datetime <= Time.parse(x['ToDate']) }
       return nil if possible_values.empty?
-      possible_values = possible_values.first['mlf_data']['loss_factors'].select { |x| DateTime.parse(x['start']) <= datetime && datetime <= DateTime.parse(x['finish']) }
+      possible_values = possible_values.first['mlf_data']['loss_factors'].select { |x| Time.parse(x['start']) <= datetime && datetime <= Time.parse(x['finish']) }
       return nil if possible_values.empty?
       possible_values.first['value'].to_f
     end
@@ -341,14 +335,14 @@ module AEMO
     # @param [DateTime, Time] start the date for the distribution loss factor value
     # @param [DateTime, Time] finish the date for the distribution loss factor value
     # @return [Array(Hash)] array of hashes of start, finish and value
-    def tni_values(start = DateTime.now, finish = DateTime.now)
+    def tni_values(start = Time.now, finish = Time.now)
       raise 'No TNI set, ensure that you have set the value either via the update_from_msats! function or manually' if @tni.nil?
       raise 'TNI is invalid' unless TNI_CODES.keys.include?(@tni)
       raise 'Invalid start' unless [DateTime, Time].include?(start.class)
       raise 'Invalid finish' unless [DateTime, Time].include?(finish.class)
       raise 'start cannot be after finish' if start > finish
       possible_values = TNI_CODES[@tni]
-                        .reject { |x| start > DateTime.parse(x['ToDate']) || finish < DateTime.parse(x['FromDate']) }
+                        .reject { |x| start > Time.parse(x['ToDate']) || finish < Time.parse(x['FromDate']) }
       return nil if possible_values.empty?
       possible_values.map { |x| x['mlf_data']['loss_factors'] }
     end
