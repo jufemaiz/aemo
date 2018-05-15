@@ -341,8 +341,12 @@ module AEMO
       raise 'Invalid start' unless [DateTime, Time].include?(start.class)
       raise 'Invalid finish' unless [DateTime, Time].include?(finish.class)
       raise 'start cannot be after finish' if start > finish
-      possible_values = TNI_CODES[@tni]
-                        .reject { |x| start > Time.parse(x['ToDate']) || finish < Time.parse(x['FromDate']) }
+
+      possible_values = TNI_CODES[@tni].reject do |tni_code|
+        start > Time.parse(tni_code['ToDate']) ||
+          finish < Time.parse(tni_code['FromDate'])
+      end
+
       return nil if possible_values.empty?
       possible_values.map { |x| x['mlf_data']['loss_factors'] }
     end
