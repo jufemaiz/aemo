@@ -19,8 +19,10 @@ module AEMO
           friendly_title: 'ACTEWAgl',
           region: 'ACT',
           type: 'electricity',
-          includes: [/^(NGGG[A-HJ-NP-VX-Z\d][A-HJ-NP-Z\d]{5})$/,
-                     /^(7001\d{6})$/],
+          includes: [
+            /^(NGGG[A-HJ-NP-VX-Z\d][A-HJ-NP-Z\d]{5})$/,
+            /^(7001\d{6})$/
+          ],
           excludes: []
         },
         {
@@ -29,14 +31,16 @@ module AEMO
           friendly_title: 'Essential Energy',
           region: 'NSW',
           type: 'electricity',
-          includes: [/^(NAAA[A-HJ-NP-VX-Z\d][A-HJ-NP-Z\d]{5})$/,
-                     /^(NBBB[A-HJ-NP-VX-Z\d][A-HJ-NP-Z\d]{5})$/,
-                     /^(NDDD[A-HJ-NP-VX-Z\d][A-HJ-NP-Z\d]{5})$/,
-                     /^(NFFF[A-HJ-NP-VX-Z\d][A-HJ-NP-Z\d]{5})$/,
-                     /^(4001\d{6})$/,
-                     /^(4508\d{6})$/,
-                     /^(4204\d{6})$/,
-                     /^(4407\d{6})$/],
+          includes: [
+            /^(NAAA[A-HJ-NP-VX-Z\d][A-HJ-NP-Z\d]{5})$/,
+            /^(NBBB[A-HJ-NP-VX-Z\d][A-HJ-NP-Z\d]{5})$/,
+            /^(NDDD[A-HJ-NP-VX-Z\d][A-HJ-NP-Z\d]{5})$/,
+            /^(NFFF[A-HJ-NP-VX-Z\d][A-HJ-NP-Z\d]{5})$/,
+            /^(4001\d{6})$/,
+            /^(4508\d{6})$/,
+            /^(4204\d{6})$/,
+            /^(4407\d{6})$/
+          ],
           excludes: []
         },
         {
@@ -45,8 +49,10 @@ module AEMO
           friendly_title: 'Ausgrid',
           region: 'NSW',
           type: 'electricity',
-          includes: [/^(NCCC[A-HJ-NP-VX-Z\d][A-HJ-NP-Z\d]{5})$/,
-                     /^(410[234]\d{6})$/],
+          includes: [
+            /^(NCCC[A-HJ-NP-VX-Z\d][A-HJ-NP-Z\d]{5})$/,
+            /^(410[234]\d{6})$/
+          ],
           excludes: []
         },
         {
@@ -55,8 +61,10 @@ module AEMO
           friendly_title: 'Endeavour Energy',
           region: 'NSW',
           type: 'electricity',
-          includes: [/^(NEEE[A-HJ-NP-VX-Z\d][A-HJ-NP-Z\d]{5})$/,
-                     /^(431\d{7})$/],
+          includes: [
+            /^(NEEE[A-HJ-NP-VX-Z\d][A-HJ-NP-Z\d]{5})$/,
+            /^(431\d{7})$/
+          ],
           excludes: []
         },
         {
@@ -65,8 +73,10 @@ module AEMO
           friendly_title: 'TransGrid',
           region: 'NSW',
           type: 'electricity',
-          includes: [/^(NTTT[A-HJ-NP-VX-Z\d][A-HJ-NP-Z\d]{5})$/,
-                     /^(460810[0-8]\d{3})$/],
+          includes: [
+            /^(NTTT[A-HJ-NP-VX-Z\d][A-HJ-NP-Z\d]{5})$/,
+            /^(460810[0-8]\d{3})$/
+          ],
           excludes: []
         },
         {
@@ -93,13 +103,15 @@ module AEMO
           friendly_title: 'Ergon Energy',
           region: 'QLD',
           type: 'electricity',
-          includes: [/^(QAAA[A-HJ-NP-VX-Z\d][A-HJ-NP-Z\d]{5})$/,
-                     /^(QCCC[A-HJ-NP-VX-Z\d][A-HJ-NP-Z\d]{5})$/,
-                     /^(QDDD[A-HJ-NP-VX-Z\d][A-HJ-NP-Z\d]{5})$/,
-                     /^(QEEE[A-HJ-NP-VX-Z\d][A-HJ-NP-Z\d]{5})$/,
-                     /^(QFFF[A-HJ-NP-VX-Z\d][A-HJ-NP-Z\d]{5})$/,
-                     /^(QGGG[A-HJ-NP-VX-Z\d][A-HJ-NP-Z\d]{5})$/,
-                     /^(30\d{8})$/],
+          includes: [
+            /^(QAAA[A-HJ-NP-VX-Z\d][A-HJ-NP-Z\d]{5})$/,
+            /^(QCCC[A-HJ-NP-VX-Z\d][A-HJ-NP-Z\d]{5})$/,
+            /^(QDDD[A-HJ-NP-VX-Z\d][A-HJ-NP-Z\d]{5})$/,
+            /^(QEEE[A-HJ-NP-VX-Z\d][A-HJ-NP-Z\d]{5})$/,
+            /^(QFFF[A-HJ-NP-VX-Z\d][A-HJ-NP-Z\d]{5})$/,
+            /^(QGGG[A-HJ-NP-VX-Z\d][A-HJ-NP-Z\d]{5})$/,
+            /^(30\d{8})$/
+          ],
           excludes: []
         },
         {
@@ -108,8 +120,10 @@ module AEMO
           friendly_title: 'Energex',
           region: 'QLD',
           type: 'electricity',
-          includes: [/^(QB\d{2}[A-HJ-NP-VX-Z\d][A-HJ-NP-Z\d]{5})$/,
-                     /^(31\d{8})$/],
+          includes: [
+            /^(QB\d{2}[A-HJ-NP-VX-Z\d][A-HJ-NP-Z\d]{5})$/,
+            /^(31\d{8})$/
+          ],
           excludes: []
         },
         {
@@ -118,8 +132,10 @@ module AEMO
           friendly_title: 'Powerlink',
           region: 'QLD',
           type: 'electricity',
-          includes: [/^(Q[A-HJ-NP-Z\d]{3}W[A-HJ-NP-Z\d]{5})$/,
-                     /^(320200\d{4})$/],
+          includes: [
+            /^(Q[A-HJ-NP-Z\d]{3}W[A-HJ-NP-Z\d]{5})$/,
+            /^(320200\d{4})$/
+          ],
           excludes: []
         },
         {
@@ -128,9 +144,11 @@ module AEMO
           friendly_title: 'SA Power Networks',
           region: 'SA',
           type: 'electricity',
-          includes: [/^(SAAA[A-HJ-NP-VX-Z\d][A-HJ-NP-Z\d]{5})$/,
-                     /^(SASMPL[\d]{4})$/,
-                     /^(200[12]\d{6})$/],
+          includes: [
+            /^(SAAA[A-HJ-NP-VX-Z\d][A-HJ-NP-Z\d]{5})$/,
+            /^(SASMPL[\d]{4})$/,
+            /^(200[12]\d{6})$/
+          ],
           excludes: []
         },
         {
@@ -139,8 +157,10 @@ module AEMO
           friendly_title: 'ElectraNet SA',
           region: 'SA',
           type: 'electricity',
-          includes: [/^(S[A-HJ-NP-Z\d]{3}W[A-HJ-NP-Z\d]{5})$/,
-                     /^(210200\d{4})$/],
+          includes: [
+            /^(S[A-HJ-NP-Z\d]{3}W[A-HJ-NP-Z\d]{5})$/,
+            /^(210200\d{4})$/
+          ],
           excludes: []
         },
         {
@@ -149,9 +169,11 @@ module AEMO
           friendly_title: 'TasNetworks',
           region: 'TAS',
           type: 'electricity',
-          includes: [/^(T000000(([0-4]\d{3})|(500[01])))$/,
-                     /^(8000\d{6})$/,
-                     /^(8590[23]\d{5})$/],
+          includes: [
+            /^(T000000(([0-4]\d{3})|(500[01])))$/,
+            /^(8000\d{6})$/,
+            /^(8590[23]\d{5})$/
+          ],
           excludes: []
         },
         {
@@ -169,8 +191,10 @@ module AEMO
           friendly_title: 'CitiPower',
           region: 'VIC',
           type: 'electricity',
-          includes: [/^(VAAA[A-HJ-NP-VX-Z\d][A-HJ-NP-Z\d]{5})$/,
-                     /^(610[23]\d{6})$/],
+          includes: [
+            /^(VAAA[A-HJ-NP-VX-Z\d][A-HJ-NP-Z\d]{5})$/,
+            /^(610[23]\d{6})$/
+          ],
           excludes: []
         },
         {
@@ -179,8 +203,10 @@ module AEMO
           friendly_title: 'SP AusNet DNSP',
           region: 'VIC',
           type: 'electricity',
-          includes: [/^(VBBB[A-HJ-NP-VX-Z\d][A-HJ-NP-Z\d]{5})$/,
-                     /^(630[56]\d{6})$/],
+          includes: [
+            /^(VBBB[A-HJ-NP-VX-Z\d][A-HJ-NP-Z\d]{5})$/,
+            /^(630[56]\d{6})$/
+          ],
           excludes: []
         },
         {
@@ -189,8 +215,10 @@ module AEMO
           friendly_title: 'PowerCor',
           region: 'VIC',
           type: 'electricity',
-          includes: [/^(VCCC[A-HJ-NP-VX-Z\d][A-HJ-NP-Z\d]{5})$/,
-                     /^(620[34]\d{6})$/],
+          includes: [
+            /^(VCCC[A-HJ-NP-VX-Z\d][A-HJ-NP-Z\d]{5})$/,
+            /^(620[34]\d{6})$/
+          ],
           excludes: []
         },
         {
@@ -199,8 +227,10 @@ module AEMO
           friendly_title: 'Jemena',
           region: 'VIC',
           type: 'electricity',
-          includes: [/^(VDDD[A-HJ-NP-VX-Z\d][A-HJ-NP-Z\d]{5})$/,
-                     /^(6001\d{6})$/],
+          includes: [
+            /^(VDDD[A-HJ-NP-VX-Z\d][A-HJ-NP-Z\d]{5})$/,
+            /^(6001\d{6})$/
+          ],
           excludes: []
         },
         {
@@ -209,8 +239,10 @@ module AEMO
           friendly_title: 'United Energy',
           region: 'VIC',
           type: 'electricity',
-          includes: [/^(VEEE[A-HJ-NP-VX-Z\d][A-HJ-NP-Z\d]{5})$/,
-                     /^(640[78]\d{6})$/],
+          includes: [
+            /^(VEEE[A-HJ-NP-VX-Z\d][A-HJ-NP-Z\d]{5})$/,
+            /^(640[78]\d{6})$/
+          ],
           excludes: []
         },
         {
@@ -219,8 +251,10 @@ module AEMO
           friendly_title: 'SP AusNet TNSP',
           region: 'VIC',
           type: 'electricity',
-          includes: [/^(V[A-HJ-NP-Z\d]{3}W[A-HJ-NP-Z\d]{5})$/,
-                     /^(650900\d{4})$/],
+          includes: [
+            /^(V[A-HJ-NP-Z\d]{3}W[A-HJ-NP-Z\d]{5})$/,
+            /^(650900\d{4})$/
+          ],
           excludes: []
         },
         {
@@ -229,10 +263,12 @@ module AEMO
           friendly_title: 'Western Power',
           region: 'WA',
           type: 'electricity',
-          includes: [/^(WAAA[A-HJ-NP-VX-Z\d][A-HJ-NP-Z\d]{5})$/,
-                     /^(800[1-9]\d{6})$/,
-                     /^(801\d{7})$/,
-                     /^(8020\d{6})$/],
+          includes: [
+            /^(WAAA[A-HJ-NP-VX-Z\d][A-HJ-NP-Z\d]{5})$/,
+            /^(800[1-9]\d{6})$/,
+            /^(801\d{7})$/,
+            /^(8020\d{6})$/
+          ],
           excludes: []
         },
         {
@@ -312,8 +348,10 @@ module AEMO
           title: 'Exempt Networks - various',
           friendly_title: 'Exempt Networks - various',
           type: 'electricity',
-          includes: [/^(NKKK[A-HJ-NP-VX-Z\d][A-HJ-NP-Z\d]{5})$/,
-                     /^(7102\d{6})$/],
+          includes: [
+            /^(NKKK[A-HJ-NP-VX-Z\d][A-HJ-NP-Z\d]{5})$/,
+            /^(7102\d{6})$/
+          ],
           excludes: []
         },
         {
@@ -321,8 +359,10 @@ module AEMO
           title: 'AEMO Reserved',
           friendly_title: 'AEMO Reserved',
           type: 'electricity',
-          includes: [/^(880[1-5]\d{6})$/,
-                     /^(9\d{9})$/],
+          includes: [
+            /^(880[1-5]\d{6})$/,
+            /^(9\d{9})$/
+          ],
           excludes: []
         }
       ].freeze
