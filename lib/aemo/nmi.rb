@@ -33,7 +33,7 @@ module AEMO
     #  See /lib/data for further data manipulation required
     TNI_CODES = JSON.parse(
       File.read(
-        File.join(File.dirname(__FILE__), '..','data', 'aemo-tni.json')
+        File.join(File.dirname(__FILE__), '..', 'data', 'aemo-tni.json')
       )
     ).freeze
 
@@ -47,7 +47,7 @@ module AEMO
     #  See /lib/data for further data manipulation required
     DLF_CODES = JSON.parse(
       File.read(
-        File.join(File.dirname(__FILE__), '..','data', 'aemo-dlf.json')
+        File.join(File.dirname(__FILE__), '..', 'data', 'aemo-dlf.json')
       )
     ).freeze
 
