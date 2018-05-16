@@ -426,7 +426,7 @@ module AEMO
         end
       end
 
-      # Initialises an AEMO::NMI::Allocation
+      # Initialises an {AEMO::NMI::Allocation}
       #
       # @param [String] title
       # @param [String] type
