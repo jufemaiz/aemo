@@ -9,10 +9,18 @@ module AEMO
     # @abstract An abstraction of NMI Allocation groups that kind of represents
     #   networks but not always.
     # @since 0.3.0
+    #
+    # @attr [Array<Regexp>] exclude_nmi_patterns
+    # @attr [String] friendly_title
+    # @attr [String] identifier
+    # @attr [Array<Regexp>] include_nmi_patterns
+    # @attr [AEMO::Region] region
+    # @attr [String] title
+    # @attr [Symbol] type
     class Allocation
       # NMI_ALLOCATIONS as per AEMO Documentation at
-      # hhttps://www.aemo.com.au/-/media/Files/Electricity/NEM/Retail_and_Metering/Metering-Procedures/NMI-Allocation-List.pdf
-      # Last updated 2017-08-01
+      #   https://www.aemo.com.au/-/media/Files/Electricity/NEM/Retail_and_Metering/Metering-Procedures/NMI-Allocation-List.pdf
+      #   Last updated 2017-08-01
       ALLOCATIONS = [
         {
           participant_id: 'ACTEWP',
@@ -417,6 +425,17 @@ module AEMO
         end
       end
 
+      # Initialises an AEMO::NMI::Allocation
+      #
+      # @param [String] title
+      # @param [String] type
+      # @param [Hash] opts
+      # @option opts [String] :identifier
+      # @option opts [String] :friendly_title
+      # @option opts [Array<Regexp>] :exclude_nmi_patterns
+      # @option opts [Array<Regexp>] :include_nmi_patterns
+      # @option opts [String] :region
+      # @return [AEMO::NMI::Allocation]
       def initialize(title, type, opts = {})
         @title = title
         @type = parse_allocation_type(type)
@@ -429,9 +448,16 @@ module AEMO
 
       private
 
+      # Private method to parse an
+      #
+      # @param [#to_sym] type
+      # @raise [AEMO::InvalidNMIAllocationType]
+      # @return [Symbol]
       def parse_allocation_type(type)
         type_sym = type.to_sym
-        raise AEMO::InvalidNMIAllocationType unless SUPPORTED_TYPES.include? type_sym
+        unless SUPPORTED_TYPES.include?(type_sym)
+          raise AEMO::InvalidNMIAllocationType
+        end
         type_sym
       rescue NoMethodError
         raise AEMO::InvalidNMIAllocationType
