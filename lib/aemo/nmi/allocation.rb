@@ -376,6 +376,7 @@ module AEMO
         }
       ].freeze
 
+      # NMI Allocations are only for Electricity and Gas metering
       SUPPORTED_TYPES = %i[electricity gas].freeze
 
       attr_accessor :exclude_nmi_patterns,
