@@ -23,9 +23,7 @@ module AEMO
       #
       # @return [Array<AEMO::Market::Interval>]
       def current_dispatch
-        if @current_dispatch.empty? || @current_dispatch.last.datetime != (Time.now - Time.now.to_i % 300)
-          @current_dispatch = AEMO::Market.current_dispatch(@identifier)
-        end
+        @current_dispatch = AEMO::Market.current_dispatch(@identifier) if @current_dispatch.empty? || @current_dispatch.last.datetime != (Time.now - Time.now.to_i % 300)
         @current_dispatch
       end
 

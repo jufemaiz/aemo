@@ -72,9 +72,7 @@ module AEMO
       # @return [Float] the value of the interval in Australian Dollars
       def value
         @value ||= Float::NAN
-        if @total_demand.class == Float && @rrp.class == Float
-          @value = (@total_demand * @rrp).round(2)
-        end
+        @value = (@total_demand * @rrp).round(2) if @total_demand.class == Float && @rrp.class == Float
         @value
       end
     end

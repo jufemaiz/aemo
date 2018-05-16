@@ -1,5 +1,9 @@
 # AEMO Gem Changelog
 
+## 0.3.0-beta1
+
+* Refactor NMI allocations
+
 ## 0.2.1
 
 * Loss factors for FY18

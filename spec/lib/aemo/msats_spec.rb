@@ -48,14 +48,10 @@ describe AEMO::MSATS do
         end
 
         it 'should return a hash of information' do
-          expect(AEMO::MSATS.c4('4001234567', DateTime.now, DateTime.now, DateTime.now)).to be_a(Hash)
+          expect(AEMO::MSATS.c4('4001234567', Time.now, Time.now, Time.now)).to be_a(Hash)
         end
         it 'should raise an error for a bad nmi' do
           expect { AEMO::MSATS.c4('BOBISAFISH') }.to raise_error(ArgumentError)
-        end
-        it 'should return a hash of information' do
-          # AEMO::MSATS.c4('4001234566', DateTime.now, DateTime.now, DateTime.now)
-          # TODO workout what the different errors are here...
         end
       end
 
@@ -67,9 +63,9 @@ describe AEMO::MSATS do
         it 'should return response' do
           expect(AEMO::MSATS.c4(
             '4001234567',
-            DateTime.now,
-            DateTime.now,
-            DateTime.now
+            Time.now,
+            Time.now,
+            Time.now
           ).class).to eq(HTTParty::Response)
         end
       end
