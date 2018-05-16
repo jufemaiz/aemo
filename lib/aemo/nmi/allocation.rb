@@ -2,11 +2,12 @@
 
 module AEMO
   class NMI
-    # AEMO::NMI::Allocation
+    # [AEMO::NMI::Allocation]
     #
     # @author Joel Courtney
     # @author Stuart Auld
-    # @abstract An abstraction of NMI Allocation groups that kind of represents networks but not always.
+    # @abstract An abstraction of NMI Allocation groups that kind of represents
+    #   networks but not always.
     # @since 0.3.0
     class Allocation
       # NMI_ALLOCATIONS as per AEMO Documentation at

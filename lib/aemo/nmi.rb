@@ -6,25 +6,37 @@ require 'time'
 require 'ostruct'
 
 module AEMO
+  # [AEMO::NMI]
+  #
   # AEMO::NMI acts as an object to simplify access to data and information
-  # about a NMI and provide verification of the NMI value
+  #   about a NMI and provide verification of the NMI value
+  #
+  # @author Joel Courtney
+  # @abstract Model for a National Metering Identifier.
+  # @since 2014-12-05
   class NMI
     # Operational Regions for the NMI
-    REGIONS = { 'ACT' => 'Australian Capital Territory',
-                'NSW' => 'New South Wales',
-                'QLD' => 'Queensland',
-                'SA'  => 'South Australia',
-                'TAS' => 'Tasmania',
-                'VIC' => 'Victoria',
-                'WA'  => 'Western Australia',
-                'NT'  => 'Northern Territory' }.freeze
+    REGIONS = {
+      'ACT' => 'Australian Capital Territory',
+      'NSW' => 'New South Wales',
+      'QLD' => 'Queensland',
+      'SA'  => 'South Australia',
+      'TAS' => 'Tasmania',
+      'VIC' => 'Victoria',
+      'WA'  => 'Western Australia',
+      'NT'  => 'Northern Territory'
+    }.freeze
 
     # Transmission Node Identifier Codes are loaded from a json file
     #  Obtained from http://www.nemweb.com.au/
     #
     #  See /lib/data for further data manipulation required
-    TNI_CODES = JSON.parse(File.read(File.join(File.dirname(__FILE__), '..',
-                                               'data', 'aemo-tni.json'))).freeze
+    TNI_CODES = JSON.parse(
+      File.read(
+        File.join(File.dirname(__FILE__), '..','data', 'aemo-tni.json')
+      )
+    ).freeze
+
     # Distribution Loss Factor Codes are loaded from a json file
     #  Obtained from MSATS, matching to DNSP from file
     # https://www.aemo.com.au/-/media/Files/Electricity/NEM/
@@ -33,8 +45,11 @@ module AEMO
     #
     #  Last accessed 2017-08-01
     #  See /lib/data for further data manipulation required
-    DLF_CODES = JSON.parse(File.read(File.join(File.dirname(__FILE__), '..',
-                                               'data', 'aemo-dlf.json'))).freeze
+    DLF_CODES = JSON.parse(
+      File.read(
+        File.join(File.dirname(__FILE__), '..','data', 'aemo-dlf.json')
+      )
+    ).freeze
 
     # [String] National Meter Identifier
     @nmi                          = nil
@@ -272,6 +287,7 @@ module AEMO
 
     # The current annual load in MWh
     #
+    # @todo Use TimeDifference for more accurate annualised load
     # @return [Integer] the current annual load for the meter in MWh
     def current_annual_load
       (current_daily_load * 365.2425 / 1000).to_i
@@ -306,7 +322,10 @@ module AEMO
     # @param [DateTime, Time] finish the date for the distribution loss factor value
     # @return [Array(Hash)] array of hashes of start, finish and value
     def dlfc_values(start = Time.now, finish = Time.now)
-      raise 'No DLF set, ensure that you have set the value either via the update_from_msats! function or manually' if @dlf.nil?
+      if @dlf.nil?
+        raise 'No DLF set, ensure that you have set the value either via the '\
+              'update_from_msats! function or manually'
+      end
       raise 'DLF is invalid' unless DLF_CODES.keys.include?(@dlf)
       raise 'Invalid start' unless [DateTime, Time].include?(start.class)
       raise 'Invalid finish' unless [DateTime, Time].include?(finish.class)
@@ -320,7 +339,10 @@ module AEMO
     # @param [DateTime, Time] datetime the date for the distribution loss factor value
     # @return [nil, float] the transmission node identifier loss factor value
     def tni_value(datetime = Time.now)
-      raise 'No TNI set, ensure that you have set the value either via the update_from_msats! function or manually' if @tni.nil?
+      if @tni.nil?
+        raise 'No TNI set, ensure that you have set the value either via the '\
+              'update_from_msats! function or manually'
+      end
       raise 'TNI is invalid' unless TNI_CODES.keys.include?(@tni)
       raise 'Invalid date' unless [DateTime, Time].include?(datetime.class)
       possible_values = TNI_CODES[@tni].select { |x| Time.parse(x['FromDate']) <= datetime && datetime <= Time.parse(x['ToDate']) }
@@ -336,7 +358,10 @@ module AEMO
     # @param [DateTime, Time] finish the date for the distribution loss factor value
     # @return [Array(Hash)] array of hashes of start, finish and value
     def tni_values(start = Time.now, finish = Time.now)
-      raise 'No TNI set, ensure that you have set the value either via the update_from_msats! function or manually' if @tni.nil?
+      if @tni.nil?
+        raise 'No TNI set, ensure that you have set the value either via the '\
+              'update_from_msats! function or manually'
+      end
       raise 'TNI is invalid' unless TNI_CODES.keys.include?(@tni)
       raise 'Invalid start' unless [DateTime, Time].include?(start.class)
       raise 'Invalid finish' unless [DateTime, Time].include?(finish.class)
