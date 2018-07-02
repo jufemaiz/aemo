@@ -39,8 +39,8 @@ module AEMO
       # Return an array of historic trading values based on a start and finish
       #
       # @param [String, AEMO::Region] region AEMO::Region
-      # @param [DateTime] start this is inclusive not exclusive
-      # @param [DateTime] finish this is inclusive not exclusive
+      # @param [Time] start this is inclusive not exclusive
+      # @param [Time] finish this is inclusive not exclusive
       # @return [Array<AEMO::Market::Interval>]
       def historic_trading_by_range(region, start, finish)
         region = AEMO::Region.new(region) if region.is_a?(String)
