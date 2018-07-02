@@ -2,7 +2,7 @@
 
 ## 0.2.2
 
-* Raise argument error on empty NEM12 file or string.
+* Return an empty array on empty NEM12 file or string.
 
 ## 0.2.1
 

@@ -26,7 +26,7 @@ describe AEMO::NEM12 do
 
   describe '#parse_nem12' do
     it 'should reject an empty NEM12 string' do
-      expect { AEMO::NEM12.parse_nem12('') }.to raise_error(ArgumentError)
+      expect(AEMO::NEM12.parse_nem12('')).to eq([])
     end
   end
 

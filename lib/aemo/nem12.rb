@@ -523,7 +523,9 @@ module AEMO
     # @return [Array<AEMO::NEM12>] An array of NEM12 objects
     def self.parse_nem12(contents, strict = true)
       file_contents = contents.tr("\r", "\n").tr("\n\n", "\n").split("\n").delete_if(&:empty?)
-      raise ArgumentError, 'Cannot process empty NEM12 string or file' if file_contents.empty?
+      # nothing to further process
+      return [] if file_contents.empty?
+
       raise ArgumentError, 'First row should be have a RecordIndicator of 100 and be of type Header Record' unless file_contents.first.parse_csv[0] == '100'
 
       nem12s = []
