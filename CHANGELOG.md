@@ -1,5 +1,9 @@
 # AEMO Gem Changelog
 
+## 0.2.2
+
+* Raise argument error on empty NEM12 file or string are not processed.
+
 ## 0.2.1
 
 * Loss factors for FY18
