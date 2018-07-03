@@ -11,8 +11,8 @@ Gem::Specification.new do |s|
   s.date          = '2018-05-16'
   s.summary       = 'Gem providing functionality for the Australian Energy Market Operator data'
   s.description   = 'Gem providing functionality for the Australian Energy Market Operator data. Supports NMIs, NEM12, MSATS Web Services and more'
-  s.authors       = ['Joel Courtney', 'Stuart Auld', 'Neil Parikh']
-  s.email         = ['jcourtney@cozero.com.au', 'sauld@cozero.com.au', 'nparikh@cozero.com.au']
+  s.authors       = ['Joel Courtney', 'Stuart Auld', 'Neil Parikh', 'Olivier Nsabimana']
+  s.email         = ['jcourtney@cozero.com.au', 'sauld@cozero.com.au', 'nparikh@cozero.com.au', 'onsabimana@cozero.com.au']
   s.homepage      = 'https://github.com/jufemaiz/aemo'
   s.license       = 'MIT'
   s.files         = Dir['lib/**/*', 'spec/**/*', 'bin/*']
