@@ -1,8 +1,10 @@
 # AEMO Gem Changelog
 
-## 0.3.0-beta1
+
+## 0.3.0
 
 * Refactor NMI allocations
+* Return an empty array on empty NEM12 file or string.
 
 ## 0.2.1
 
