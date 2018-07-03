@@ -1,6 +1,5 @@
 # AEMO Gem Changelog
 
-
 ## 0.3.0
 
 * Refactor NMI allocations
