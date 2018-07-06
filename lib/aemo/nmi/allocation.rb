@@ -456,9 +456,7 @@ module AEMO
       # @return [Symbol]
       def parse_allocation_type(type)
         type_sym = type.to_sym
-        unless SUPPORTED_TYPES.include?(type_sym)
-          raise AEMO::InvalidNMIAllocationType
-        end
+        raise AEMO::InvalidNMIAllocationType unless SUPPORTED_TYPES.include?(type_sym)
         type_sym
       rescue NoMethodError
         raise AEMO::InvalidNMIAllocationType

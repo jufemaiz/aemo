@@ -289,6 +289,18 @@ module AEMO
       @nmi.nil? ? nil : @nmi.nmi
     end
 
+    # Clears instance variables
+    def clear
+      @data_details     = []
+      @interval_data    = []
+      @interval_events  = []
+    end
+
+    # Checks if nem12 object is empty
+    def empty?
+      @data_details.empty? && @interval_data.empty?
+    end
+
     # Parses the header record
     # @param [String] line A single line in string format
     # @return [Hash] the line parsed into a hash of information
@@ -505,30 +517,44 @@ module AEMO
     # @return [Array<AEMO::NEM12>] An array of NEM12 objects
     def self.parse_nem12(contents, strict = true)
       file_contents = contents.tr("\r", "\n").tr("\n\n", "\n").split("\n").delete_if(&:empty?)
-      # nothing to further process
+      # nothing to process
       return [] if file_contents.empty?
 
       raise ArgumentError, 'First row should be have a RecordIndicator of 100 and be of type Header Record' unless file_contents.first.parse_csv[0] == '100'
 
       nem12s = []
       AEMO::NEM12.parse_nem12_100(file_contents.first, strict: strict)
+      nem12 = AEMO::NEM12.new('')
       file_contents.each do |line|
-        case line[0..2].to_i
-        when 200
-          nem12s << AEMO::NEM12.new('')
-          nem12s.last.parse_nem12_200(line, strict: strict)
-        when 300
-          nem12s.last.parse_nem12_300(line)
-        when 400
-          nem12s.last.parse_nem12_400(line)
-          # when 500
-          #   nem12s.last.parse_nem12_500(line)
-          # when 900
-          #   nem12s.last.parse_nem12_900(line)
+        parse_to_nem12(nem12, line, strict) do |parsed|
+          nem12s << parsed.dup unless parsed.empty?
         end
       end
       # Return the array of NEM12 groups
       nem12s
+    end
+
+    # @param [AEMO::NEM12] nem12 object to parse record to. initially empty object
+    # @param [String] record string containing either 100, 200, 300, 400, 500 900 NEM12 record
+    # @yield [AEMO::NEM12] a filled out NEM12 object.
+    def self.parse_to_nem12(nem12, record, strict = true)
+      # remove superfluous escape characters
+      line = record.tr("\r", "\n").tr("\n\n", "\n")
+      case line[0..2].to_i
+      when 200
+        yield(nem12) if block_given?
+        nem12.clear
+        nem12.parse_nem12_200(line, strict: strict)
+      when 300
+        nem12.parse_nem12_300(line)
+      when 400
+        nem12.parse_nem12_400(line)
+      when 500
+        nem12.parse_nem12_500(line)
+      when 900
+        nem12.parse_nem12_900(line)
+        yield(nem12) if block_given?
+      end
     end
   end
 end
