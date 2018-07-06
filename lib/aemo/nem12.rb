@@ -526,7 +526,7 @@ module AEMO
       AEMO::NEM12.parse_nem12_100(file_contents.first, strict: strict)
       nem12 = AEMO::NEM12.new('')
       file_contents.each do |line|
-        parse_to_nem12(nem12, line, strict) do |parsed|
+        parse_line_to_nem12(nem12, line, strict) do |parsed|
           nem12s << parsed.dup unless parsed.empty?
         end
       end
@@ -535,14 +535,13 @@ module AEMO
     end
 
     # @param [AEMO::NEM12] nem12 object to parse record to. initially empty object
-    # @param [String] record string containing either 100, 200, 300, 400, 500 900 NEM12 record
+    # @param [String] line string containing either 100, 200, 300, 400, 500 900 NEM12 record
     # @yield [AEMO::NEM12] a filled out NEM12 object.
-    def self.parse_to_nem12(nem12, record, strict = true)
-      # remove superfluous escape characters
-      line = record.tr("\r", "\n").tr("\n\n", "\n")
+    def self.parse_line_to_nem12(nem12, line, strict = true)
+      line = line.tr("\r", "\n").tr("\n\n", "\n")
       case line[0..2].to_i
       when 200
-        yield(nem12) if block_given?
+        yield(nem12) if block_given? && !nem12.empty?
         nem12.clear
         nem12.parse_nem12_200(line, strict: strict)
       when 300
