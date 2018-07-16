@@ -349,9 +349,13 @@ module AEMO
     # @return [Array of hashes] the line parsed into a hash of information
     def parse_nem12_300(line, options = {})
       csv = line.parse_csv
-
       raise TypeError, 'Expected NMI Data Details to exist with IntervalLength specified' if @data_details.last.nil? || @data_details.last[:interval_length].nil?
+
+      # ref: AEMO's MDFF Spec NEM12 and NEM13 v1.01 (14.05.2014)
+      record_fixed_fields = %w[RecordIndicator IntervalDate QualityMethod ReasonCode ReasonDescription UpdateDatetime MSATSLoadDateTime]
       number_of_intervals = 1440 / @data_details.last[:interval_length]
+      raise TypeError, 'Invalid record length' if csv.length != record_fixed_fields.length + number_of_intervals
+
       intervals_offset = number_of_intervals + 2
 
       raise ArgumentError, 'RecordIndicator is not 300' if csv[0] != '300'
