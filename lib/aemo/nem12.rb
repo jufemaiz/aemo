@@ -361,7 +361,7 @@ module AEMO
       raise ArgumentError, 'RecordIndicator is not 300' if csv[0] != '300'
       raise ArgumentError, 'IntervalDate is not valid' if csv[1].match(/\d{8}/).nil? || csv[1] != Time.parse(csv[1].to_s).strftime('%Y%m%d')
       (2..(number_of_intervals + 1)).each do |i|
-        raise ArgumentError, "Interval number #{i - 1} is not valid" if csv[i].match(/\d+(\.\d+)?/).nil?
+        raise ArgumentError, "Interval number #{i - 1} is not valid" if csv[i].nil? || csv[i].match(/\d+(\.\d+)?/).nil?
       end
       raise ArgumentError, 'QualityMethod is not valid' unless csv[intervals_offset + 0].class == String
       raise ArgumentError, 'QualityMethod does not have valid length' unless [1, 3].include?(csv[intervals_offset + 0].length)

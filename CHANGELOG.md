@@ -1,5 +1,9 @@
 # AEMO Gem Changelog
 
+## 0.3.1
+
+* Catch invalid length  NEM12 data details record (300)
+
 ## 0.3.0
 
 * Refactor NMI allocations

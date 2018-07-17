@@ -67,9 +67,9 @@ describe AEMO::NEM12 do
   end
 
   describe '#parse_nem12_300' do
-    it 'should nraise invalid record length error' do
-      expect { AEMO::NEM12.parse_nem12_file(fixture(File.join('NEM12-Errors', 'NEM12#InvalidIntervalDataLength#CNRGYMDP#NEMMCO.csv'))) }
-        .to raise_error(TypeError, 'Invalid record length')
+    it 'should raise invalid record length error' do
+      bad_file = fixture(File.join('NEM12-Errors', 'NEM12#InvalidIntervalDataLength#CNRGYMDP#NEMMCO.csv'))
+      expect { AEMO::NEM12.parse_nem12_file(bad_file) }.to raise_error(TypeError, 'Invalid record length')
     end
   end
 
