@@ -2,7 +2,7 @@
 
 ## 0.3.1
 
-* Catch invalid length  NEM12 data details record (300)
+* Catch invalid length  NEM12 records (300 and 400)
 
 ## 0.3.0
 

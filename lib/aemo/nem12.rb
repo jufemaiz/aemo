@@ -415,9 +415,9 @@ module AEMO
     def parse_nem12_400(line)
       csv = line.parse_csv
       raise ArgumentError, 'RecordIndicator is not 400'     if csv[0] != '400'
-      raise ArgumentError, 'StartInterval is not valid'     if csv[1].match(/^\d+$/).nil?
-      raise ArgumentError, 'EndInterval is not valid'       if csv[2].match(/^\d+$/).nil?
-      raise ArgumentError, 'QualityMethod is not valid'     if csv[3].match(/^([AN]|([AEFNSV]\d{2}))$/).nil?
+      raise ArgumentError, 'StartInterval is not valid'     if csv[1].nil? || csv[1].match(/^\d+$/).nil?
+      raise ArgumentError, 'EndInterval is not valid'       if csv[2].nil? || csv[2].match(/^\d+$/).nil?
+      raise ArgumentError, 'QualityMethod is not valid'     if csv[3].nil? || csv[3].match(/^([AN]|([AEFNSV]\d{2}))$/).nil?
       # raise ArgumentError, 'ReasonCode is not valid'        if (csv[4].nil? && csv[3].match(/^ANE/)) || csv[4].match(/^\d{3}?$/) || csv[3].match(/^ANE/)
       # raise ArgumentError, 'ReasonDescription is not valid' if (csv[4].nil? && csv[3].match(/^ANE/)) || ( csv[5].match(/^$/) && csv[4].match(/^0$/) )
 
