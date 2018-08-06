@@ -349,15 +349,19 @@ module AEMO
     # @return [Array of hashes] the line parsed into a hash of information
     def parse_nem12_300(line, options = {})
       csv = line.parse_csv
-
       raise TypeError, 'Expected NMI Data Details to exist with IntervalLength specified' if @data_details.last.nil? || @data_details.last[:interval_length].nil?
+
+      # ref: AEMO's MDFF Spec NEM12 and NEM13 v1.01 (2014-05-14)
+      record_fixed_fields = %w[RecordIndicator IntervalDate QualityMethod ReasonCode ReasonDescription UpdateDatetime MSATSLoadDateTime]
       number_of_intervals = 1440 / @data_details.last[:interval_length]
+      raise TypeError, 'Invalid record length' if csv.length != record_fixed_fields.length + number_of_intervals
+
       intervals_offset = number_of_intervals + 2
 
       raise ArgumentError, 'RecordIndicator is not 300' if csv[0] != '300'
       raise ArgumentError, 'IntervalDate is not valid' if csv[1].match(/\d{8}/).nil? || csv[1] != Time.parse(csv[1].to_s).strftime('%Y%m%d')
       (2..(number_of_intervals + 1)).each do |i|
-        raise ArgumentError, "Interval number #{i - 1} is not valid" if csv[i].match(/\d+(\.\d+)?/).nil?
+        raise ArgumentError, "Interval number #{i - 1} is not valid" if csv[i].nil? || csv[i].match(/\d+(\.\d+)?/).nil?
       end
       raise ArgumentError, 'QualityMethod is not valid' unless csv[intervals_offset + 0].class == String
       raise ArgumentError, 'QualityMethod does not have valid length' unless [1, 3].include?(csv[intervals_offset + 0].length)
@@ -411,9 +415,9 @@ module AEMO
     def parse_nem12_400(line)
       csv = line.parse_csv
       raise ArgumentError, 'RecordIndicator is not 400'     if csv[0] != '400'
-      raise ArgumentError, 'StartInterval is not valid'     if csv[1].match(/^\d+$/).nil?
-      raise ArgumentError, 'EndInterval is not valid'       if csv[2].match(/^\d+$/).nil?
-      raise ArgumentError, 'QualityMethod is not valid'     if csv[3].match(/^([AN]|([AEFNSV]\d{2}))$/).nil?
+      raise ArgumentError, 'StartInterval is not valid'     if csv[1].nil? || csv[1].match(/^\d+$/).nil?
+      raise ArgumentError, 'EndInterval is not valid'       if csv[2].nil? || csv[2].match(/^\d+$/).nil?
+      raise ArgumentError, 'QualityMethod is not valid'     if csv[3].nil? || csv[3].match(/^([AN]|([AEFNSV]\d{2}))$/).nil?
       # raise ArgumentError, 'ReasonCode is not valid'        if (csv[4].nil? && csv[3].match(/^ANE/)) || csv[4].match(/^\d{3}?$/) || csv[3].match(/^ANE/)
       # raise ArgumentError, 'ReasonDescription is not valid' if (csv[4].nil? && csv[3].match(/^ANE/)) || ( csv[5].match(/^$/) && csv[4].match(/^0$/) )
 

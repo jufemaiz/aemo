@@ -67,9 +67,22 @@ describe AEMO::NEM12 do
   end
 
   describe '#parse_nem12_300' do
+    it 'should raise invalid record length error' do
+      bad_file = fixture(File.join('NEM12-Errors', 'NEM12#InvalidIntervalDataLength#CNRGYMDP#NEMMCO.csv'))
+      expect { AEMO::NEM12.parse_nem12_file(bad_file) }.to raise_error(TypeError, 'Invalid record length')
+    end
+
+    it 'should raise argument error on 300 empty cells' do
+      nem12_empty_cells_300_record = fixture(File.join('NEM12-Errors', 'NEM12#EmptyCells300Record#CNRGYMDP#NEMMCO.csv'))
+      expect { AEMO::NEM12.parse_nem12_file(nem12_empty_cells_300_record) }.to raise_error(ArgumentError)
+    end
   end
 
   describe '#parse_nem12_400' do
+    it 'should raise argument error on 400 empty cells' do
+      nem12_empty_cells_400_record = fixture(File.join('NEM12-Errors', 'NEM12#EmptyCells400Record#CNRGYMDP#NEMMCO.csv'))
+      expect { AEMO::NEM12.parse_nem12_file(nem12_empty_cells_400_record) }.to raise_error(ArgumentError)
+    end
   end
 
   describe '#parse_nem12_500' do
