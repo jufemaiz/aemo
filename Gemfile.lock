@@ -4,7 +4,7 @@ PATH
     aemo (0.3.1)
       activesupport (>= 4.2.6, < 5.2)
       httparty (~> 0.15, >= 0.15.6)
-      json (~> 2.1.0, >= 1.7.5)
+      json (>= 1.7.5, < 3)
       multi_xml (~> 0.6, >= 0.5.0)
       nokogiri (~> 1.8, >= 1.8.2)
 
