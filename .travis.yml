@@ -6,6 +6,7 @@ bundler_args: --retry=3 --jobs=3
 cache: bundler
 sudo: false
 rvm:
+  - 2.6.0-preview2
   - 2.6.0-preview1
   - 2.5.1
   - 2.5.0
