@@ -17,7 +17,7 @@ http://www.rubydoc.info/gems/aemo
 ## Ruby Versions Supported
 
 * ruby-head
-* 2.6 (.0-preview1)
+* 2.6 (.0-preview1, .0-preview2)
 * 2.5 (.0, .1)
 * 2.4 (.0, .1, .2, .3, .4)
 * 2.3 (.0, .1, .2, .3, .4, .5, .6, .7)
