@@ -27,14 +27,16 @@ Gem::Specification.new do |s|
   s.add_dependency 'httparty',  '~> 0.15', '>= 0.15.6'
   s.add_dependency 'json', '>= 1.7.5', '< 3'
   s.add_dependency 'multi_xml', '~> 0.6', '>= 0.5.0'
-  s.add_dependency 'nokogiri',  '~> 1.8', '>= 1.8.2'
+  s.add_dependency 'nokogiri',  '~> 1.8', '>= 1.8.5'
 
   # Development Dependencies
   s.add_development_dependency 'awesome_print', '~> 1.8', '>= 1.8.0'
   s.add_development_dependency 'coveralls', '~> 0.8', '>= 0.8.21'
+  s.add_development_dependency 'ffi', '~> 1', '> 1.9.18'
   s.add_development_dependency 'guard-yard', '~> 2.2', '>= 2.2.0'
   s.add_development_dependency 'jeweler', '~> 2.3', '>= 2.3.7'
   s.add_development_dependency 'listen', '~> 3.1', '= 3.1.5'
+  s.add_development_dependency 'rack', '~> 2', '>= 2.0.4'
   s.add_development_dependency 'rdoc', '~> 5.1', '>= 5.1.0'
   s.add_development_dependency 'rspec', '~> 3.7', '>= 3.7.0'
   s.add_development_dependency 'rubocop', '~> 0.52.1', '>= 0.52.1'
