@@ -1,5 +1,14 @@
 # AEMO Gem Changelog
 
+## 0.3.3 (2018-11-17)
+
+- Upgrade [nokogiri](https://rubygems.org/gems/nokogiri) to v1.8.5 to resolve
+  vulnerabilities:
+  - [CVE-2018-14404](https://nvd.nist.gov/vuln/detail/CVE-2018-14404)
+  - [CVE-2018-14567](https://nvd.nist.gov/vuln/detail/CVE-2018-14567)
+- Set [ffi](https://rubygems.org/gems/ffi) and
+  [rack](https://rubygems.org/gems/rack) versions to resolve vulnerabilities.
+
 ## 0.3.2
 
 - Support JSON v2.x.y JSON (#46)
