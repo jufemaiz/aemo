@@ -11,30 +11,37 @@ Makes working with AEMO data more pleasant.
 
 # Documentation
 
-http://www.rubydoc.info/gems/aemo
+<http://www.rubydoc.info/gems/aemo>
 
 # Installation
 
 ## Ruby Versions Supported
 
-* ruby-head
-* 2.6 (.0-preview1, .0-preview2)
-* 2.5 (.0, .1)
-* 2.4 (.0, .1, .2, .3, .4)
-* 2.3 (.0, .1, .2, .3, .4, .5, .6, .7)
-* 2.2 (.5, .6, .7, .8, .9)
+*   ruby-head
+*   2.6 (.0, .1)
+*   2.5 (.0, .1, .2, .3)
+*   2.4 (.0, .1, .2, .3, .4, .5)
+*   2.3 (.0, .1, .2, .3, .4, .5, .6, .7, .8)
 
-## Manually from RubyGems.org ###
+### Deprecated
+
+*   2.2 (.5, .6, .7, .8, .9, .10)
+
+## Manually from RubyGems.org
 
 ```sh
 % gem install aemo
 ```
 
-## Or if you are using Bundler ###
+## Or if you are using Bundler
 
 ```ruby
+# frozen_string_literal: true
+
 # Gemfile
-gem 'aemo'
+source 'https://rubygems.org' do
+  gem 'aemo'
+end
 ```
 
 # Maintenance
@@ -52,7 +59,10 @@ gem 'aemo'
 1.  Wait some more...
 1.  Navigate to Participant Outbox (you have new messages link)
 1.  Get the file!
-1.  `cd lib/data && ruby xml_to_json.rb`
+1.  Run the following:
+    ```ruby
+    cd lib/data && ruby xml_to_json.rb
+    ```
 1.  Add tests for your new FY to spec/lib/aemo/nmi_spec.rb
 1.  `rspec` - note that AEMO can retroactively change factors so if there is an
     old failing test double check the json to make sure it's not AEMO's fault.
