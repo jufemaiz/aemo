@@ -6,15 +6,19 @@ bundler_args: --retry=3 --jobs=3
 cache: bundler
 sudo: false
 rvm:
-  - 2.6.0-preview2
-  - 2.6.0-preview1
+  - 2.6.1
+  - 2.6.0
+  - 2.5.3
+  - 2.5.2
   - 2.5.1
   - 2.5.0
+  - 2.4.5
   - 2.4.4
   - 2.4.3
   - 2.4.2
   - 2.4.1
   - 2.4.0
+  - 2.3.8
   - 2.3.7
   - 2.3.6
   - 2.3.5
@@ -28,7 +32,6 @@ matrix:
   allow_failures:
     - rvm:
       - ruby-head
-      - 2.6.0-preview1
   fast_finish: true
 install:
   - bundle install
