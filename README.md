@@ -17,9 +17,9 @@ Makes working with AEMO data more pleasant.
 
 ## Ruby Versions Supported
 
-*   ruby-head
-*   2.6 (.0, .1)
-*   2.5 (.0, .1, .2, .3)
+*   ruby-head (failures allowed)
+*   2.6 (.0, .1, .2, .3)
+*   2.5 (.0, .1, .2, .3, .4, .5)
 *   2.4 (.0, .1, .2, .3, .4, .5)
 *   2.3 (.0, .1, .2, .3, .4, .5, .6, .7, .8)
 
