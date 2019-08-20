@@ -1,5 +1,11 @@
 # AEMO Gem Changelog
 
+## 0.3.5 (2019-08-20)
+
+*   Upgrade [nokogiri](https://rubygems.org/gems/nokogiri) to v1.10.4 to resolve
+    vulnerability:
+    *   [CVE-2019-5477](https://nvd.nist.gov/vuln/detail/CVE-2019-5477)
+
 ## 0.3.4 (2019-07-04)
 
 *   Bump [yard](https://github.com/lsegal/yard) from 0.9.16 to 0.9.20
