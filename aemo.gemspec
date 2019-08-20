@@ -27,8 +27,8 @@ Gem::Specification.new do |s|
   s.add_dependency 'httparty',  '~> 0.15', '>= 0.15.6'
   s.add_dependency 'json', '>= 1.7.5', '< 3'
   s.add_dependency 'multi_xml', '~> 0.6', '>= 0.5.0'
-  s.add_dependency 'nokogiri',  '~> 1.8', '>= 1.8.5'
-
+  s.add_dependency 'nokogiri',  '~> 1.10', '>= 1.10.4'
+  
   # Development Dependencies
   s.add_development_dependency 'awesome_print', '~> 1.8', '>= 1.8.0'
   s.add_development_dependency 'coveralls', '~> 0.8', '>= 0.8.21'
