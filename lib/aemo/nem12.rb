@@ -274,6 +274,8 @@ module AEMO
     attr_accessor :file_contents, :header, :nmi_data_details, :nmi
 
     # Initialize a NEM12 file
+    # @param [string] nmi
+    # @param [Hash] options
     def initialize(nmi, options = {})
       @nmi              = AEMO::NMI.new(nmi) unless nmi.empty?
       @data_details     = []
@@ -291,6 +293,7 @@ module AEMO
 
     # Parses the header record
     # @param [String] line A single line in string format
+    # @param [Hash] options
     # @return [Hash] the line parsed into a hash of information
     def self.parse_nem12_100(line, options = {})
       csv = line.parse_csv
@@ -312,6 +315,7 @@ module AEMO
 
     # Parses the NMI Data Details
     # @param [String] line A single line in string format
+    # @param [Hash] options
     # @return [Hash] the line parsed into a hash of information
     def parse_nem12_200(line, options = {})
       csv = line.parse_csv
@@ -346,6 +350,7 @@ module AEMO
     end
 
     # @param [String] line A single line in string format
+    # @param [Hash] options
     # @return [Array of hashes] the line parsed into a hash of information
     def parse_nem12_300(line, options = {})
       csv = line.parse_csv
@@ -427,8 +432,9 @@ module AEMO
     end
 
     # @param [String] line A single line in string format
+    # @param [Hash] options
     # @return [Hash] the line parsed into a hash of information
-    def parse_nem12_400(line)
+    def parse_nem12_400(line, options = {})
       csv = line.parse_csv
       raise ArgumentError, 'RecordIndicator is not 400'     if csv[0] != '400'
       raise ArgumentError, 'StartInterval is not valid'     if csv[1].nil? || csv[1].match(/^\d+$/).nil?
@@ -467,11 +473,17 @@ module AEMO
       interval_events
     end
 
+    # What even is a 500 row?
+    #
     # @param [String] line A single line in string format
+    # @param [Hash] _options
     # @return [Hash] the line parsed into a hash of information
     def parse_nem12_500(_line, _options = {}); end
 
+    # 900 is the last row a NEM12 should see...
+    #
     # @param [String] line A single line in string format
+    # @param [Hash] _options
     # @return [Hash] the line parsed into a hash of information
     def parse_nem12_900(_line, _options = {}); end
 
