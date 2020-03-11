@@ -440,7 +440,7 @@ module AEMO
       def initialize(title, type, opts = {})
         @title = title
         @type = parse_allocation_type(type)
-        @identifier = opts.fetch(:identifier, title.upcase)
+        @identifier = opts.fetch(:participant_id, title.upcase)
         @friendly_title = opts.fetch(:friendly_title, title)
         @exclude_nmi_patterns = opts.fetch(:excludes, [])
         @include_nmi_patterns = opts.fetch(:includes, [])

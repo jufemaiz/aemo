@@ -274,6 +274,8 @@ module AEMO
     attr_accessor :file_contents, :header, :nmi_data_details, :nmi
 
     # Initialize a NEM12 file
+    # @param [string] nmi
+    # @param [Hash] options
     def initialize(nmi, options = {})
       @nmi              = AEMO::NMI.new(nmi) unless nmi.empty?
       @data_details     = []
@@ -291,6 +293,7 @@ module AEMO
 
     # Parses the header record
     # @param [String] line A single line in string format
+    # @param [Hash] options
     # @return [Hash] the line parsed into a hash of information
     def self.parse_nem12_100(line, options = {})
       csv = line.parse_csv
@@ -312,6 +315,7 @@ module AEMO
 
     # Parses the NMI Data Details
     # @param [String] line A single line in string format
+    # @param [Hash] options
     # @return [Hash] the line parsed into a hash of information
     def parse_nem12_200(line, options = {})
       csv = line.parse_csv
@@ -346,6 +350,7 @@ module AEMO
     end
 
     # @param [String] line A single line in string format
+    # @param [Hash] options
     # @return [Array of hashes] the line parsed into a hash of information
     def parse_nem12_300(line, options = {})
       csv = line.parse_csv
@@ -380,7 +385,7 @@ module AEMO
         if csv[intervals_offset + 3].match(/\d{14}/).nil? || csv[intervals_offset + 3] != Time.parse(csv[intervals_offset + 3].to_s).strftime('%Y%m%d%H%M%S')
           raise ArgumentError, 'UpdateDateTime is not valid'
         end
-        if !csv[intervals_offset + 4].nil? && csv[intervals_offset + 4].match(/\d{14}/).nil? || csv[intervals_offset + 4] != Time.parse(csv[intervals_offset + 4].to_s).strftime('%Y%m%d%H%M%S')
+        if !csv[intervals_offset + 4].blank? && csv[intervals_offset + 4].match(/\d{14}/).nil? || !csv[intervals_offset + 4].blank? && csv[intervals_offset + 4] != Time.parse(csv[intervals_offset + 4].to_s).strftime('%Y%m%d%H%M%S')
           raise ArgumentError, 'MSATSLoadDateTime is not valid'
         end
       end
@@ -397,7 +402,23 @@ module AEMO
         flag[:reason_code] = csv[intervals_offset + 1].to_i unless csv[intervals_offset + 1].nil?
       end
 
-      base_interval = { data_details: @data_details.last, datetime: Time.parse("#{csv[1]}000000+1000"), value: nil, flag: flag }
+      # Deal with updated_at & msats_load_at
+      updated_at = nil
+      msats_load_at = nil
+
+      if options[:strict]
+        updated_at = Time.parse(csv[intervals_offset + 3]) unless csv[intervals_offset + 3].blank?
+        msats_load_at = Time.parse(csv[intervals_offset + 4]) unless csv[intervals_offset + 4].blank?
+      end
+
+      base_interval = {
+        data_details: @data_details.last,
+        datetime: Time.parse("#{csv[1]}000000+1000"),
+        value: nil,
+        flag: flag,
+        updated_at: updated_at,
+        msats_load_at: msats_load_at
+      }
 
       intervals = []
       (2..(number_of_intervals + 1)).each do |i|
@@ -411,8 +432,9 @@ module AEMO
     end
 
     # @param [String] line A single line in string format
+    # @param [Hash] options
     # @return [Hash] the line parsed into a hash of information
-    def parse_nem12_400(line)
+    def parse_nem12_400(line, options = {})
       csv = line.parse_csv
       raise ArgumentError, 'RecordIndicator is not 400'     if csv[0] != '400'
       raise ArgumentError, 'StartInterval is not valid'     if csv[1].nil? || csv[1].match(/^\d+$/).nil?
@@ -451,11 +473,17 @@ module AEMO
       interval_events
     end
 
+    # What even is a 500 row?
+    #
     # @param [String] line A single line in string format
+    # @param [Hash] _options
     # @return [Hash] the line parsed into a hash of information
     def parse_nem12_500(_line, _options = {}); end
 
+    # 900 is the last row a NEM12 should see...
+    #
     # @param [String] line A single line in string format
+    # @param [Hash] _options
     # @return [Hash] the line parsed into a hash of information
     def parse_nem12_900(_line, _options = {}); end
 
@@ -522,13 +550,13 @@ module AEMO
           nem12s << AEMO::NEM12.new('')
           nem12s.last.parse_nem12_200(line, strict: strict)
         when 300
-          nem12s.last.parse_nem12_300(line)
+          nem12s.last.parse_nem12_300(line, strict: strict)
         when 400
-          nem12s.last.parse_nem12_400(line)
+          nem12s.last.parse_nem12_400(line, strict: strict)
           # when 500
-          #   nem12s.last.parse_nem12_500(line)
+          #   nem12s.last.parse_nem12_500(line, strict: strict)
           # when 900
-          #   nem12s.last.parse_nem12_900(line)
+          #   nem12s.last.parse_nem12_900(line, strict: strict)
         end
       end
       # Return the array of NEM12 groups
