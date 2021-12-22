@@ -1,19 +1,42 @@
 # AEMO Gem Changelog
 
-## 0.3.5 (2019-08-20)
+## [v0.4.0] (2021-12-22)
+
+### Added
+
+*   Support for Ruby 3.
+*   [SonarCloud](https://sonarcloud.io/project/issues?id=jufemaiz_aemo) support.
+
+### Changed
+
+*   Migrated to [travis-ci.com](https://travis-ci.com/github/jufemaiz/aemo).
+
+## [v0.3.6] (2020-03-11)
+
+### Changed
+
+* Bump nokogiri from 1.10.4 to 1.10.8
+* Bump rack from 2.0.7 to 2.0.8.
+* Update .travis.yml.
+
+### Fixed
+
+* Include updated at and MSATS load date in NEM12 data structure.
+
+## [v0.3.5] (2019-08-20)
 
 *   Upgrade [nokogiri](https://rubygems.org/gems/nokogiri) to v1.10.4 to resolve
     vulnerability:
     *   [CVE-2019-5477](https://nvd.nist.gov/vuln/detail/CVE-2019-5477)
 
-## 0.3.4 (2019-07-04)
+## [v0.3.4] (2019-07-04)
 
 *   Bump [yard](https://github.com/lsegal/yard) from 0.9.16 to 0.9.20
 *   Added support for ruby versions: 2.6.3, 2.6.2, 2.5.5, 2.5.4, 2.4.6
 *   Using [bundler](https://rubygems.com/gems/bundler) 2.0.2
 
 
-## 0.3.3 (2018-11-17)
+## [v0.3.3] (2018-11-17)
 
 *   Upgrade [nokogiri](https://rubygems.org/gems/nokogiri) to v1.8.5 to resolve
     vulnerabilities:
@@ -22,43 +45,43 @@
 *   Set [ffi](https://rubygems.org/gems/ffi) and
     [rack](https://rubygems.org/gems/rack) versions to resolve vulnerabilities.
 
-## 0.3.2
+## [v0.3.2]
 
 *   Support JSON v2.x.y JSON (#46)
 
-## 0.3.1
+## [v0.3.1]
 
 *   Catch invalid length  NEM12 records (300 and 400)
 
-## 0.3.0
+## [v0.3.0]
 
 *   Refactor NMI allocations
 *   Return an empty array on empty NEM12 file or string.
 
-## 0.2.1
+## [v0.2.1]
 
 *   Loss factors for FY18
 
-## 0.2.0
+## [v0.2.0]
 
 *   Default NEM12 parsing to use strict validation
 *   Only enforce validation of NMIConfiguration in strict mode
 
-## 0.1.45
+## [v0.1.45]
 
 *   [Nokogiri vulnerability](https://rubysec.com/advisories/nokogiri-CVE-2017-15412)
     update
 
-## 0.1.44
+## [v0.1.44]
 
 *   [YARD vulnerability](https://rubysec.com/advisories/yard-CVE-2017-17042)
     update
 
-## 0.1.42
+## [v0.1.42]
 
 *   Dependency updates to support Rails 5.1
 
-## 0.1.41
+## [v0.1.41]
 
 *   Dependency updates
 *   Drop support for old versions of Ruby. Currently supported versions are:
@@ -67,7 +90,7 @@
     *   2.3 (.0, .1, .2, .3, .4, .5)
     *   2.2 (.5, .6, .7, .8)
 
-## 0.1.40
+## [v0.1.40]
 
 *   Remove ZIP
 *   Update loss factor data including finalised values according to FY18 data
@@ -86,30 +109,30 @@
 *   SPPS has gone offline in FY18
 *   A whole bunch of new generation added
 
-## 0.1.39
+## [v0.1.39]
 
 *   AEMO went and changed their data schema. Need to point historical requests
     at something like:
     <http://aemo.com.au/aemo/data/nem/priceanddemand/PRICE_AND_DEMAND_201601_QLD1.csv>
 
-## 0.1.38
+## [v0.1.38]
 
 *   `AEMO::NMI::DLF_CODES` updates for FY17.
 
-## 0.1.37
+## [v0.1.37]
 
 *   General Gem dependency updates.
 
-## 0.1.36
+## [v0.1.36]
 
 *   Minor change to `AEMO::NMI::NMI_ALLOCATIONS` for a 'State' to be an instance
     of `AEMO::Region`
 
-## 0.1.34
+## [v0.1.34]
 
 *   Added `AEMO::Market::Node` to deal with Region v Node differences
 
-## 0.1.33
+## [v0.1.33]
 
 *   [Rubocop](https://github.com/rubocop-hq/rubocop) lint bugfix
     (`AEMO::NEM12.parse_nem12` not breaking up rows correctly)
@@ -118,16 +141,16 @@
 *   FY17 Marginal Loss Factors added from
     <http://www.aemo.com.au/Electricity/Market-Operations/Loss-Factors-and-Regional-Boundaries/Distribution-Loss-Factors-for-the-2016_17-Financial-Year>
 
-## 0.1.32
+## [v0.1.32]
 
 *   [Nokogiri](https://github.com/sparklemotion/nokogiri) security flaw patched
     (Ref: [Issue #1374](https://github.com/sparklemotion/nokogiri/issues/1374))
 
-## 0.1.31
+## [v0.1.31]
 
 *   `AEMO::Market#historic_trading`
 *   `AEMO::Market#historic_trading_by_range`
 
-## 0.1.30
+## [v0.1.30]
 
 *   `AEMO::NMI#current_annual_load`
