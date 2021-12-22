@@ -39,7 +39,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'listen', '~> 3.1', '>= 3.5.0'
   s.add_development_dependency 'minitest', '~> 5.14', '>= 5.14.2'
   s.add_development_dependency 'rack', '~> 2', '>= 2.0.4'
-  s.add_development_dependency 'rdoc', '~> 5.1', '>= 5.1.0'
+  s.add_development_dependency 'rdoc', '>= 5.1.0', '~> 6.3'
   s.add_development_dependency 'rspec', '~> 3.7', '>= 3.7.0'
   s.add_development_dependency 'rubocop', '~> 0.52.1', '>= 0.52.1'
   s.add_development_dependency 'simplecov', '~> 0.14', '>= 0.14.1'
