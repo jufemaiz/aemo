@@ -8,6 +8,8 @@ Makes working with AEMO data more pleasant.
 [![Coverage Status](https://coveralls.io/repos/github/jufemaiz/aemo/badge.svg?branch=master)](https://coveralls.io/github/jufemaiz/aemo?branch=master)
 [![Known Vulnerabilities](https://snyk.io/test/github/jufemaiz/aemo/badge.svg)](https://snyk.io/test/github/jufemaiz/aemo)
 [![Help Contribute to Open Source](https://www.codetriage.com/jufemaiz/aemo/badges/users.svg)](https://www.codetriage.com/jufemaiz/aemo)
+[![Quality gate](https://sonarcloud.io/api/project_badges/quality_gate?project=jufemaiz_aemo)](https://sonarcloud.io/summary/new_code?id=jufemaiz_aemo)
+
 
 # Documentation
 
