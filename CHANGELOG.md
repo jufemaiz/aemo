@@ -1,5 +1,11 @@
 # AEMO Gem Changelog
 
+## [v0.4.1] (2022-01-20)
+
+### Fixed
+
+*   Typo in `meter_serial_number`.
+
 ## [v0.4.0] (2021-12-22)
 
 ### Added
