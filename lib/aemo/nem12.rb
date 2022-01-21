@@ -342,7 +342,7 @@ module AEMO
         register_id: csv[3],
         nmi_suffix: csv[4],
         mdm_data_streaming_identifier: csv[5],
-        meter_serial_nubmer: csv[6],
+        meter_serial_number: csv[6],
         uom: csv[7].upcase,
         interval_length: csv[8].to_i,
         next_scheduled_read_date: csv[9]
