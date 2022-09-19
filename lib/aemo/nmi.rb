@@ -5,6 +5,8 @@ require 'json'
 require 'time'
 require 'ostruct'
 
+require 'aemo/nmi/allocation.rb'
+
 module AEMO
   # [AEMO::NMI]
   #

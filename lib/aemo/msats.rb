@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'aemo'
 require 'digest/sha1'
 require 'httparty'
 require 'nokogiri'
