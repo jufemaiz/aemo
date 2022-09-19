@@ -10,3 +10,5 @@ doc
 .bundle/
 vendor/
 .DS_Store
+
+checksums/

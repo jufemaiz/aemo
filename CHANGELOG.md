@@ -1,5 +1,18 @@
 # AEMO Gem Changelog
 
+## [v0.5.0] (2022-09-19)
+
+### Added
+
+*   New method flags:
+
+    | Type | `EST` and/or `SUB` | Descriptor |
+    | --- | --- | --- |
+    | Type 20 | `SUB` | Churn Correction (Like Day) |
+    | Type 21 | `SUB` | Five-minute No Historical Data |
+    | Type 59 | `SUB`, `EST` | Five-minute No Historical Data |
+    | Type 69 | `SUB` | Linear extrapolation |
+
 ## [v0.4.1] (2022-01-20)
 
 ### Fixed
