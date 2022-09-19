@@ -3,12 +3,12 @@
 require 'csv'
 require 'time'
 
-require_relative 'nem12/data_stream_suffix'
-require_relative 'nem12/quality_method'
-require_relative 'nem12/reason_codes'
-require_relative 'nem12/record_indicators'
-require_relative 'nem12/transaction_code_flags'
-require_relative 'nem12/unit_of_measurement'
+require 'aemo/nem12/data_stream_suffix'
+require 'aemo/nem12/quality_method'
+require 'aemo/nem12/reason_codes'
+require 'aemo/nem12/record_indicators'
+require 'aemo/nem12/transaction_code_flags'
+require 'aemo/nem12/unit_of_measurement'
 
 module AEMO
   # Namespace for classes and modules that handle AEMO Gem NEM12 interactions
