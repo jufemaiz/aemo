@@ -38,7 +38,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'guard-yard', '~> 2.2', '>= 2.2.0'
   s.add_development_dependency 'listen', '~> 3.1', '>= 3.5.0'
   s.add_development_dependency 'minitest', '~> 5.14', '>= 5.14.2'
-  s.add_development_dependency 'rack', '~> 2', '>= 2.0.4'
+  s.add_development_dependency 'rack', '>= 2.0.4', '~> 3'
   s.add_development_dependency 'rdoc', '~> 6.3', '>= 5.1.0'
   s.add_development_dependency 'rspec', '~> 3.7', '>= 3.7.0'
   s.add_development_dependency 'rubocop', '~> 0.52.1', '>= 0.52.1'
