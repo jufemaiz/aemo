@@ -7,7 +7,7 @@ AllCops:
   DisplayCopNames: true
   DisplayStyleGuide: true
   ExtraDetails: true
-  TargetRubyVersion: 2.3
+  TargetRubyVersion: 2.6
 
 Style/StringLiterals:
   EnforcedStyle: single_quotes
