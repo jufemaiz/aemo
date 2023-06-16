@@ -24,10 +24,10 @@ Gem::Specification.new do |s|
 
   # Production Dependencies
   s.add_dependency 'activesupport', '>= 4.2.6', '< 7.1'
-  s.add_dependency 'httparty',  '~> 0.15', '>= 0.15.6'
+  s.add_dependency 'httparty',  '~> 0.21', '>= 0.21.0'
   s.add_dependency 'json', '>= 1.7.5', '< 3'
   s.add_dependency 'multi_xml', '~> 0.6', '>= 0.5.0'
-  s.add_dependency 'nokogiri',  '~> 1.10', '>= 1.10.4'
+  s.add_dependency 'nokogiri',  '~> 1.14', '>= 1.14.3'
   s.add_dependency 'rexml'
 
   # Development Dependencies

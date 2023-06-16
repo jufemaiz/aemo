@@ -1,5 +1,13 @@
 # AEMO Gem Changelog
 
+## [v0.5.1] (2023-06-16)
+
+### Changed
+
+* bump `httparty` to `>= 0.21.0` to resolve security issue.
+* bump `nokogiri` to `>= 1.14.3` to resolve `libxml2` security issue.
+
+
 ## [v0.5.0] (2022-09-19)
 
 ### Added
