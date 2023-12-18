@@ -100,14 +100,26 @@ module AEMO
       # @return [String]
       def default_nem12_100
         timestamp = Time.now.in_time_zone(NEMTIMEZONE).strftime(TIMESTAMP12)
-        return "100,NEM12,#{timestamp},ENOSI,ENOSI" + CRLF if header.nil?
+        return "100,NEM12,#{timestamp},ENOSI,ENOSI#{CRLF}"
       end
 
       # Default NEM12 100 row record.
       #
       # @return [String]
       def default_nem12_900
-        return '900' + CRLF
+        return "900#{CRLF}"
+      end
+
+      # For a list of nem12s, turn into a single NEM12 CSV string with default header row.
+      #
+      # @param [Array<AEMO::NEM12>] nem12s
+      # @return [String]
+      def to_nem12(nem12s:)
+        [
+          default_nem12_100,
+          nem12s.map(&:to_nem12_200_csv),
+          default_nem12_900
+        ].flatten.join
       end
     end
 
@@ -349,15 +361,16 @@ module AEMO
       [
         to_nem12_100_csv,
         to_nem12_200_csv,
-        to_nem12_900_csv
-      ].flatten.join
+        to_nem12_900_csv,
+        ''
+      ].flatten.join(CRLF)
     end
 
     # Output the AEMO::NEM12 to a valid NEM12 100 row CSV string.
     #
     # @return [String]
     def to_nem12_100_csv
-      return self.class.default_nem12_100
+      return self.class.default_nem12_100 if header.nil?
 
       [
         header[:record_indicator],
@@ -365,7 +378,7 @@ module AEMO
         header[:datetime].in_time_zone(NEMTIMEZONE).strftime(TIMESTAMP12),
         header[:from_participant],
         header[:to_participant],
-      ].join(CSV_SEPARATOR) + CRLF
+      ].join(CSV_SEPARATOR)
     end
 
     # Output the AEMO::NEM12 to a valid NEM12 200 row CSV string.
@@ -390,7 +403,7 @@ module AEMO
           data_detail[:next_scheduled_read_date] # Note: this is not turned into a timestamp.
         ].join(CSV_SEPARATOR),
         to_nem12_300_csv,
-      ].flatten.join(CRLF) + CRLF
+      ].flatten.join(CRLF)
     end
 
     # Output the AEMO::NEM12 to a valid NEM12 300 row CSV string.
@@ -420,7 +433,7 @@ module AEMO
         lines << to_nem12_400_csv(daily_data: daily_data, interval_duration: daily_data.first[:data_details][:interval_length])
       end
 
-      lines.join(CRLF)
+      lines.join(CRLF) + CRLF
     end
 
     # Output the AEMO::NEM12 to a valid NEM12 400 row CSV string.
@@ -442,8 +455,6 @@ module AEMO
 
         nem12_400_rows << { flag: x[:flag], start_index: i + 1, finish_index: i + 1 }
       end
-
-      puts nem12_400_rows.inspect
 
       nem12_400_rows.map do |row|
         [
