@@ -6,6 +6,32 @@ require 'json'
 describe AEMO::NEM12 do
   let(:json) { JSON.parse(fixture('nmi_checksum.json').read) }
 
+  describe '#parse_nem12' do
+    it 'should reject an empty NEM12 string' do
+      expect(AEMO::NEM12.parse_nem12('')).to eq([])
+    end
+  end
+
+  describe '.parse_nem12_file' do
+    it 'should parse a file' do
+      Dir.entries(File.join(File.dirname(__FILE__), '..', '..', 'fixtures', 'NEM12')).reject { |f| %w[. .. .DS_Store].include?(f) }.each do |file|
+        expect(AEMO::NEM12.parse_nem12_file(fixture(File.join('NEM12', file))).length).not_to eq(0)
+      end
+    end
+  end
+
+  describe '.parse_nem12_100' do
+    it 'should raise datetime error' do
+      expect { AEMO::NEM12.parse_nem12_100('100,NEM12,666,CNRGYMDP,NEMMCO') }.to raise_error(ArgumentError)
+    end
+    it 'should raise datetime error' do
+      expect { AEMO::NEM12.parse_nem12_100('100,NEM12,666,CNRGYMDP,NEMMCO', strict: true) }.to raise_error(ArgumentError)
+    end
+    it 'should not raise an error' do
+      expect { AEMO::NEM12.parse_nem12_100('100,NEM12,201603010000,CNRGYMDP,NEMMCO', strict: true) }.not_to raise_error
+    end
+  end
+
   describe '::RECORD_INDICATORS' do
     it 'should be a hash' do
       expect(AEMO::NEM12::RECORD_INDICATORS.class).to eq(Hash)
@@ -21,32 +47,6 @@ describe AEMO::NEM12 do
           expect(nem12.nmi_identifier).to be_a String
         end
       end
-    end
-  end
-
-  describe '#parse_nem12' do
-    it 'should reject an empty NEM12 string' do
-      expect(AEMO::NEM12.parse_nem12('')).to eq([])
-    end
-  end
-
-  describe '.parse_nem12_file' do
-    it 'should parse a file' do
-      Dir.entries(File.join(File.dirname(__FILE__), '..', '..', 'fixtures', 'NEM12')).reject { |f| %w[. .. .DS_Store].include?(f) }.each do |file|
-        expect(AEMO::NEM12.parse_nem12_file(fixture(File.join('NEM12', file))).length).not_to eq(0)
-      end
-    end
-  end
-
-  describe '#parse_nem12_100' do
-    it 'should raise datetime error' do
-      expect { AEMO::NEM12.parse_nem12_100('100,NEM12,666,CNRGYMDP,NEMMCO') }.to raise_error(ArgumentError)
-    end
-    it 'should raise datetime error' do
-      expect { AEMO::NEM12.parse_nem12_100('100,NEM12,666,CNRGYMDP,NEMMCO', strict: true) }.to raise_error(ArgumentError)
-    end
-    it 'should not raise an error' do
-      expect { AEMO::NEM12.parse_nem12_100('100,NEM12,201603010000,CNRGYMDP,NEMMCO', strict: true) }.not_to raise_error
     end
   end
 
@@ -97,6 +97,26 @@ describe AEMO::NEM12 do
       nem12 = AEMO::NEM12.new('NEEE000010')
       expect(nem12.flag_to_s(flag))
         .to eq 'Substituted Data - Check - Bees/Wasp In Meter Box'
+    end
+  end
+
+  describe '#to_nem12_csv' do
+    let(:nem12_filepath) do
+      File.join(File.dirname(__FILE__), '..', '..', 'fixtures', 'NEM12', 'NEM12#000000000000004#CNRGYMDP#NEMMCO.csv')
+    end
+    let(:nem12) { described_class.parse_nem12_file(nem12_filepath).first }
+    let(:expected) do
+"100,NEM12,200505121137,CNRGYMDP,NEMMCO\r
+200,NEM1204062,E1,E1,E1,N1,04062,KWH,30,20050503\r
+300,20040527,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.735,0.625,0.618,0.63,0.893,1.075,1.263,1.505,1.645,1.073,0.938,1.15,0.75,1.35,1.093,0.973,1.018,0.735,0.718,0.735,0.64,0.638,0.65,0.645,0.73,0.63,0.673,0.688,0.663,0.625,0.628,0.628,0.633,0.645,0.625,0.62,0.623,0.78,V,,,20040609153903,\r
+400,1,10,F52,71,\r
+400,11,48,E52,,\r
+900\r
+"
+    end
+
+    it 'returns a correct NEM12 file' do
+      expect(nem12.to_nem12_csv).to eq(expected)
     end
   end
 end

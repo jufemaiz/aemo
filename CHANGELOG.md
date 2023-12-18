@@ -1,5 +1,12 @@
 # AEMO Gem Changelog
 
+## [v0.6.0] (2023-12-18)
+
+### Added
+
+*   NEM12 header value set at parsing.
+*   `to_nem12_csv` capability added.
+
 ## [v0.5.1] (2023-06-16)
 
 ### Changed
