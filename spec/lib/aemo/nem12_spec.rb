@@ -32,7 +32,7 @@ describe AEMO::NEM12 do
     end
   end
 
-  describe '.to_nem12' do
+  describe '.to_nem12_csv' do
     let(:now) { Time.parse('2023-04-05T06:07:08+10:00') }
 
     context 'with empty nem12s' do
@@ -43,7 +43,7 @@ describe AEMO::NEM12 do
       after { Timecop.return }
 
       it 'returns expected' do
-        expect(described_class.to_nem12(nem12s: nem12s)).to eq(expected)
+        expect(described_class.to_nem12_csv(nem12s: nem12s)).to eq(expected)
       end
     end
 
@@ -79,7 +79,7 @@ describe AEMO::NEM12 do
       after { Timecop.return }
 
       it 'returns expected' do
-        expect(described_class.to_nem12(nem12s: nem12s)).to eq(expected)
+        expect(described_class.to_nem12_csv(nem12s: nem12s)).to eq(expected)
       end
     end
 
@@ -110,7 +110,7 @@ describe AEMO::NEM12 do
       after { Timecop.return }
 
       it 'returns expected' do
-        expect(described_class.to_nem12(nem12s: nem12s)).to eq(expected)
+        expect(described_class.to_nem12_csv(nem12s: nem12s)).to eq(expected)
       end
     end
 

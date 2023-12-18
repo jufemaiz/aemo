@@ -114,7 +114,7 @@ module AEMO
       #
       # @param [Array<AEMO::NEM12>] nem12s
       # @return [String]
-      def to_nem12(nem12s:)
+      def to_nem12_csv(nem12s:)
         [
           default_nem12_100,
           nem12s.map(&:to_nem12_200_csv),
