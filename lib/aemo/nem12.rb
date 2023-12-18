@@ -94,6 +94,21 @@ module AEMO
           to_participant:   csv[4]
         }
       end
+
+      # Default NEM12 100 row record.
+      #
+      # @return [String]
+      def default_nem12_100
+        timestamp = Time.now.in_time_zone(NEMTIMEZONE).strftime(TIMESTAMP12)
+        return "100,NEM12,#{timestamp},ENOSI,ENOSI" + CRLF if header.nil?
+      end
+
+      # Default NEM12 100 row record.
+      #
+      # @return [String]
+      def default_nem12_900
+        return '900' + CRLF
+      end
     end
 
     # Initialize a NEM12 file
@@ -342,8 +357,7 @@ module AEMO
     #
     # @return [String]
     def to_nem12_100_csv
-      timestamp = Time.now.in_time_zone(NEMTIMEZONE).strftime(TIMESTAMP12)
-      return "100,NEM12,#{timestamp},ENOSI,ENOSI" + CRLF if header.nil?
+      return self.class.default_nem12_100
 
       [
         header[:record_indicator],
@@ -447,7 +461,7 @@ module AEMO
     #
     # @return [String]
     def to_nem12_900_csv
-      '900' + CRLF
+      self.class.default_nem12_900
     end
   end
 end
