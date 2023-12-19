@@ -5,6 +5,7 @@ require 'httparty'
 require 'csv'
 
 require 'aemo/struct'
+require 'aemo/time'
 require 'aemo/region'
 require 'aemo/market'
 require 'aemo/market/interval'

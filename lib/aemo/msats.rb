@@ -265,7 +265,7 @@ module AEMO
       #
       # @return [String] the transaction id
       def transaction_id
-        Digest::SHA1.hexdigest(Time.now.to_s)[0..35]
+        Digest::SHA1.hexdigest(::Time.now.to_s)[0..35]
       end
     end
 

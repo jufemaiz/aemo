@@ -297,20 +297,20 @@ module AEMO
 
     # A function to return the distribution loss factor value for a given date
     #
-    # @param [DateTime, Time] datetime the date for the distribution loss factor
+    # @param [DateTime, ::Time] datetime the date for the distribution loss factor
     #   value
     # @return [nil, float] the distribution loss factor value
-    def dlfc_value(datetime = Time.now)
+    def dlfc_value(datetime = ::Time.now)
       if @dlf.nil?
         raise 'No DLF set, ensure that you have set the value either via the' \
               'update_from_msats! function or manually'
       end
       raise 'DLF is invalid' unless DLF_CODES.keys.include?(@dlf)
-      raise 'Invalid date' unless [DateTime, Time].include?(datetime.class)
+      raise 'Invalid date' unless [DateTime, ::Time].include?(datetime.class)
 
       possible_values = DLF_CODES[@dlf].select do |x|
-        Time.parse(x['FromDate']) <= datetime &&
-          Time.parse(x['ToDate']) >= datetime
+        ::Time.parse(x['FromDate']) <= datetime &&
+          ::Time.parse(x['ToDate']) >= datetime
       end
       if possible_values.empty?
         nil
@@ -321,42 +321,42 @@ module AEMO
 
     # A function to return the distribution loss factor value for a given date
     #
-    # @param [DateTime, Time] start the date for the distribution loss factor value
-    # @param [DateTime, Time] finish the date for the distribution loss factor value
+    # @param [DateTime, ::Time] start the date for the distribution loss factor value
+    # @param [DateTime, ::Time] finish the date for the distribution loss factor value
     # @return [Array(Hash)] array of hashes of start, finish and value
-    def dlfc_values(start = Time.now, finish = Time.now)
+    def dlfc_values(start = ::Time.now, finish = ::Time.now)
       if @dlf.nil?
         raise 'No DLF set, ensure that you have set the value either via the ' \
               'update_from_msats! function or manually'
       end
       raise 'DLF is invalid' unless DLF_CODES.keys.include?(@dlf)
-      raise 'Invalid start' unless [DateTime, Time].include?(start.class)
-      raise 'Invalid finish' unless [DateTime, Time].include?(finish.class)
+      raise 'Invalid start' unless [DateTime, ::Time].include?(start.class)
+      raise 'Invalid finish' unless [DateTime, ::Time].include?(finish.class)
       raise 'start cannot be after finish' if start > finish
 
-      DLF_CODES[@dlf].reject { |x| start > Time.parse(x['ToDate']) || finish < Time.parse(x['FromDate']) }
+      DLF_CODES[@dlf].reject { |x| start > ::Time.parse(x['ToDate']) || finish < ::Time.parse(x['FromDate']) }
                      .map { |x| { 'start' => x['FromDate'], 'finish' => x['ToDate'], 'value' => x['Value'].to_f } }
     end
 
     # A function to return the transmission node identifier loss factor value for a given date
     #
-    # @param [DateTime, Time] datetime the date for the distribution loss factor value
+    # @param [DateTime, ::Time] datetime the date for the distribution loss factor value
     # @return [nil, float] the transmission node identifier loss factor value
-    def tni_value(datetime = Time.now)
+    def tni_value(datetime = ::Time.now)
       if @tni.nil?
         raise 'No TNI set, ensure that you have set the value either via the ' \
               'update_from_msats! function or manually'
       end
       raise 'TNI is invalid' unless TNI_CODES.keys.include?(@tni)
-      raise 'Invalid date' unless [DateTime, Time].include?(datetime.class)
+      raise 'Invalid date' unless [DateTime, ::Time].include?(datetime.class)
 
       possible_values = TNI_CODES[@tni].select do |x|
-        Time.parse(x['FromDate']) <= datetime && datetime <= Time.parse(x['ToDate'])
+        ::Time.parse(x['FromDate']) <= datetime && datetime <= ::Time.parse(x['ToDate'])
       end
       return nil if possible_values.empty?
 
       possible_values = possible_values.first['mlf_data']['loss_factors'].select do |x|
-        Time.parse(x['start']) <= datetime && datetime <= Time.parse(x['finish'])
+        ::Time.parse(x['start']) <= datetime && datetime <= ::Time.parse(x['finish'])
       end
       return nil if possible_values.empty?
 
@@ -365,22 +365,22 @@ module AEMO
 
     # A function to return the transmission node identifier loss factor value for a given date
     #
-    # @param [DateTime, Time] start the date for the distribution loss factor value
-    # @param [DateTime, Time] finish the date for the distribution loss factor value
+    # @param [DateTime, ::Time] start the date for the distribution loss factor value
+    # @param [DateTime, ::Time] finish the date for the distribution loss factor value
     # @return [Array(Hash)] array of hashes of start, finish and value
-    def tni_values(start = Time.now, finish = Time.now)
+    def tni_values(start = ::Time.now, finish = ::Time.now)
       if @tni.nil?
         raise 'No TNI set, ensure that you have set the value either via the ' \
               'update_from_msats! function or manually'
       end
       raise 'TNI is invalid' unless TNI_CODES.keys.include?(@tni)
-      raise 'Invalid start' unless [DateTime, Time].include?(start.class)
-      raise 'Invalid finish' unless [DateTime, Time].include?(finish.class)
+      raise 'Invalid start' unless [DateTime, ::Time].include?(start.class)
+      raise 'Invalid finish' unless [DateTime, ::Time].include?(finish.class)
       raise 'start cannot be after finish' if start > finish
 
       possible_values = TNI_CODES[@tni].reject do |tni_code|
-        start > Time.parse(tni_code['ToDate']) ||
-          finish < Time.parse(tni_code['FromDate'])
+        start > ::Time.parse(tni_code['ToDate']) ||
+          finish < ::Time.parse(tni_code['FromDate'])
       end
 
       return nil if possible_values.empty?

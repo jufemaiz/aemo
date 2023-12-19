@@ -22,7 +22,7 @@ module AEMO
       # @param [Hash] options Hash of optional data values
       # @return [AEMO::Market::Interval]
       def initialize(datetime, options = {})
-        @datetime     = Time.parse("#{datetime} +1000")
+        @datetime     = ::Time.parse("#{datetime} +1000")
         @region       = options['REGION']
         @total_demand = options['TOTALDEMAND']
         @rrp          = options['RRP']
@@ -51,7 +51,7 @@ module AEMO
 
       # @return [Time] the time of the
       def interval_length
-        Time.at(300)
+        ::Time.at(300)
       end
 
       # @return [Symbol] :dispatch or :trading

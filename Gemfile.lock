@@ -10,9 +10,6 @@ PATH
       rexml
 
 GEM
-  specs:
-
-GEM
   remote: https://rubygems.org/
   specs:
     activesupport (7.1.2)
@@ -170,24 +167,24 @@ PLATFORMS
   x86_64-darwin-22
 
 DEPENDENCIES
-  addressable (~> 2.8, >= 2.8.0)!
+  addressable (~> 2.8, >= 2.8.0)
   aemo!
-  awesome_print (~> 1.8, >= 1.8.0)!
-  coveralls (~> 0.8, >= 0.8.21)!
-  ffi (~> 1.16, > 1.9.18)!
-  guard-yard (~> 2.2, >= 2.2.0)!
-  listen (~> 3.1, >= 3.5.0)!
-  minitest (~> 5.14, >= 5.14.2)!
-  rack (~> 3.0, >= 3.0.8)!
-  rdoc (~> 6.3, >= 5.1.0)!
-  rspec (~> 3.7, >= 3.7.0)!
-  rubocop (~> 1.59, >= 0.52.1)!
-  rubocop-minitest!
-  rubocop-rspec!
-  simplecov (~> 0.14, >= 0.14.1)!
-  timecop (~> 0.9, >= 0.9.1)!
-  webmock (~> 3.1, >= 3.1.0)!
-  yard (~> 0.9, >= 0.9.11)!
+  awesome_print (~> 1.8, >= 1.8.0)
+  coveralls (~> 0.8, >= 0.8.21)
+  ffi (~> 1.16, > 1.9.18)
+  guard-yard (~> 2.2, >= 2.2.0)
+  listen (~> 3.1, >= 3.5.0)
+  minitest (~> 5.14, >= 5.14.2)
+  rack (~> 3.0, >= 3.0.8)
+  rdoc (~> 6.3, >= 5.1.0)
+  rspec (~> 3.7, >= 3.7.0)
+  rubocop (~> 1.59, >= 0.52.1)
+  rubocop-minitest
+  rubocop-rspec
+  simplecov (~> 0.14, >= 0.14.1)
+  timecop (~> 0.9, >= 0.9.1)
+  webmock (~> 3.1, >= 3.1.0)
+  yard (~> 0.9, >= 0.9.11)
 
 BUNDLED WITH
-   2.4.21
+   2.5.1
