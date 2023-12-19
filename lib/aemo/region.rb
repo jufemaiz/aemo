@@ -12,11 +12,11 @@ module AEMO
       'ACT' => 'Australian Capital Territory',
       'NSW' => 'New South Wales',
       'QLD' => 'Queensland',
-      'SA'  => 'South Australia',
+      'SA' => 'South Australia',
       'TAS' => 'Tasmania',
       'VIC' => 'Victoria',
-      'NT'  => 'Northern Territory',
-      'WA'  => 'Western Australia'
+      'NT' => 'Northern Territory',
+      'WA' => 'Western Australia'
     }.freeze
 
     attr_accessor :region
@@ -34,6 +34,7 @@ module AEMO
     # @return [self]
     def initialize(region)
       raise ArgumentError, "Region '#{region}' is not valid." unless valid_region?(region)
+
       @region = region.upcase
       @full_name = REGIONS[@region]
       @current_trading = []

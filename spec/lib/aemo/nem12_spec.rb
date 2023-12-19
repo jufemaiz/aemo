@@ -7,28 +7,38 @@ describe AEMO::NEM12 do
   let(:json) { JSON.parse(fixture('nmi_checksum.json').read) }
 
   describe '#parse_nem12' do
-    it 'should reject an empty NEM12 string' do
-      expect(AEMO::NEM12.parse_nem12('')).to eq([])
+    it 'rejects an empty NEM12 string' do
+      expect(described_class.parse_nem12('')).to eq([])
     end
   end
 
   describe '.parse_nem12_file' do
-    it 'should parse a file' do
-      Dir.entries(File.join(File.dirname(__FILE__), '..', '..', 'fixtures', 'NEM12')).reject { |f| %w[. .. .DS_Store].include?(f) }.each do |file|
-        expect(AEMO::NEM12.parse_nem12_file(fixture(File.join('NEM12', file))).length).not_to eq(0)
+    let(:files) do
+      Dir.entries(File.join(File.dirname(__FILE__), '..', '..', 'fixtures', 'NEM12')).reject do |f|
+        %w[. .. .DS_Store].include?(f)
+      end
+    end
+
+    it 'parses a file' do
+      files.each do |file|
+        expect(described_class.parse_nem12_file(fixture(File.join('NEM12', file))).length).not_to eq(0)
       end
     end
   end
 
   describe '.parse_nem12_100' do
-    it 'should raise datetime error' do
-      expect { AEMO::NEM12.parse_nem12_100('100,NEM12,666,CNRGYMDP,NEMMCO') }.to raise_error(ArgumentError)
+    it 'raises datetime error' do
+      expect { described_class.parse_nem12_100('100,NEM12,666,CNRGYMDP,NEMMCO') }.to raise_error(ArgumentError)
     end
-    it 'should raise datetime error' do
-      expect { AEMO::NEM12.parse_nem12_100('100,NEM12,666,CNRGYMDP,NEMMCO', strict: true) }.to raise_error(ArgumentError)
+
+    it 'raises datetime error' do
+      expect do
+        described_class.parse_nem12_100('100,NEM12,666,CNRGYMDP,NEMMCO', strict: true)
+      end.to raise_error(ArgumentError)
     end
-    it 'should not raise an error' do
-      expect { AEMO::NEM12.parse_nem12_100('100,NEM12,201603010000,CNRGYMDP,NEMMCO', strict: true) }.not_to raise_error
+
+    it 'does not raise an error' do
+      expect { described_class.parse_nem12_100('100,NEM12,201603010000,CNRGYMDP,NEMMCO', strict: true) }.not_to raise_error
     end
   end
 
@@ -43,7 +53,7 @@ describe AEMO::NEM12 do
       after { Timecop.return }
 
       it 'returns expected' do
-        expect(described_class.to_nem12_csv(nem12s: nem12s)).to eq(expected)
+        expect(described_class.to_nem12_csv(nem12s:)).to eq(expected)
       end
     end
 
@@ -70,7 +80,7 @@ describe AEMO::NEM12 do
           '200,NEM1201002,E1E2,E1,E1,N1,01002,KWH,30,',
           '300,20050318,315.15,313.8,296.55,298.5,295.2,298.95,300.75,322.95,330.45,350.7,345.75,346.95,345.9,348.6,300.15,337.5,336.75,345.9,330.45,327.15,334.8,345.75,335.85,320.1,325.5,325.2,326.4,330.6,332.7,332.25,321.0,316.5,299.85,302.4,301.05,263.85,255.45,142.05,138.3,138.3,136.8,138.3,136.05,135.75,135.75,136.65,136.05,130.8,A,,,20050319004041,',
           '200,NEM1201002,E1E2,E2,E2,N2,01002,KWH,30,',
-          '300,20050318,103.05,98.85,81.15,75.6,72.15,73.95,74.55,81.15,89.25,124.2,125.7,128.7,136.8,151.05,177.9,174.45,204.0,210.15,180.15,164.4,187.95,211.95,193.8,122.85,124.8,121.2,129.3,131.25,130.95,130.05,118.05,105.75,77.1,75.9,75.0,51.15,44.4,12.3,12.75,12.15,12.45,11.55,14.4,14.55,15.0,14.7,15.75,21.9,A,,,20050319004041,',          '900',
+          '300,20050318,103.05,98.85,81.15,75.6,72.15,73.95,74.55,81.15,89.25,124.2,125.7,128.7,136.8,151.05,177.9,174.45,204.0,210.15,180.15,164.4,187.95,211.95,193.8,122.85,124.8,121.2,129.3,131.25,130.95,130.05,118.05,105.75,77.1,75.9,75.0,51.15,44.4,12.3,12.75,12.15,12.45,11.55,14.4,14.55,15.0,14.7,15.75,21.9,A,,,20050319004041,', '900',
           ''
         ].join("\r\n")
       end
@@ -79,7 +89,7 @@ describe AEMO::NEM12 do
       after { Timecop.return }
 
       it 'returns expected' do
-        expect(described_class.to_nem12_csv(nem12s: nem12s)).to eq(expected)
+        expect(described_class.to_nem12_csv(nem12s:)).to eq(expected)
       end
     end
 
@@ -110,14 +120,13 @@ describe AEMO::NEM12 do
       after { Timecop.return }
 
       it 'returns expected' do
-        expect(described_class.to_nem12_csv(nem12s: nem12s)).to eq(expected)
+        expect(described_class.to_nem12_csv(nem12s:)).to eq(expected)
       end
     end
-
   end
 
   describe '::RECORD_INDICATORS' do
-    it 'should be a hash' do
+    it 'is a hash' do
       expect(AEMO::NEM12::RECORD_INDICATORS.class).to eq(Hash)
     end
   end
@@ -127,7 +136,7 @@ describe AEMO::NEM12 do
       Dir.entries(File.join(File.dirname(__FILE__), '..', '..', 'fixtures', 'NEM12'))
          .reject { |f| %w[. .. .DS_Store].include?(f) }
          .each do |file|
-        AEMO::NEM12.parse_nem12_file(fixture(File.join('NEM12', file))).each do |nem12|
+        described_class.parse_nem12_file(fixture(File.join('NEM12', file))).each do |nem12|
           expect(nem12.nmi_identifier).to be_a String
         end
       end
@@ -136,49 +145,47 @@ describe AEMO::NEM12 do
 
   describe '#parse_nem12_200' do
     context 'non-strict mode' do
-      it 'should not raise validation warning with bad NMI configuration' do
-        expect(AEMO::NEM12.parse_nem12_file(fixture(File.join('NEM12-Errors', 'NEM12#DerpyNMIConfig#CNRGYMDP#NEMMCO.csv')), false))
+      it 'does not raise validation warning with bad NMI configuration' do
+        expect(described_class.parse_nem12_file(
+                 fixture(File.join('NEM12-Errors', 'NEM12#DerpyNMIConfig#CNRGYMDP#NEMMCO.csv')), strict: false
+               ))
           .to be_truthy
       end
     end
 
     context 'strict mode (default)' do
-      it 'should raise validation warning with bad NMI configuration' do
-        expect { AEMO::NEM12.parse_nem12_file(fixture(File.join('NEM12-Errors', 'NEM12#DerpyNMIConfig#CNRGYMDP#NEMMCO.csv'))) }
+      it 'raises validation warning with bad NMI configuration' do
+        expect do
+          described_class.parse_nem12_file(fixture(File.join('NEM12-Errors', 'NEM12#DerpyNMIConfig#CNRGYMDP#NEMMCO.csv')))
+        end
           .to raise_error(ArgumentError, 'NMIConfiguration is not valid')
       end
     end
   end
 
   describe '#parse_nem12_300' do
-    it 'should raise invalid record length error' do
+    it 'raises invalid record length error' do
       bad_file = fixture(File.join('NEM12-Errors', 'NEM12#InvalidIntervalDataLength#CNRGYMDP#NEMMCO.csv'))
-      expect { AEMO::NEM12.parse_nem12_file(bad_file) }.to raise_error(TypeError, 'Invalid record length')
+      expect { described_class.parse_nem12_file(bad_file) }.to raise_error(TypeError, 'Invalid record length')
     end
 
-    it 'should raise argument error on 300 empty cells' do
+    it 'raises argument error on 300 empty cells' do
       nem12_empty_cells_300_record = fixture(File.join('NEM12-Errors', 'NEM12#EmptyCells300Record#CNRGYMDP#NEMMCO.csv'))
-      expect { AEMO::NEM12.parse_nem12_file(nem12_empty_cells_300_record) }.to raise_error(ArgumentError)
+      expect { described_class.parse_nem12_file(nem12_empty_cells_300_record) }.to raise_error(ArgumentError)
     end
   end
 
   describe '#parse_nem12_400' do
-    it 'should raise argument error on 400 empty cells' do
+    it 'raises argument error on 400 empty cells' do
       nem12_empty_cells_400_record = fixture(File.join('NEM12-Errors', 'NEM12#EmptyCells400Record#CNRGYMDP#NEMMCO.csv'))
-      expect { AEMO::NEM12.parse_nem12_file(nem12_empty_cells_400_record) }.to raise_error(ArgumentError)
+      expect { described_class.parse_nem12_file(nem12_empty_cells_400_record) }.to raise_error(ArgumentError)
     end
-  end
-
-  describe '#parse_nem12_500' do
-  end
-
-  describe '#parse_nem12_900' do
   end
 
   describe '#flag_to_s' do
     it 'converts the flags to a string' do
       flag = { quality_flag: 'S', method_flag: 11, reason_code: 53 }
-      nem12 = AEMO::NEM12.new('NEEE000010')
+      nem12 = described_class.new('NEEE000010')
       expect(nem12.flag_to_s(flag))
         .to eq 'Substituted Data - Check - Bees/Wasp In Meter Box'
     end
@@ -190,7 +197,7 @@ describe AEMO::NEM12 do
     end
     let(:nem12) { described_class.parse_nem12_file(nem12_filepath).first }
     let(:expected) do
-"100,NEM12,200505121137,CNRGYMDP,NEMMCO\r
+      "100,NEM12,200505121137,CNRGYMDP,NEMMCO\r
 200,NEM1204062,E1,E1,E1,N1,04062,KWH,30,20050503\r
 300,20040527,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.735,0.625,0.618,0.63,0.893,1.075,1.263,1.505,1.645,1.073,0.938,1.15,0.75,1.35,1.093,0.973,1.018,0.735,0.718,0.735,0.64,0.638,0.65,0.645,0.73,0.63,0.673,0.688,0.663,0.625,0.628,0.628,0.633,0.645,0.625,0.62,0.623,0.78,V,,,20040609153903,\r
 400,1,10,F52,71,\r

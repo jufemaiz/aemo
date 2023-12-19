@@ -155,7 +155,7 @@ module AEMO
           type: 'electricity',
           includes: [
             /^(SAAA[A-HJ-NP-VX-Z\d][A-HJ-NP-Z\d]{5})$/,
-            /^(SASMPL[\d]{4})$/,
+            /^(SASMPL\d{4})$/,
             /^(200[12]\d{6})$/
           ],
           excludes: []
@@ -405,8 +405,8 @@ module AEMO
         # Enumerable support
         #
         # @return [Enumerator]
-        def each(&block)
-          all.each(&block)
+        def each(&)
+          all.each(&)
         end
 
         # Finds the Allocation that encompasses a given NMI
@@ -444,7 +444,7 @@ module AEMO
         @friendly_title = opts.fetch(:friendly_title, title)
         @exclude_nmi_patterns = opts.fetch(:excludes, [])
         @include_nmi_patterns = opts.fetch(:includes, [])
-        @region = AEMO::Region.new(opts.fetch(:region)) if opts.dig(:region)
+        @region = AEMO::Region.new(opts.fetch(:region)) if opts[:region]
       end
 
       private
@@ -456,9 +456,8 @@ module AEMO
       # @return [Symbol]
       def parse_allocation_type(type)
         type_sym = type.to_sym
-        unless SUPPORTED_TYPES.include?(type_sym)
-          raise AEMO::InvalidNMIAllocationType
-        end
+        raise AEMO::InvalidNMIAllocationType unless SUPPORTED_TYPES.include?(type_sym)
+
         type_sym
       rescue NoMethodError
         raise AEMO::InvalidNMIAllocationType

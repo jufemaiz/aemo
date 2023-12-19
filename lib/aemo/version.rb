@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# -*- coding: UTF-8 -*-
 #
 # Copyright 2014 Joel Courtney
 #

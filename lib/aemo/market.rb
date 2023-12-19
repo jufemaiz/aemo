@@ -20,8 +20,7 @@ module AEMO
         region = AEMO::Region.new(region) if region.is_a?(String)
 
         response = get "/mms.GRAPHS/GRAPHS/GRAPH_5#{region}1.csv"
-        values = parse_response(response)
-        values
+        parse_response(response)
       end
 
       # Description of method
@@ -32,8 +31,7 @@ module AEMO
         region = AEMO::Region.new(region) if region.is_a?(String)
 
         response = get "/mms.GRAPHS/GRAPHS/GRAPH_30#{region}1.csv"
-        values = parse_response(response)
-        values
+        parse_response(response)
       end
 
       # Return an array of historic trading values based on a start and finish

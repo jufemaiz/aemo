@@ -35,7 +35,7 @@ module AEMO
       # All AEMO Data aggregates to the trailing edge of the period (this makes it difficult to do daily aggregations :( )
       # @param [Boolean] trailing_edge selection of either the trailing edge of the period or the rising edge of the period for the date time
       # @return [Time] a time object of the trailing edge of the interval
-      def datetime(trailing_edge = true)
+      def datetime(trailing_edge: true)
         t = @datetime
         # If the datetime requested is the trailing edge, offset as per interval requirement
         unless trailing_edge
@@ -72,7 +72,7 @@ module AEMO
       # @return [Float] the value of the interval in Australian Dollars
       def value
         @value ||= Float::NAN
-        @value = (@total_demand * @rrp).round(2) if @total_demand.class == Float && @rrp.class == Float
+        @value = (@total_demand * @rrp).round(2) if @total_demand.instance_of?(Float) && @rrp.instance_of?(Float)
         @value
       end
     end

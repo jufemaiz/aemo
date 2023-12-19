@@ -8,7 +8,7 @@ module AEMO
   # @since 0.3.0
   class InvalidNMIAllocationType < ArgumentError
     DEFAULT_MESSAGE = 'Not a valid allocation type, try one of ' \
-                      "#{AEMO::NMI::Allocation::SUPPORTED_TYPES.join(' |')}"
+                      "#{AEMO::NMI::Allocation::SUPPORTED_TYPES.join(' |')}".freeze
 
     # Initialize an InvalidNMIAllocationType
     #

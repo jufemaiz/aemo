@@ -21,7 +21,7 @@ CSV.parse(file_contents, headers: true, converters: :numeric).each do |row|
   @mlf_data[row['TNI']] ||= { location: row['Location'],
                               voltage: row['Voltage'],
                               loss_factors: [] }
-  row.headers.select { |x| x =~ /^FY\d{2}$/ }.sort.reverse.each do |fin_year|
+  row.headers.grep(/^FY\d{2}$/).sort.reverse.each do |fin_year|
     year = "20#{fin_year.match(/FY(\d{2})/)[1]}".to_i
     @mlf_data[row['TNI']][:loss_factors] << {
       start: Time.parse("#{year - 1}-07-01T00:00:00+1000"),
@@ -74,7 +74,5 @@ end
     output_data[code] << output_data_instance
   end
 
-  File.open(File.join(@path, output_file), 'w') do |write_file|
-    write_file.write(output_data.to_json)
-  end
+  File.write(File.join(@path, output_file), output_data.to_json)
 end

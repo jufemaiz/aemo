@@ -37,32 +37,35 @@ module AEMO
     class << self
       # @param [String] path_to_file the path to a file
       # @return [Array<AEMO::NEM12>] NEM12 object
-      def parse_nem12_file(path_to_file, strict = true)
-        parse_nem12(File.read(path_to_file), strict)
+      def parse_nem12_file(path_to_file, strict: true)
+        parse_nem12(File.read(path_to_file), strict:)
       end
 
       # @param [String] contents the path to a file
       # @param [Boolean] strict
       # @return [Array<AEMO::NEM12>] An array of NEM12 objects
-      def parse_nem12(contents, strict = true)
+      def parse_nem12(contents, strict: true)
         file_contents = contents.tr("\r", "\n").tr("\n\n", "\n").split("\n").delete_if(&:empty?)
         # nothing to further process
         return [] if file_contents.empty?
 
-        raise ArgumentError, 'First row should be have a RecordIndicator of 100 and be of type Header Record' unless file_contents.first.parse_csv[0] == '100'
+        unless file_contents.first.parse_csv[0] == '100'
+          raise ArgumentError,
+                'First row should be have a RecordIndicator of 100 and be of type Header Record'
+        end
 
         nem12s = []
-        header = AEMO::NEM12.parse_nem12_100(file_contents.first, strict: strict)
+        header = AEMO::NEM12.parse_nem12_100(file_contents.first, strict:)
         file_contents.each do |line|
           case line[0..2].to_i
           when 200
             nem12s << AEMO::NEM12.new('')
             nem12s.last.header = header
-            nem12s.last.parse_nem12_200(line, strict: strict)
+            nem12s.last.parse_nem12_200(line, strict:)
           when 300
-            nem12s.last.parse_nem12_300(line, strict: strict)
+            nem12s.last.parse_nem12_300(line, strict:)
           when 400
-            nem12s.last.parse_nem12_400(line, strict: strict)
+            nem12s.last.parse_nem12_400(line, strict:)
             # when 500
             #   nem12s.last.parse_nem12_500(line, strict: strict)
             # when 900
@@ -77,37 +80,41 @@ module AEMO
       # @param [String] line A single line in string format
       # @param [Hash] options
       # @return [Hash] the line parsed into a hash of information
-      def parse_nem12_100(line, options = {})
+      def parse_nem12_100(line, options = {}) # rubocop:disable Naming/VariableNumber
         csv = line.parse_csv
 
         raise ArgumentError, 'RecordIndicator is not 100'     if csv[0] != '100'
         raise ArgumentError, 'VersionHeader is not NEM12'     if csv[1] != 'NEM12'
-        raise ArgumentError, 'Time is not valid' if options[:strict] && (csv[2].match(/\d{12}/).nil? || csv[2] != Time.parse("#{csv[2]}00").strftime(TIMESTAMP12))
+
+        if options[:strict] && (csv[2].match(/\d{12}/).nil? || csv[2] != Time.parse("#{csv[2]}00").strftime(TIMESTAMP12))
+          raise ArgumentError,
+                'Time is not valid'
+        end
         raise ArgumentError, 'FromParticipant is not valid'  if csv[3].match(/.{1,10}/).nil?
         raise ArgumentError, 'ToParticipant is not valid'    if csv[4].match(/.{1,10}/).nil?
 
         {
           record_indicator: csv[0].to_i,
-          version_header:   csv[1],
-          datetime:         Time.parse("#{csv[2]}+1000"),
+          version_header: csv[1],
+          datetime: Time.parse("#{csv[2]}+1000"),
           from_participant: csv[3],
-          to_participant:   csv[4]
+          to_participant: csv[4]
         }
       end
 
       # Default NEM12 100 row record.
       #
       # @return [String]
-      def default_nem12_100
+      def default_nem12_100 # rubocop:disable Naming/VariableNumber
         timestamp = Time.now.in_time_zone(NEMTIMEZONE).strftime(TIMESTAMP12)
-        return "100,NEM12,#{timestamp},ENOSI,ENOSI#{CRLF}"
+        "100,NEM12,#{timestamp},ENOSI,ENOSI#{CRLF}"
       end
 
       # Default NEM12 100 row record.
       #
       # @return [String]
-      def default_nem12_900
-        return "900#{CRLF}"
+      def default_nem12_900 # rubocop:disable Naming/VariableNumber
+        "900#{CRLF}"
       end
 
       # For a list of nem12s, turn into a single NEM12 CSV string with default header row.
@@ -138,26 +145,38 @@ module AEMO
 
     # Returns the NMI Identifier or nil
     def nmi_identifier
-      @nmi.nil? ? nil : @nmi.nmi
+      @nmi&.nmi
     end
 
     # Parses the NMI Data Details
     # @param [String] line A single line in string format
     # @param [Hash] options
     # @return [Hash] the line parsed into a hash of information
-    def parse_nem12_200(line, options = {})
+    def parse_nem12_200(line, options = {}) # rubocop:disable Naming/VariableNumber
       csv = line.parse_csv
 
       raise ArgumentError, 'RecordIndicator is not 200'     if csv[0] != '200'
       raise ArgumentError, 'NMI is not valid'               unless AEMO::NMI.valid_nmi?(csv[1])
-      raise ArgumentError, 'NMIConfiguration is not valid' if options[:strict] && (csv[2].nil? || csv[2].match(/.{1,240}/).nil?)
+
+      if options[:strict] && (csv[2].nil? || csv[2].match(/.{1,240}/).nil?)
+        raise ArgumentError,
+              'NMIConfiguration is not valid'
+      end
       raise ArgumentError, 'RegisterID is not valid' if !csv[3].nil? && csv[3].match(/.{1,10}/).nil?
       raise ArgumentError, 'NMISuffix is not valid' if csv[4].nil? || csv[4].match(/[A-HJ-NP-Z][1-9A-HJ-NP-Z]/).nil?
-      raise ArgumentError, 'MDMDataStreamIdentifier is not valid' if !csv[5].nil? && !csv[5].empty? && !csv[5].match(/^\s*$/) && csv[5].match(/[A-Z0-9]{2}/).nil?
-      raise ArgumentError, 'MeterSerialNumber is not valid' if !csv[6].nil? && !csv[6].empty? && !csv[6].match(/^\s*$/) && csv[6].match(/[A-Z0-9]{2}/).nil?
+
+      if !csv[5].nil? && !csv[5].empty? && !csv[5].match(/^\s*$/) && csv[5].match(/[A-Z0-9]{2}/).nil?
+        raise ArgumentError,
+              'MDMDataStreamIdentifier is not valid'
+      end
+      if !csv[6].nil? && !csv[6].empty? && !csv[6].match(/^\s*$/) && csv[6].match(/[A-Z0-9]{2}/).nil?
+        raise ArgumentError,
+              'MeterSerialNumber is not valid'
+      end
       raise ArgumentError, 'UOM is not valid' if csv[7].nil? || csv[7].upcase.match(/[A-Z0-9]{2}/).nil?
       raise ArgumentError, 'UOM is not valid'               unless UOM.keys.map(&:upcase).include?(csv[7].upcase)
       raise ArgumentError, 'IntervalLength is not valid'    unless %w[1 5 10 15 30].include?(csv[8])
+
       # raise ArgumentError, 'NextScheduledReadDate is not valid' if csv[9].match(/\d{8}/).nil? || csv[9] != Time.parse('#{csv[9]}').strftime(TIMESTAMP8)
 
       @nmi = AEMO::NMI.new(csv[1])
@@ -180,40 +199,61 @@ module AEMO
     # @param [String] line A single line in string format
     # @param [Hash] options
     # @return [Array of hashes] the line parsed into a hash of information
-    def parse_nem12_300(line, options = {})
+    def parse_nem12_300(line, options = {}) # rubocop:disable Naming/VariableNumber
       csv = line.parse_csv
-      raise TypeError, 'Expected NMI Data Details to exist with IntervalLength specified' if @data_details.last.nil? || @data_details.last[:interval_length].nil?
+      if @data_details.last.nil? || @data_details.last[:interval_length].nil?
+        raise TypeError,
+              'Expected NMI Data Details to exist with IntervalLength specified'
+      end
 
       # ref: AEMO's MDFF Spec NEM12 and NEM13 v1.01 (2014-05-14)
-      record_fixed_fields = %w[RecordIndicator IntervalDate QualityMethod ReasonCode ReasonDescription UpdateDatetime MSATSLoadDateTime]
+      record_fixed_fields = %w[RecordIndicator IntervalDate QualityMethod ReasonCode ReasonDescription UpdateDatetime
+                               MSATSLoadDateTime]
       number_of_intervals = 1440 / @data_details.last[:interval_length]
       raise TypeError, 'Invalid record length' if csv.length != record_fixed_fields.length + number_of_intervals
 
       intervals_offset = number_of_intervals + 2
 
       raise ArgumentError, 'RecordIndicator is not 300' if csv[0] != '300'
-      raise ArgumentError, 'IntervalDate is not valid' if csv[1].match(/\d{8}/).nil? || csv[1] != Time.parse(csv[1].to_s).strftime(TIMESTAMP8)
+
+      if csv[1].match(/\d{8}/).nil? || csv[1] != Time.parse(csv[1].to_s).strftime(TIMESTAMP8)
+        raise ArgumentError,
+              'IntervalDate is not valid'
+      end
+
       (2..(number_of_intervals + 1)).each do |i|
         raise ArgumentError, "Interval number #{i - 1} is not valid" if csv[i].nil? || csv[i].match(/\d+(\.\d+)?/).nil?
       end
-      raise ArgumentError, 'QualityMethod is not valid' unless csv[intervals_offset + 0].class == String
-      raise ArgumentError, 'QualityMethod does not have valid length' unless [1, 3].include?(csv[intervals_offset + 0].length)
-      raise ArgumentError, 'QualityMethod does not have valid QualityFlag' unless QUALITY_FLAGS.keys.include?(csv[intervals_offset + 0][0])
+      raise ArgumentError, 'QualityMethod is not valid' unless csv[intervals_offset + 0].instance_of?(String)
+      raise ArgumentError, 'QualityMethod does not have valid length' unless [1,
+                                                                              3].include?(csv[intervals_offset + 0].length)
+
+      unless QUALITY_FLAGS.keys.include?(csv[intervals_offset + 0][0])
+        raise ArgumentError,
+              'QualityMethod does not have valid QualityFlag'
+      end
+
       unless %w[A N V].include?(csv[intervals_offset + 0][0])
         raise ArgumentError, 'QualityMethod does not have valid length' unless csv[intervals_offset + 0].length == 3
-        raise ArgumentError, 'QualityMethod does not have valid MethodFlag' unless METHOD_FLAGS.keys.include?(csv[intervals_offset + 0][1..2].to_i)
+
+        unless METHOD_FLAGS.keys.include?(csv[intervals_offset + 0][1..2].to_i)
+          raise ArgumentError,
+                'QualityMethod does not have valid MethodFlag'
+        end
       end
-      unless %w[A N E].include?(csv[intervals_offset + 0][0])
-        raise ArgumentError, 'ReasonCode is not valid' unless REASON_CODES.keys.include?(csv[intervals_offset + 1].to_i)
+      if !%w[A N
+             E].include?(csv[intervals_offset + 0][0]) && !REASON_CODES.keys.include?(csv[intervals_offset + 1].to_i)
+        raise ArgumentError, 'ReasonCode is not valid'
       end
-      if !csv[intervals_offset + 1].nil? && csv[intervals_offset + 1].to_i.zero?
-        raise ArgumentError, 'ReasonDescription is not valid' unless csv[intervals_offset + 2].class == String && !csv[intervals_offset + 2].empty?
+
+      if !csv[intervals_offset + 1].nil? && csv[intervals_offset + 1].to_i.zero? && !(csv[intervals_offset + 2].instance_of?(String) && !csv[intervals_offset + 2].empty?)
+        raise ArgumentError,
+              'ReasonDescription is not valid'
       end
       if options[:strict]
-        if csv[intervals_offset + 3].match(/\d{14}/).nil? || csv[intervals_offset + 3] != Time.parse(csv[intervals_offset + 3].to_s).strftime(TIMESTAMP14)
-          raise ArgumentError, 'UpdateDateTime is not valid'
-        end
-        if !csv[intervals_offset + 4].blank? && csv[intervals_offset + 4].match(/\d{14}/).nil? || !csv[intervals_offset + 4].blank? && csv[intervals_offset + 4] != Time.parse(csv[intervals_offset + 4].to_s).strftime(TIMESTAMP14)
+        raise ArgumentError, 'UpdateDateTime is not valid' if csv[intervals_offset + 3].match(/\d{14}/).nil? || csv[intervals_offset + 3] != Time.parse(csv[intervals_offset + 3].to_s).strftime(TIMESTAMP14)
+        if (!csv[intervals_offset + 4].blank? && csv[intervals_offset + 4].match(/\d{14}/).nil?) ||
+           (!csv[intervals_offset + 4].blank? && csv[intervals_offset + 4] != Time.parse(csv[intervals_offset + 4].to_s).strftime(TIMESTAMP14))
           raise ArgumentError, 'MSATSLoadDateTime is not valid'
         end
       end
@@ -243,9 +283,9 @@ module AEMO
         data_details: @data_details.last,
         datetime: Time.parse("#{csv[1]}000000+1000"),
         value: nil,
-        flag: flag,
-        updated_at: updated_at,
-        msats_load_at: msats_load_at
+        flag:,
+        updated_at:,
+        msats_load_at:
       }
 
       intervals = []
@@ -262,12 +302,17 @@ module AEMO
     # @param [String] line A single line in string format
     # @param [Hash] options
     # @return [Hash] the line parsed into a hash of information
-    def parse_nem12_400(line, options = {})
+    def parse_nem12_400(line, _options = {}) # rubocop:disable Naming/VariableNumber
       csv = line.parse_csv
       raise ArgumentError, 'RecordIndicator is not 400'     if csv[0] != '400'
       raise ArgumentError, 'StartInterval is not valid'     if csv[1].nil? || csv[1].match(/^\d+$/).nil?
       raise ArgumentError, 'EndInterval is not valid'       if csv[2].nil? || csv[2].match(/^\d+$/).nil?
-      raise ArgumentError, 'QualityMethod is not valid'     if csv[3].nil? || csv[3].match(/^([AN]|([AEFNSV]\d{2}))$/).nil?
+
+      if csv[3].nil? || csv[3].match(/^([AN]|([AEFNSV]\d{2}))$/).nil?
+        raise ArgumentError,
+              'QualityMethod is not valid'
+      end
+
       # raise ArgumentError, 'ReasonCode is not valid'        if (csv[4].nil? && csv[3].match(/^ANE/)) || csv[4].match(/^\d{3}?$/) || csv[3].match(/^ANE/)
       # raise ArgumentError, 'ReasonDescription is not valid' if (csv[4].nil? && csv[3].match(/^ANE/)) || ( csv[5].match(/^$/) && csv[4].match(/^0$/) )
 
@@ -279,7 +324,8 @@ module AEMO
         interval_start_point = @interval_data.length - number_of_intervals
 
         # For each of these
-        base_interval_event = { datetime: nil, quality_method: csv[3], reason_code: (csv[4].nil? ? nil : csv[4].to_i), reason_description: csv[5] }
+        base_interval_event = { datetime: nil, quality_method: csv[3], reason_code: csv[4]&.to_i,
+                                reason_description: csv[5] }
 
         # Interval Numbers are 1-indexed
         ((csv[1].to_i)..(csv[2].to_i)).each do |i|
@@ -306,14 +352,14 @@ module AEMO
     # @param [String] line A single line in string format
     # @param [Hash] _options
     # @return [Hash] the line parsed into a hash of information
-    def parse_nem12_500(_line, _options = {}); end
+    def parse_nem12_500(_line, _options = {}); end # rubocop:disable Naming/VariableNumber
 
     # 900 is the last row a NEM12 should see...
     #
     # @param [String] line A single line in string format
     # @param [Hash] _options
     # @return [Hash] the line parsed into a hash of information
-    def parse_nem12_900(_line, _options = {}); end
+    def parse_nem12_900(_line, _options = {}); end # rubocop:disable Naming/VariableNumber
 
     # Turns the flag to a string
     #
@@ -361,9 +407,8 @@ module AEMO
       [
         to_nem12_100_csv,
         to_nem12_200_csv,
-        to_nem12_900_csv,
-        ''
-      ].flatten.join(CRLF)
+        to_nem12_900_csv
+      ].flatten.join
     end
 
     # Output the AEMO::NEM12 to a valid NEM12 100 row CSV string.
@@ -377,8 +422,8 @@ module AEMO
         header[:version_header],
         header[:datetime].in_time_zone(NEMTIMEZONE).strftime(TIMESTAMP12),
         header[:from_participant],
-        header[:to_participant],
-      ].join(CSV_SEPARATOR)
+        header[:to_participant]
+      ].join(CSV_SEPARATOR) + CRLF
     end
 
     # Output the AEMO::NEM12 to a valid NEM12 200 row CSV string.
@@ -400,9 +445,9 @@ module AEMO
           data_detail[:meter_serial_number],
           data_detail[:uom],
           data_detail[:interval_length],
-          data_detail[:next_scheduled_read_date] # Note: this is not turned into a timestamp.
+          data_detail[:next_scheduled_read_date] # NOTE: this is not turned into a timestamp.
         ].join(CSV_SEPARATOR),
-        to_nem12_300_csv,
+        to_nem12_300_csv
       ].flatten.join(CRLF)
     end
 
@@ -412,7 +457,9 @@ module AEMO
     def to_nem12_300_csv
       lines = []
 
-      daily_datas = interval_data.group_by { |x| (x[:datetime].in_time_zone(NEMTIMEZONE) - 1.second).strftime(TIMESTAMP8) }
+      daily_datas = interval_data.group_by do |x|
+        (x[:datetime].in_time_zone(NEMTIMEZONE) - 1.second).strftime(TIMESTAMP8)
+      end
       daily_datas.keys.sort.each do |key|
         daily_data = daily_datas[key].sort_by { |x| x[:datetime] }
         has_flags = daily_data.map { |x| x[:flag]&.any? }.uniq.include?(true)
@@ -421,7 +468,7 @@ module AEMO
           '300',
           key,
           daily_data.map { |x| x[:value] },
-          !has_flags ? 'A' : 'V',
+          has_flags ? 'V' : 'A',
           '',
           '',
           daily_data.first[:updated_at]&.in_time_zone(NEMTIMEZONE)&.strftime(TIMESTAMP14),
@@ -430,7 +477,7 @@ module AEMO
 
         next unless has_flags
 
-        lines << to_nem12_400_csv(daily_data: daily_data, interval_duration: daily_data.first[:data_details][:interval_length])
+        lines << to_nem12_400_csv(daily_data:)
       end
 
       lines.join(CRLF) + CRLF
@@ -440,7 +487,7 @@ module AEMO
     #
     # @param [Array<Hash>] daily_data
     # @return [String]
-    def to_nem12_400_csv(daily_data:, interval_duration:)
+    def to_nem12_400_csv(daily_data:)
       daily_data.sort_by! { |x| x[:datetime] }
 
       nem12_400_rows = []

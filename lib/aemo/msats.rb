@@ -13,9 +13,9 @@ module AEMO
   class MSATS
     # Globally set request headers
     HEADERS = {
-      'User-Agent'    => 'Ruby.AEMO.MSATS.Api',
-      'Accept'        => 'text/xml',
-      'Content-Type'  => 'text/xml'
+      'User-Agent' => 'Ruby.AEMO.MSATS.Api',
+      'Accept' => 'text/xml',
+      'Content-Type' => 'text/xml'
     }.freeze
 
     # We like to party
@@ -31,8 +31,7 @@ module AEMO
 
     # Class Methods
     class << self
-      attr_accessor :auth
-      attr_accessor :participant_id
+      attr_accessor :auth, :participant_id
 
       # Single NMI Master (C4) Report
       # /C4/PARTICIPANT_IDENTIFIER?transactionId=XXX&nmi=XXX&checksum=X&type=XXX&reason=XXX
@@ -52,22 +51,23 @@ module AEMO
         options[:inittransId]     ||= nil
 
         query = {
-          transactionId:  transaction_id,
-          # Note: AEMO has case sensitivity but no consistency across requests.
-          NMI:            nmi.nmi,
-          fromDate:       from_date,
-          toDate:         to_date,
-          asatDate:       as_at_date,
-          participantId:  @participant_id,
-          roleId:         options[:role_id],
-          inittransId:    options[:init_trans_id]
+          transactionId: transaction_id,
+          # NOTE: AEMO has case sensitivity but no consistency across requests.
+          NMI: nmi.nmi,
+          fromDate: from_date,
+          toDate: to_date,
+          asatDate: as_at_date,
+          participantId: @participant_id,
+          roleId: options[:role_id],
+          inittransId: options[:init_trans_id]
         }
 
-        response = get("/C4/#{@participant_id}", basic_auth: @auth, headers: HEADERS, query: query, verify: (options[:verify_ssl] != false))
-        if response.response.code != '200'
-          response
-        else
+        response = get("/C4/#{@participant_id}", basic_auth: @auth, headers: HEADERS, query:,
+                                                 verify: (options[:verify_ssl] != false))
+        if response.response.code == '200'
           response.parsed_response['aseXML']['Transactions']['Transaction']['ReportResponse']['ReportResults']
+        else
+          response
         end
       end
 
@@ -77,13 +77,14 @@ module AEMO
       # @return [Hash] The report results from the MSATS Limits web service query
       def msats_limits(options = {})
         query = {
-          transactionId:  transaction_id
+          transactionId: transaction_id
         }
-        response = get("/MSATSLimits/#{@participant_id}", basic_auth: @auth, headers: HEADERS, query: query, verify: (options[:verify_ssl] != false))
-        if response.response.code != '200'
-          response
-        else
+        response = get("/MSATSLimits/#{@participant_id}", basic_auth: @auth, headers: HEADERS, query:,
+                                                          verify: (options[:verify_ssl] != false))
+        if response.response.code == '200'
           response.parsed_response['aseXML']['Transactions']['Transaction']['ReportResponse']['ReportResults']
+        else
+          response
         end
       end
 
@@ -93,21 +94,30 @@ module AEMO
       # @param [Integer] delivery_point_identifier Delivery Point Identifier
       # @return [Hash] The response
       def nmi_discovery_by_delivery_point_identifier(jurisdiction_code, delivery_point_identifier, options = {})
-        raise ArgumentError, 'jurisdiction_code is not valid' unless %w[ACT NEM NSW QLD SA VIC TAS].include?(jurisdiction_code)
-        raise ArgumentError, 'delivery_point_identifier is not valid' unless delivery_point_identifier.respond_to?('to_i')
-        raise ArgumentError, 'delivery_point_identifier is not valid' if delivery_point_identifier.to_i < 10_000_000 || delivery_point_identifier.to_i > 99_999_999
+        raise ArgumentError, 'jurisdiction_code is not valid' unless %w[ACT NEM NSW QLD SA VIC
+                                                                        TAS].include?(jurisdiction_code)
+
+        unless delivery_point_identifier.respond_to?('to_i')
+          raise ArgumentError,
+                'delivery_point_identifier is not valid'
+        end
+        if delivery_point_identifier.to_i < 10_000_000 || delivery_point_identifier.to_i > 99_999_999
+          raise ArgumentError,
+                'delivery_point_identifier is not valid'
+        end
 
         query = {
-          transactionId:  transaction_id,
+          transactionId: transaction_id,
           jurisdictionCode: jurisdiction_code,
           deliveryPointIdentifier: delivery_point_identifier.to_i
         }
 
-        response = get("/NMIDiscovery/#{@participant_id}", basic_auth: @auth, headers: HEADERS, query: query, verify: (options[:verify_ssl] != false))
-        if response.response.code != '200'
-          response
-        else
+        response = get("/NMIDiscovery/#{@participant_id}", basic_auth: @auth, headers: HEADERS, query:,
+                                                           verify: (options[:verify_ssl] != false))
+        if response.response.code == '200'
           response.parsed_response['aseXML']['Transactions']['Transaction']['NMIDiscoveryResponse']['NMIStandingData']
+        else
+          response
         end
       end
 
@@ -117,19 +127,21 @@ module AEMO
       # @param [Integer] meter_serial_number The meter's serial number
       # @return [Hash] The response
       def nmi_discovery_by_meter_serial_number(jurisdiction_code, meter_serial_number, options = {})
-        raise ArgumentError, 'jurisdiction_code is not valid' unless %w[ACT NEM NSW QLD SA VIC TAS].include?(jurisdiction_code)
+        raise ArgumentError, 'jurisdiction_code is not valid' unless %w[ACT NEM NSW QLD SA VIC
+                                                                        TAS].include?(jurisdiction_code)
 
         query = {
-          transactionId:  transaction_id,
+          transactionId: transaction_id,
           jurisdictionCode: jurisdiction_code,
           meterSerialNumber: meter_serial_number.to_i
         }
 
-        response = get("/NMIDiscovery/#{@participant_id}", basic_auth: @auth, headers: HEADERS, query: query, verify: (options[:verify_ssl] != false))
-        if response.response.code != '200'
-          response
-        else
+        response = get("/NMIDiscovery/#{@participant_id}", basic_auth: @auth, headers: HEADERS, query:,
+                                                           verify: (options[:verify_ssl] != false))
+        if response.response.code == '200'
           response.parsed_response['aseXML']['Transactions']['Transaction']['NMIDiscoveryResponse']['NMIStandingData']
+        else
+          response
         end
       end
 
@@ -139,7 +151,8 @@ module AEMO
       # @param [Integer] meter_serial_number The meter's serial number
       # @return [Hash] The response
       def nmi_discovery_by_address(jurisdiction_code, options = {})
-        raise ArgumentError, 'jurisdiction_code is not valid' unless %w[ACT NEM NSW QLD SA VIC TAS].include?(jurisdiction_code)
+        raise ArgumentError, 'jurisdiction_code is not valid' unless %w[ACT NEM NSW QLD SA VIC
+                                                                        TAS].include?(jurisdiction_code)
 
         options[:building_or_property_name] ||= nil
         options[:location_descriptor] ||= nil
@@ -158,7 +171,7 @@ module AEMO
         options[:state_or_territory] ||= jurisdiction_code
 
         query = {
-          transactionId:  transaction_id,
+          transactionId: transaction_id,
           jurisdictionCode: jurisdiction_code,
           buildingOrPropertyName: options[:building_or_property_name],
           locationDescriptor: options[:location_descriptor],
@@ -177,12 +190,13 @@ module AEMO
           stateOrTerritory: options[:state_or_territory]
         }
 
-        response = get("/NMIDiscovery/#{@participant_id}", basic_auth: @auth, headers: HEADERS, query: query, verify: (options[:verify_ssl] != false))
-        if response.response.code != '200'
-          response
-        else
+        response = get("/NMIDiscovery/#{@participant_id}", basic_auth: @auth, headers: HEADERS, query:,
+                                                           verify: (options[:verify_ssl] != false))
+        if response.response.code == '200'
           myresponse = response.parsed_response['aseXML']['Transactions']['Transaction']['NMIDiscoveryResponse']['NMIStandingData']
           myresponse.is_a?(Hash) ? [myresponse] : myresponse
+        else
+          response
         end
       end
 
@@ -204,11 +218,12 @@ module AEMO
           reason: options[:reason]
         }
 
-        response = get("/NMIDetail/#{@participant_id}", basic_auth: @auth, headers: HEADERS, query: query, verify: (options[:verify_ssl] != false))
-        if response.response.code != '200'
-          response
-        else
+        response = get("/NMIDetail/#{@participant_id}", basic_auth: @auth, headers: HEADERS, query:,
+                                                        verify: (options[:verify_ssl] != false))
+        if response.response.code == '200'
           response.parsed_response['aseXML']['Transactions']['Transaction']['NMIStandingDataResponse']['NMIStandingData']
+        else
+          response
         end
       end
 
@@ -218,13 +233,14 @@ module AEMO
       # @return [Hash] The report results from the Participant System Status web service query
       def system_status(options = {})
         query = {
-          transactionId:  transaction_id
+          transactionId: transaction_id
         }
-        response = get("/ParticipantSystemStatus/#{@participant_id}", basic_auth: @auth, headers: HEADERS, query: query, verify: (options[:verify_ssl] != false))
-        if response.response.code != '200'
-          response
-        else
+        response = get("/ParticipantSystemStatus/#{@participant_id}", basic_auth: @auth, headers: HEADERS,
+                                                                      query:, verify: (options[:verify_ssl] != false))
+        if response.response.code == '200'
           response.parsed_response['aseXML']['Transactions']['Transaction']['ReportResponse']['ReportResults']
+        else
+          response
         end
       end
 
@@ -235,7 +251,7 @@ module AEMO
       # @return [Hash] authentication credentials
       def authorize(participant_id, username, password)
         @participant_id  = participant_id
-        @auth            = { username: username, password: password }
+        @auth            = { username:, password: }
       end
 
       # Check if credentials are available to use

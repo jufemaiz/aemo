@@ -5,12 +5,12 @@ module AEMO
   # @since 0.1.4
   class NEM12
     QUALITY_FLAGS = {
-      'A'     => 'Actual Data',
-      'E'     => 'Forward Estimated Data',
-      'F'     => 'Final Substituted Data',
-      'N'     => 'Null Data',
-      'S'     => 'Substituted Data',
-      'V'     => 'Variable Data'
+      'A' => 'Actual Data',
+      'E' => 'Forward Estimated Data',
+      'F' => 'Final Substituted Data',
+      'N' => 'Null Data',
+      'S' => 'Substituted Data',
+      'V' => 'Variable Data'
     }.freeze
 
     METHOD_FLAGS = {
@@ -23,17 +23,21 @@ module AEMO
       17 => { type: %w[SUB], installation_type: [1, 2, 3, 4], short_descriptor: 'Linear', description: '' },
       18 => { type: %w[SUB], installation_type: [1, 2, 3, 4], short_descriptor: 'Alternate', description: '' },
       19 => { type: %w[SUB], installation_type: [1, 2, 3, 4], short_descriptor: 'Zero', description: '' },
-      20 => { type: %w[SUB], installation_type: [1, 2, 3, 4], short_descriptor: 'Churn Correction (Like Day)', description: '' },
-      21 => { type: %w[SUB], installation_type: [1, 2, 3, 4], short_descriptor: 'Five-minute No Historical Data', description: '' },
+      20 => { type: %w[SUB], installation_type: [1, 2, 3, 4], short_descriptor: 'Churn Correction (Like Day)',
+              description: '' },
+      21 => { type: %w[SUB], installation_type: [1, 2, 3, 4], short_descriptor: 'Five-minute No Historical Data',
+              description: '' },
       51 => { type: %w[EST SUB], installation_type: 5, short_descriptor: 'Previous Year', description: '' },
       52 => { type: %w[EST SUB], installation_type: 5, short_descriptor: 'Previous Read', description: '' },
       53 => { type: %w[SUB], installation_type: 5, short_descriptor: 'Revision', description: '' },
       54 => { type: %w[SUB], installation_type: 5, short_descriptor: 'Linear', description: '' },
       55 => { type: %w[SUB], installation_type: 5, short_descriptor: 'Agreed', description: '' },
-      56 => { type: %w[EST SUB], installation_type: 5, short_descriptor: 'Prior to First Read - Agreed', description: '' },
+      56 => { type: %w[EST SUB], installation_type: 5, short_descriptor: 'Prior to First Read - Agreed',
+              description: '' },
       57 => { type: %w[EST SUB], installation_type: 5, short_descriptor: 'Customer Class', description: '' },
       58 => { type: %w[EST SUB], installation_type: 5, short_descriptor: 'Zero', description: '' },
-      59 => { type: %w[EST SUB], installation_type: 5, short_descriptor: 'Five-minute No Historical Data', description: '' },
+      59 => { type: %w[EST SUB], installation_type: 5, short_descriptor: 'Five-minute No Historical Data',
+              description: '' },
       61 => { type: %w[EST SUB], installation_type: 6, short_descriptor: 'Previous Year', description: '' },
       62 => { type: %w[EST SUB], installation_type: 6, short_descriptor: 'Previous Read', description: '' },
       63 => { type: %w[EST SUB], installation_type: 6, short_descriptor: 'Customer Class', description: '' },

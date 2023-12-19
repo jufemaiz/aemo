@@ -7,21 +7,21 @@ describe AEMO::NMI::Allocation do
   # CLASS METHODS
   # ---
   describe '.all' do
-    it 'should return an array of all the Allocations' do
-      expect(AEMO::NMI::Allocation.all).to be_a Array
-      expect(AEMO::NMI::Allocation.all.first).to be_a AEMO::NMI::Allocation
+    it 'returns an array of all the Allocations' do
+      expect(described_class.all).to be_a Array
+      expect(described_class.all.first).to be_a described_class
     end
   end
 
   describe '.each' do
-    it 'should return an enumerable of all the Allocations' do
-      expect(AEMO::NMI::Allocation.each).to be_a Enumerable
+    it 'returns an enumerable of all the Allocations' do
+      expect(described_class.each).to be_a Enumerable
     end
   end
 
   describe '.first' do
-    it 'should return the first Allocation' do
-      expect(AEMO::NMI::Allocation.first).to be_a AEMO::NMI::Allocation
+    it 'returns the first Allocation' do
+      expect(described_class.first).to be_a described_class
     end
   end
 
@@ -30,20 +30,25 @@ describe AEMO::NMI::Allocation do
   # ---
   describe '#initialize' do
     context 'valid' do
-      it 'should return an Allocation' do
-        expect(AEMO::NMI::Allocation.new('My great LNSP', :electricity)).to be_a AEMO::NMI::Allocation
-        expect(AEMO::NMI::Allocation.new('My great LNSP', 'electricity')).to be_a AEMO::NMI::Allocation
-        expect(AEMO::NMI::Allocation.new('My great gas LNSP', :gas)).to be_a AEMO::NMI::Allocation
-        expect(AEMO::NMI::Allocation.new('My great gas LNSP', 'gas')).to be_a AEMO::NMI::Allocation
+      it 'returns an Allocation' do
+        expect(described_class.new('My great LNSP', :electricity)).to be_a described_class
+        expect(described_class.new('My great LNSP', 'electricity')).to be_a described_class
+        expect(described_class.new('My great gas LNSP', :gas)).to be_a described_class
+        expect(described_class.new('My great gas LNSP', 'gas')).to be_a described_class
       end
     end
+
     context 'invalid' do
-      it 'should raise an InvalidNMIAllocationType error' do
-        expect { AEMO::NMI::Allocation.new('My terrible LNSP', :water) }.to raise_error AEMO::InvalidNMIAllocationType
-        expect { AEMO::NMI::Allocation.new('My terrible LNSP', :broccoli) }.to raise_error AEMO::InvalidNMIAllocationType
-        expect { AEMO::NMI::Allocation.new('My terrible LNSP', 'Ch4') }.to raise_error AEMO::InvalidNMIAllocationType
-        expect { AEMO::NMI::Allocation.new('My terrible LNSP', 'Natural gas') }.to raise_error AEMO::InvalidNMIAllocationType
-        expect { AEMO::NMI::Allocation.new('My terrible LNSP', :coal) }.to raise_error AEMO::InvalidNMIAllocationType
+      it 'raises an InvalidNMIAllocationType error' do
+        expect { described_class.new('My terrible LNSP', :water) }.to raise_error AEMO::InvalidNMIAllocationType
+        expect do
+          described_class.new('My terrible LNSP', :broccoli)
+        end.to raise_error AEMO::InvalidNMIAllocationType
+        expect { described_class.new('My terrible LNSP', 'Ch4') }.to raise_error AEMO::InvalidNMIAllocationType
+        expect do
+          described_class.new('My terrible LNSP', 'Natural gas')
+        end.to raise_error AEMO::InvalidNMIAllocationType
+        expect { described_class.new('My terrible LNSP', :coal) }.to raise_error AEMO::InvalidNMIAllocationType
       end
     end
   end
