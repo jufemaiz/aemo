@@ -1,5 +1,5 @@
 ---
-name: Tests
+name: Test + lint
 on:
   pull_request:
   push:
@@ -12,6 +12,19 @@ permissions:
   contents: read
 
 jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: '3.2'
+        bundler-cache: true # runs 'bundle install' and caches installed gems automatically
+    - name: Run lints
+      run: bundle exec rubocop
+
   test:
     runs-on: ubuntu-latest
     strategy:
