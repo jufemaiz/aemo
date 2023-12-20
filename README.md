@@ -2,13 +2,13 @@
 Makes working with AEMO data more pleasant.
 
 [![Gem Version](https://badge.fury.io/rb/aemo.svg)](http://badge.fury.io/rb/aemo)
-[![Build Status](https://app.travis-ci.com/jufemaiz/aemo.svg?branch=main)](https://app.travis-ci.com/jufemaiz/aemo)
+[![Build Status](https://github.com/jufemaiz/aemo/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/jufemaiz/aemo/actions)
 [![Maintainability](https://api.codeclimate.com/v1/badges/f16f9df6762d9870cd2c/maintainability)](https://codeclimate.com/github/jufemaiz/aemo/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/f16f9df6762d9870cd2c/test_coverage)](https://codeclimate.com/github/jufemaiz/aemo/test_coverage)
 [![Coverage Status](https://coveralls.io/repos/github/jufemaiz/aemo/badge.svg?branch=master)](https://coveralls.io/github/jufemaiz/aemo?branch=master)
 [![Known Vulnerabilities](https://snyk.io/test/github/jufemaiz/aemo/badge.svg)](https://snyk.io/test/github/jufemaiz/aemo)
 [![Help Contribute to Open Source](https://www.codetriage.com/jufemaiz/aemo/badges/users.svg)](https://www.codetriage.com/jufemaiz/aemo)
-[![Quality gate](https://sonarcloud.io/api/project_badges/quality_gate?project=jufemaiz_aemo)](https://sonarcloud.io/summary/new_code?id=jufemaiz_aemo)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=jufemaiz_aemo&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=jufemaiz_aemo)
 
 
 # Documentation
@@ -20,17 +20,12 @@ Makes working with AEMO data more pleasant.
 ## Ruby Versions Supported
 
 *   ruby-head (failures allowed)
-*   3.1.0-preview1 (failures allowed)
-*   3.0 (.0, .1, .2, .3)
-*   2.7 (.0, .1, .2, .3, .4, .5)
-*   2.6 (.0, .1, .2, .3, .4, .5, .6, .7, .8, .9)
+*   3.2
+*   3.1
 
 ### Deprecated
 
-*   2.5
-*   2.4
-*   2.3
-*   2.2
+*   < 3.1
 
 ## Manually from RubyGems.org
 
