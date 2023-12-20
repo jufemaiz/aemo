@@ -9,7 +9,7 @@ gemspec
 group :development, :test do
   gem 'addressable', '~> 2.8', '>= 2.8.0'
   gem 'awesome_print', '~> 1.8', '>= 1.8.0'
-  gem 'coveralls', '~> 0.8', '>= 0.8.21'
+  gem 'coveralls_reborn', '~> 0.28', '>= 0.28.0'
   gem 'ffi', '~> 1.16', '> 1.9.18'
   gem 'guard-yard', '~> 2.2', '>= 2.2.0'
   gem 'listen', '~> 3.1', '>= 3.5.0'
