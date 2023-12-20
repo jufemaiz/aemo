@@ -1,0 +1,29 @@
+---
+name: Lints
+on:
+  pull_request:
+  push:
+    tags-ignore:
+    - '*'
+    paths-ignore:
+    - '*.md'
+  workflow_dispatch:
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        ruby-version: ['3.0', '3.1', '3.2', 'ruby-head']
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: ${{ matrix.ruby-version }}
+        bundler-cache: true # runs 'bundle install' and caches installed gems automatically
+    - name: Run lints
+      run: bundle exec rubocop
