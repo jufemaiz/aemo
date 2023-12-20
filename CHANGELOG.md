@@ -1,5 +1,17 @@
 # AEMO Gem Changelog
 
+## [v0.6.0] (2023-12-20)
+
+### Added
+
+*   Ability to output a valid NEM12 file from a single, or an array of, `AEMO::NEM12` with `to_nem12_csv`.
+*   `AEMO::Time` for customised formatting, parsing, and validating in `NEMTIME`.
+*   Github actions for tests and lints.
+
+### Changed
+
+*   Correctly set `AEMO::NEM12` header value set at parsing.
+
 ## [v0.5.1] (2023-06-16)
 
 ### Changed

@@ -28,14 +28,14 @@ module AEMO
     # @return [AEMO::Register] description of returned object
     def self.from_hash(register)
       AEMO::Register.new(
-        controlled_load:     register['ControlledLoad'] == 'Y',
-        dial_format:         register['DialFormat'],
-        multiplier:          register['Multiplier'],
+        controlled_load: register['ControlledLoad'] == 'Y',
+        dial_format: register['DialFormat'],
+        multiplier: register['Multiplier'],
         network_tariff_code: register['NetworkTariffCode'],
-        register_id:         register['RegisterID'],
-        status:              register['Status'],
-        time_of_day:         register['TimeOfDay'],
-        unit_of_measure:     register['UnitOfMeasure']
+        register_id: register['RegisterID'],
+        status: register['Status'],
+        time_of_day: register['TimeOfDay'],
+        unit_of_measure: register['UnitOfMeasure']
       )
     end
   end

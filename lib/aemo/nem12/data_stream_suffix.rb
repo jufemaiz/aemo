@@ -29,7 +29,7 @@ module AEMO
       'U' => { stream: 'Check',  description: '',       units: 'kVAh' },
       'Y' => { stream: 'Check',  description: 'Q Metering',         units: 'Qh' },
       'W' => { stream: 'Check',  description: 'Par Metering Path',  units: '' },
-      'Z' => { stream: 'Check',  description: 'Volts or V2h or Amps or A2h',  units: '' },
+      'Z' => { stream: 'Check',  description: 'Volts or V2h or Amps or A2h',  units: '' }
       # Net Meter Streams
       # AEMO: NOTE THAT D AND J ARE PREVIOUSLY DEFINED
       # 'D' => { stream: 'Net',    description: 'Net', units: 'kWh' },

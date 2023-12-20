@@ -18,7 +18,7 @@ require 'aemo'
 
 RSpec.configure do |config|
   # WebMock
-  config.before(:each) do
+  config.before do
     csv_headers = { 'Content-Type' => 'text/csv' }
     xml_headers = { 'Content-Type' => 'text/xml' }
 
@@ -45,43 +45,43 @@ RSpec.configure do |config|
       .to_return(status: 200, body: File.new('spec/fixtures/Market/DATA201502_NSW1.csv'), headers: csv_headers)
 
     # MSATS
-    stub_request(:get, %r{msats.prod.nemnet.net.au\/msats\/ws\/C4\/ER})
+    stub_request(:get, %r{msats.prod.nemnet.net.au/msats/ws/C4/ER})
       .with(headers: { 'Accept' => ['text/xml'], 'Content-Type' => 'text/xml' })
       .to_return(status: 200, body: File.new('spec/fixtures/MSATS/c4.xml'), headers: xml_headers)
-    stub_request(:get, %r{msats.prod.nemnet.net.au\/msats\/ws\/MSATSLimits\/ER})
+    stub_request(:get, %r{msats.prod.nemnet.net.au/msats/ws/MSATSLimits/ER})
       .with(headers: { 'Accept' => ['text/xml'], 'Content-Type' => 'text/xml' })
       .to_return(status: 200, body: File.new('spec/fixtures/MSATS/msats_limits.xml'), headers: xml_headers)
-    stub_request(:get, %r{msats.prod.nemnet.net.au\/msats\/ws\/NMIDetail\/ER})
+    stub_request(:get, %r{msats.prod.nemnet.net.au/msats/ws/NMIDetail/ER})
       .with(headers: { 'Accept' => ['text/xml'], 'Content-Type' => 'text/xml' })
       .to_return(status: 200, body: File.new('spec/fixtures/MSATS/nmi_details.xml'), headers: xml_headers)
-    stub_request(:get, %r{msats.prod.nemnet.net.au\/msats\/ws\/NMIDiscovery\/ER})
+    stub_request(:get, %r{msats.prod.nemnet.net.au/msats/ws/NMIDiscovery/ER})
       .with(headers: { 'Accept' => ['text/xml'], 'Content-Type' => 'text/xml' })
       .to_return(status: 200, body: File.new('spec/fixtures/MSATS/nmi_discovery_by_address.xml'), headers: xml_headers)
-    stub_request(:get, %r{msats.prod.nemnet.net.au\/msats\/ws\/ParticipantSystemStatus\/ER})
+    stub_request(:get, %r{msats.prod.nemnet.net.au/msats/ws/ParticipantSystemStatus/ER})
       .with(headers: { 'Accept' => 'text/xml', 'Content-Type' => 'text/xml' })
       .to_return(status: 200, body: File.new('spec/fixtures/MSATS/participant_system_status.xml'), headers: xml_headers)
     # MSATS ERRORS
     # Invalid MSATS User
-    stub_request(:get, %r{msats.prod.nemnet.net.au\/msats\/ws\/C4\/NOTER})
+    stub_request(:get, %r{msats.prod.nemnet.net.au/msats/ws/C4/NOTER})
       .with(headers: { 'Accept' => ['text/xml'], 'Content-Type' => 'text/xml' })
       .to_return(status: 404, body: '', headers: xml_headers)
-    stub_request(:get, %r{msats.prod.nemnet.net.au\/msats\/ws\/MSATSLimits\/NOTER})
+    stub_request(:get, %r{msats.prod.nemnet.net.au/msats/ws/MSATSLimits/NOTER})
       .with(headers: { 'Accept' => ['text/xml'], 'Content-Type' => 'text/xml' })
       .to_return(status: 404, body: '', headers: xml_headers)
-    stub_request(:get, %r{msats.prod.nemnet.net.au\/msats\/ws\/NMIDetail\/NOTER})
+    stub_request(:get, %r{msats.prod.nemnet.net.au/msats/ws/NMIDetail/NOTER})
       .with(headers: { 'Accept' => ['text/xml'], 'Content-Type' => 'text/xml' })
       .to_return(status: 404, body: '', headers: xml_headers)
-    stub_request(:get, %r{msats.prod.nemnet.net.au\/msats\/ws\/NMIDiscovery\/NOTER})
+    stub_request(:get, %r{msats.prod.nemnet.net.au/msats/ws/NMIDiscovery/NOTER})
       .with(headers: { 'Accept' => ['text/xml'], 'Content-Type' => 'text/xml' })
       .to_return(status: 404, body: '', headers: xml_headers)
-    stub_request(:get, %r{msats.prod.nemnet.net.au\/msats\/ws\/ParticipantSystemStatus\/NOTER})
+    stub_request(:get, %r{msats.prod.nemnet.net.au/msats/ws/ParticipantSystemStatus/NOTER})
       .with(headers: { 'Accept' => 'text/xml', 'Content-Type' => 'text/xml' })
       .to_return(status: 404, body: '', headers: xml_headers)
     # Data errors
-    stub_request(:get, %r{msats.prod.nemnet.net.au\/msats\/ws\/C4\/ER\?.+?NMI=4001234566.+?})
+    stub_request(:get, %r{msats.prod.nemnet.net.au/msats/ws/C4/ER\?.+?NMI=4001234566.+?})
       .with(headers: { 'Accept' => ['text/xml'], 'Content-Type' => 'text/xml' })
       .to_return(status: 404, body: '', headers: xml_headers)
-    stub_request(:get, %r{msats.prod.nemnet.net.au\/msats\/ws\/NMIDetail\/ER\?.+?nmi=4001234566.+?})
+    stub_request(:get, %r{msats.prod.nemnet.net.au/msats/ws/NMIDetail/ER\?.+?nmi=4001234566.+?})
       .with(headers: { 'Accept' => ['text/xml'], 'Content-Type' => 'text/xml' })
       .to_return(status: 404, body: '', headers: xml_headers)
   end

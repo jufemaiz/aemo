@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# -*- coding: UTF-8 -*-
 #
 # Copyright 2014 Joel Courtney
 #
@@ -24,7 +23,7 @@
 # @author Joel Courtney <euphemize@gmail.com>
 module AEMO
   # aemo version
-  VERSION = '0.5.1'
+  VERSION = '0.6.0'
 
   # aemo version split amongst different revisions
   MAJOR_VERSION, MINOR_VERSION, REVISION = VERSION.split('.').map(&:to_i)

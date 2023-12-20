@@ -1,43 +1,52 @@
+---
 inherit_from: .rubocop_todo.yml
 
+require:
+- rubocop-minitest
+- rubocop-rspec
+
 AllCops:
+  NewCops: enable
   Exclude:
     - 'vendor/**/*'
   DefaultFormatter: progress
   DisplayCopNames: true
   DisplayStyleGuide: true
-  ExtraDetails: true
-  TargetRubyVersion: 2.6
+  ExtraDetails: 3.2
 
+# Overrides.
+Layout/LineLength:
+  AllowHeredoc: true
+  AllowURI: true
+  Exclude:
+    - 'spec/**/*_spec.rb'
+  URISchemes:
+    - http
+    - https
+  Max: 210
+Metrics/AbcSize:
+  # Target: 15
+  Max: 190
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/**/*'
+    - 'aemo.gemspec'
+  # Target: 25
+  Max: 40
+Metrics/ClassLength:
+  Max: 600
+Metrics/CyclomaticComplexity:
+  # Target 6
+  Max: 40
+Metrics/MethodLength:
+  # Target 10
+  Max: 80
+Metrics/PerceivedComplexity:
+  # Target 7
+  Max: 38
 Style/StringLiterals:
   EnforcedStyle: single_quotes
   SupportedStyles:
     - single_quotes
     - double_quotes
 
-# Metrics/AbcSize:
-# # Target: 15
-#   Max: 175
-Metrics/LineLength:
-  AllowHeredoc: true
-  AllowURI: true
-  URISchemes:
-    - http
-    - https
-  # Target: 80
-  # Max: 210
-# Metrics/MethodLength:
-#   # Target 10
-#   Max: 80
-# Metrics/ClassLength:
-#   Max: 600
-# Metrics/CyclomaticComplexity:
-# # Target 6
-#   Max: 29
-# Metrics/PerceivedComplexity:
-# # Target 7
-#   Max: 29
-Metrics/BlockLength:
-  Exclude:
-    - 'spec/**/*'
-    - 'aemo.gemspec'

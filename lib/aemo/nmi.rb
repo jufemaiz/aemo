@@ -5,7 +5,7 @@ require 'json'
 require 'time'
 require 'ostruct'
 
-require 'aemo/nmi/allocation.rb'
+require 'aemo/nmi/allocation'
 
 module AEMO
   # [AEMO::NMI]
@@ -22,11 +22,11 @@ module AEMO
       'ACT' => 'Australian Capital Territory',
       'NSW' => 'New South Wales',
       'QLD' => 'Queensland',
-      'SA'  => 'South Australia',
+      'SA' => 'South Australia',
       'TAS' => 'Tasmania',
       'VIC' => 'Victoria',
-      'WA'  => 'Western Australia',
-      'NT'  => 'Northern Territory'
+      'WA' => 'Western Australia',
+      'NT' => 'Northern Territory'
     }.freeze
 
     # Transmission Node Identifier Codes are loaded from a json file
@@ -79,7 +79,7 @@ module AEMO
       # @param [String] nmi the nmi to be checked
       # @return [Boolean] whether or not the nmi is valid
       def valid_nmi?(nmi)
-        ((nmi.length == 10) && !nmi.match(/^([A-HJ-NP-Z\d]{10})/).nil?)
+        (nmi.length == 10) && !nmi.match(/^([A-HJ-NP-Z\d]{10})/).nil?
       end
 
       # A function to calculate the checksum value for a given National Meter
@@ -159,14 +159,13 @@ module AEMO
     #   Identifier
     def checksum
       summation = 0
-      @nmi.reverse.split(//).each_index do |i|
+      @nmi.reverse.chars.each_index do |i|
         value = nmi[nmi.length - i - 1].ord
         value *= 2 if i.even?
-        value = value.to_s.split(//).map(&:to_i).reduce(:+)
+        value = value.to_s.chars.map(&:to_i).reduce(:+)
         summation += value
       end
-      checksum = (10 - (summation % 10)) % 10
-      checksum
+      (10 - (summation % 10)) % 10
     end
 
     # Provided MSATS is configured, gets the MSATS data for the NMI
@@ -174,6 +173,7 @@ module AEMO
     # @return [Hash] MSATS NMI Detail data
     def raw_msats_nmi_detail(options = {})
       raise ArgumentError, 'MSATS has no authentication credentials' unless AEMO::MSATS.can_authenticate?
+
       AEMO::MSATS.nmi_detail(@nmi, options)
     end
 
@@ -233,7 +233,7 @@ module AEMO
         data_streams = @msats_detail['DataStreams']['DataStream']
         data_streams = [data_streams] if data_streams.is_a?(Hash) # Deal with issue of only one existing
         data_streams.each do |stream|
-          @data_streams << OpenStruct.new(
+          @data_streams << Struct::DataStream.new(
             suffix: stream['Suffix'],
             profile_name: stream['ProfileName'],
             averaged_daily_load: stream['AveragedDailyLoad'],
@@ -270,10 +270,10 @@ module AEMO
       @meters.select { |x| x.status == status.to_s }
     end
 
-    # Returns the data_stream OpenStructs for the requested status (A/I)
+    # Returns the data_stream Structs for the requested status (A/I)
     #
     # @param [String] status the stateus [A|I]
-    # @return [Array<OpenStruct>] Returns an array of OpenStructs for the
+    # @return [Array<Struct>] Returns an array of Structs for the
     #   current Meters
     def data_streams_by_status(status = 'A')
       @data_streams.select { |x| x.status == status.to_s }
@@ -297,19 +297,20 @@ module AEMO
 
     # A function to return the distribution loss factor value for a given date
     #
-    # @param [DateTime, Time] datetime the date for the distribution loss factor
+    # @param [DateTime, ::Time] datetime the date for the distribution loss factor
     #   value
     # @return [nil, float] the distribution loss factor value
-    def dlfc_value(datetime = Time.now)
+    def dlfc_value(datetime = ::Time.now)
       if @dlf.nil?
         raise 'No DLF set, ensure that you have set the value either via the' \
               'update_from_msats! function or manually'
       end
       raise 'DLF is invalid' unless DLF_CODES.keys.include?(@dlf)
-      raise 'Invalid date' unless [DateTime, Time].include?(datetime.class)
+      raise 'Invalid date' unless [DateTime, ::Time].include?(datetime.class)
+
       possible_values = DLF_CODES[@dlf].select do |x|
-        Time.parse(x['FromDate']) <= datetime &&
-          Time.parse(x['ToDate']) >= datetime
+        ::Time.parse(x['FromDate']) <= datetime &&
+          ::Time.parse(x['ToDate']) >= datetime
       end
       if possible_values.empty?
         nil
@@ -320,61 +321,70 @@ module AEMO
 
     # A function to return the distribution loss factor value for a given date
     #
-    # @param [DateTime, Time] start the date for the distribution loss factor value
-    # @param [DateTime, Time] finish the date for the distribution loss factor value
+    # @param [DateTime, ::Time] start the date for the distribution loss factor value
+    # @param [DateTime, ::Time] finish the date for the distribution loss factor value
     # @return [Array(Hash)] array of hashes of start, finish and value
-    def dlfc_values(start = Time.now, finish = Time.now)
+    def dlfc_values(start = ::Time.now, finish = ::Time.now)
       if @dlf.nil?
-        raise 'No DLF set, ensure that you have set the value either via the '\
+        raise 'No DLF set, ensure that you have set the value either via the ' \
               'update_from_msats! function or manually'
       end
       raise 'DLF is invalid' unless DLF_CODES.keys.include?(@dlf)
-      raise 'Invalid start' unless [DateTime, Time].include?(start.class)
-      raise 'Invalid finish' unless [DateTime, Time].include?(finish.class)
+      raise 'Invalid start' unless [DateTime, ::Time].include?(start.class)
+      raise 'Invalid finish' unless [DateTime, ::Time].include?(finish.class)
       raise 'start cannot be after finish' if start > finish
-      DLF_CODES[@dlf].reject { |x| start > Time.parse(x['ToDate']) || finish < Time.parse(x['FromDate']) }
+
+      DLF_CODES[@dlf].reject { |x| start > ::Time.parse(x['ToDate']) || finish < ::Time.parse(x['FromDate']) }
                      .map { |x| { 'start' => x['FromDate'], 'finish' => x['ToDate'], 'value' => x['Value'].to_f } }
     end
 
     # A function to return the transmission node identifier loss factor value for a given date
     #
-    # @param [DateTime, Time] datetime the date for the distribution loss factor value
+    # @param [DateTime, ::Time] datetime the date for the distribution loss factor value
     # @return [nil, float] the transmission node identifier loss factor value
-    def tni_value(datetime = Time.now)
+    def tni_value(datetime = ::Time.now)
       if @tni.nil?
-        raise 'No TNI set, ensure that you have set the value either via the '\
+        raise 'No TNI set, ensure that you have set the value either via the ' \
               'update_from_msats! function or manually'
       end
       raise 'TNI is invalid' unless TNI_CODES.keys.include?(@tni)
-      raise 'Invalid date' unless [DateTime, Time].include?(datetime.class)
-      possible_values = TNI_CODES[@tni].select { |x| Time.parse(x['FromDate']) <= datetime && datetime <= Time.parse(x['ToDate']) }
+      raise 'Invalid date' unless [DateTime, ::Time].include?(datetime.class)
+
+      possible_values = TNI_CODES[@tni].select do |x|
+        ::Time.parse(x['FromDate']) <= datetime && datetime <= ::Time.parse(x['ToDate'])
+      end
       return nil if possible_values.empty?
-      possible_values = possible_values.first['mlf_data']['loss_factors'].select { |x| Time.parse(x['start']) <= datetime && datetime <= Time.parse(x['finish']) }
+
+      possible_values = possible_values.first['mlf_data']['loss_factors'].select do |x|
+        ::Time.parse(x['start']) <= datetime && datetime <= ::Time.parse(x['finish'])
+      end
       return nil if possible_values.empty?
+
       possible_values.first['value'].to_f
     end
 
     # A function to return the transmission node identifier loss factor value for a given date
     #
-    # @param [DateTime, Time] start the date for the distribution loss factor value
-    # @param [DateTime, Time] finish the date for the distribution loss factor value
+    # @param [DateTime, ::Time] start the date for the distribution loss factor value
+    # @param [DateTime, ::Time] finish the date for the distribution loss factor value
     # @return [Array(Hash)] array of hashes of start, finish and value
-    def tni_values(start = Time.now, finish = Time.now)
+    def tni_values(start = ::Time.now, finish = ::Time.now)
       if @tni.nil?
-        raise 'No TNI set, ensure that you have set the value either via the '\
+        raise 'No TNI set, ensure that you have set the value either via the ' \
               'update_from_msats! function or manually'
       end
       raise 'TNI is invalid' unless TNI_CODES.keys.include?(@tni)
-      raise 'Invalid start' unless [DateTime, Time].include?(start.class)
-      raise 'Invalid finish' unless [DateTime, Time].include?(finish.class)
+      raise 'Invalid start' unless [DateTime, ::Time].include?(start.class)
+      raise 'Invalid finish' unless [DateTime, ::Time].include?(finish.class)
       raise 'start cannot be after finish' if start > finish
 
       possible_values = TNI_CODES[@tni].reject do |tni_code|
-        start > Time.parse(tni_code['ToDate']) ||
-          finish < Time.parse(tni_code['FromDate'])
+        start > ::Time.parse(tni_code['ToDate']) ||
+          finish < ::Time.parse(tni_code['FromDate'])
       end
 
       return nil if possible_values.empty?
+
       possible_values.map { |x| x['mlf_data']['loss_factors'] }
     end
   end
