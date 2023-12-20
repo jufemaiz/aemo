@@ -37,6 +37,8 @@ jobs:
             experimental: true
     steps:
     - uses: actions/checkout@v4
+    - name: experimental
+      run: 'echo "${{matrix.ruby-version}} is experimental: ${{matrix.experimental}}"'
     - name: Set up Ruby
       uses: ruby/setup-ruby@v1
       with:
