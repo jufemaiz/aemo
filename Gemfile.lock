@@ -74,9 +74,9 @@ GEM
     multi_xml (0.6.0)
     mutex_m (0.2.0)
     nenv (0.3.0)
-    nokogiri (1.15.5-x86_64-darwin)
+    nokogiri (1.16.2-x86_64-darwin)
       racc (~> 1.4)
-    nokogiri (1.15.5-x86_64-linux)
+    nokogiri (1.16.2-x86_64-linux)
       racc (~> 1.4)
     notiffany (0.1.3)
       nenv (~> 0.1)
@@ -92,7 +92,7 @@ GEM
       stringio
     public_suffix (5.0.4)
     racc (1.7.3)
-    rack (3.0.8)
+    rack (3.0.9.1)
     rainbow (3.1.1)
     rb-fsevent (0.11.2)
     rb-inotify (0.10.1)
@@ -162,7 +162,7 @@ GEM
       addressable (>= 2.8.0)
       crack (>= 0.3.2)
       hashdiff (>= 0.4.0, < 2.0.0)
-    yard (0.9.34)
+    yard (0.9.35)
 
 PLATFORMS
   x86_64-darwin-19
@@ -178,7 +178,7 @@ DEPENDENCIES
   guard-yard (~> 2.2, >= 2.2.0)
   listen (~> 3.1, >= 3.5.0)
   minitest (~> 5.14, >= 5.14.2)
-  rack (~> 3.0, >= 3.0.8)
+  rack (~> 3.0)
   rdoc (~> 6.3, >= 5.1.0)
   rspec (~> 3.7, >= 3.7.0)
   rubocop (~> 1.59, >= 0.52.1)
@@ -187,7 +187,7 @@ DEPENDENCIES
   simplecov (~> 0.14, >= 0.14.1)
   timecop (~> 0.9, >= 0.9.1)
   webmock (~> 3.1, >= 3.1.0)
-  yard (~> 0.9, >= 0.9.11)
+  yard (~> 0.9)
 
 BUNDLED WITH
    2.5.1
