@@ -14,7 +14,7 @@ group :development, :test do
   gem 'guard-yard', '~> 2.2', '>= 2.2.0'
   gem 'listen', '~> 3.1', '>= 3.5.0'
   gem 'minitest', '~> 5.14', '>= 5.14.2'
-  gem 'rack', '~> 3.0', '>= 3.0.8'
+  gem 'rack', '~> 3.0'
   gem 'rdoc', '~> 6.3', '>= 5.1.0'
   gem 'rspec', '~> 3.7', '>= 3.7.0'
   gem 'rubocop', '~> 1.59', '>= 0.52.1'
@@ -23,5 +23,5 @@ group :development, :test do
   gem 'simplecov', '~> 0.14', '>= 0.14.1'
   gem 'timecop', '~> 0.9', '>= 0.9.1'
   gem 'webmock', '~> 3.1', '>= 3.1.0'
-  gem 'yard', '~> 0.9', '>= 0.9.11'
+  gem 'yard', '~> 0.9'
 end
