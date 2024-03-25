@@ -15,7 +15,7 @@ group :development, :test do
   gem 'listen', '~> 3.1', '>= 3.5.0'
   gem 'minitest', '~> 5.14', '>= 5.14.2'
   gem 'rack', '~> 3.0'
-  gem 'rdoc', '~> 6.3', '>= 5.1.0'
+  gem 'rdoc', '~> 6.6'
   gem 'rspec', '~> 3.7', '>= 3.7.0'
   gem 'rubocop', '~> 1.59', '>= 0.52.1'
   gem 'rubocop-minitest'
