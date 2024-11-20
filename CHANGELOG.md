@@ -1,5 +1,16 @@
 # AEMO Gem Changelog
 
+## [v0.7.0] (2024-11-21)
+
+### Added
+
+*   [NEM12 Method flags](./lib/aemo/nem12/quality_method.rb) 22, 23, 24, 25 as per [Metrology Procedure: Part B v7.8 @ 2024-11-04](https://aemo.com.au/-/media/files/electricity/nem/retail_and_metering/market_settlement_and_transfer_solutions/2024/metrology-procedure-part-b-v781-clean.pdf?la=en)
+
+### Changed
+
+*   [NEM12 Method flags](./lib/aemo/nem12/quality_method.rb) 14, 15, 16, 20 as per [Metrology Procedure: Part B v7.8 @ 2024-11-04](https://aemo.com.au/-/media/files/electricity/nem/retail_and_metering/market_settlement_and_transfer_solutions/2024/metrology-procedure-part-b-v781-clean.pdf?la=en)
+
+
 ## [v0.6.0] (2023-12-20)
 
 ### Added
