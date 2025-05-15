@@ -1,2 +1,5 @@
+---
+rubocop:
+  version: 1.75.5
 ruby:
   config_file: .rubocop.yml
