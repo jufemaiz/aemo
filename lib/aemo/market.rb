@@ -51,7 +51,7 @@ module AEMO
         end
 
         required_data.select do |values|
-          values.datetime >= start && values.datetime <= finish
+          values.datetime.between?(start, finish)
         end
       end
 
