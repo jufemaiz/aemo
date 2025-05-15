@@ -309,8 +309,7 @@ module AEMO
       raise 'Invalid date' unless [DateTime, ::Time].include?(datetime.class)
 
       possible_values = DLF_CODES[@dlf].select do |x|
-        ::Time.parse(x['FromDate']) <= datetime &&
-          ::Time.parse(x['ToDate']) >= datetime
+        datetime.between?(::Time.parse(x['FromDate']), ::Time.parse(x['ToDate']))
       end
       if possible_values.empty?
         nil
@@ -351,12 +350,12 @@ module AEMO
       raise 'Invalid date' unless [DateTime, ::Time].include?(datetime.class)
 
       possible_values = TNI_CODES[@tni].select do |x|
-        ::Time.parse(x['FromDate']) <= datetime && datetime <= ::Time.parse(x['ToDate'])
+        datetime.between?(::Time.parse(x['FromDate']), ::Time.parse(x['ToDate']))
       end
       return nil if possible_values.empty?
 
       possible_values = possible_values.first['mlf_data']['loss_factors'].select do |x|
-        ::Time.parse(x['start']) <= datetime && datetime <= ::Time.parse(x['finish'])
+        datetime.between?(::Time.parse(x['start']), ::Time.parse(x['finish']))
       end
       return nil if possible_values.empty?
 

@@ -1,7 +1,7 @@
 ---
 inherit_from: .rubocop_todo.yml
 
-require:
+plugins:
 - rubocop-minitest
 - rubocop-rspec
 
@@ -12,7 +12,7 @@ AllCops:
   DefaultFormatter: progress
   DisplayCopNames: true
   DisplayStyleGuide: true
-  ExtraDetails: 3.2
+  ExtraDetails: 3.4
 
 # Overrides.
 Layout/LineLength:

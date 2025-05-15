@@ -1,5 +1,12 @@
 # AEMO Gem Changelog
 
+## [v0.7.1] (2025-05-15)
+
+### Changed
+
+*   Updated dependencies.
+
+
 ## [v0.7.0] (2024-11-21)
 
 ### Added
