@@ -10,11 +10,11 @@ module AEMO
   module Time
     NEMTIMEZONE = 'Australia/Brisbane'
     TIMESTAMP14 = '%Y%m%d%H%M%S'
-    TIMESTAMP14_PATTERN = /^\d{4}\d{2}\d{2}\d{2}\d{2}\d{2}$/
+    TIMESTAMP14_PATTERN = /\A\d{4}\d{2}\d{2}\d{2}\d{2}\d{2}\z/
     TIMESTAMP12 = '%Y%m%d%H%M'
-    TIMESTAMP12_PATTERN = /^\d{4}\d{2}\d{2}\d{2}\d{2}$/
+    TIMESTAMP12_PATTERN = /\A\d{4}\d{2}\d{2}\d{2}\d{2}\z/
     TIMESTAMP8 = '%Y%m%d'
-    TIMESTAMP8_PATTERN = /^\d{4}\d{2}\d{2}$/
+    TIMESTAMP8_PATTERN = /\A\d{4}\d{2}\d{2}\z/
 
     class << self
       # Format a time to a timestamp 14.
