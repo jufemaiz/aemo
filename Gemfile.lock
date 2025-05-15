@@ -197,7 +197,6 @@ DEPENDENCIES
   minitest (~> 5.14, >= 5.14.2)
   rack (~> 3.0)
   rdoc (~> 6.6)
-  rexml (~> 3.3, >= 3.3.3)
   rspec (~> 3.7, >= 3.7.0)
   rubocop (~> 1.59, >= 0.52.1)
   rubocop-minitest
