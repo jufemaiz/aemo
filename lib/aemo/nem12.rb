@@ -123,7 +123,7 @@ module AEMO
           default_nem12_100,
           nem12s.map(&:to_nem12_200_csv),
           default_nem12_900
-        ].flatten.join
+        ].join
       end
     end
 
@@ -408,7 +408,7 @@ module AEMO
         to_nem12_100_csv,
         to_nem12_200_csv,
         to_nem12_900_csv
-      ].flatten.join
+      ].join
     end
 
     # Output the AEMO::NEM12 to a valid NEM12 100 row CSV string.
