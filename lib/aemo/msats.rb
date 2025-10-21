@@ -20,6 +20,7 @@ module AEMO
 
     # We like to party
     include HTTParty
+
     # We like to debug
     # debug_output $stdout
 

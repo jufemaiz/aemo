@@ -8,6 +8,7 @@ module AEMO
   # @since 0.1.0
   module Market
     include HTTParty
+
     base_uri 'www.nemweb.com.au'
 
     # Class Methods
