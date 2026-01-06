@@ -3,6 +3,7 @@
 require 'csv'
 require 'time'
 
+require 'aemo/meter_data/flag'
 require 'aemo/nem12/data_stream_suffix'
 require 'aemo/nem12/quality_method'
 require 'aemo/nem12/reason_codes'
@@ -16,6 +17,11 @@ module AEMO
   class NEM12
     CRLF = "\r\n"
     CSV_SEPARATOR = ','
+
+    # Backward compatibility: delegate constants to Flag class
+    QUALITY_FLAGS = ::AEMO::MeterData::Flag::QUALITY_FLAGS
+    METHOD_FLAGS = ::AEMO::MeterData::Flag::METHOD_FLAGS
+    REASON_CODES = ::AEMO::MeterData::Flag::REASON_CODES
 
     @file_contents    = nil
     @header           = nil
@@ -258,17 +264,8 @@ module AEMO
         end
       end
 
-      # Deal with flags if necessary
-      flag = nil
-      # Based on QualityMethod and ReasonCode
-      if csv[intervals_offset + 0].length == 3 || !csv[intervals_offset + 1].nil?
-        flag ||= { quality_flag: nil, method_flag: nil, reason_code: nil }
-        if csv[intervals_offset + 0].length == 3
-          flag[:quality_flag] = csv[intervals_offset + 0][0]
-          flag[:method_flag] = csv[intervals_offset + 0][1, 2].to_i
-        end
-        flag[:reason_code] = csv[intervals_offset + 1].to_i unless csv[intervals_offset + 1].nil?
-      end
+      # Deal with flags - explicitly set all flag values
+      flag = AEMO::MeterData::Flag.from_quality_method_reason_code(quality_method: csv[intervals_offset + 0], reason_code: csv[intervals_offset + 1], validate: strict)
 
       # Deal with updated_at & msats_load_at
       updated_at = nil
@@ -302,7 +299,7 @@ module AEMO
     # @param [String] line A single line in string format
     # @param [Boolean] strict
     # @return [Hash] the line parsed into a hash of information
-    def parse_nem12_400(line, strict: true) # rubocop:disable Lint/UnusedMethodArgument,Naming/VariableNumber
+    def parse_nem12_400(line, strict: true) # rubocop:disable Naming/VariableNumber
       csv = line.parse_csv
       raise ArgumentError, 'RecordIndicator is not 400'     if csv[0] != '400'
       raise ArgumentError, 'StartInterval is not valid'     if csv[1].nil? || csv[1].match(/^\d+$/).nil?
@@ -318,32 +315,30 @@ module AEMO
 
       interval_events = []
 
-      # Only need to update flags for EFSV
-      unless %w[A N].include? csv[3]
-        number_of_intervals = 1440 / @data_details.last[:interval_length]
-        interval_start_point = @interval_data.length - number_of_intervals
+      number_of_intervals = 1440 / @data_details.last[:interval_length]
+      interval_start_point = @interval_data.length - number_of_intervals
 
-        # For each of these
-        base_interval_event = { datetime: nil, quality_method: csv[3], reason_code: csv[4]&.to_i,
-                                reason_description: csv[5] }
+      # For each of these
+      # Parse reason code - only set if present and not empty
+      parsed_reason_code = nil
+      parsed_reason_code = csv[4].to_i unless csv[4].nil? || csv[4].empty?
 
-        # Interval Numbers are 1-indexed
-        ((csv[1].to_i)..(csv[2].to_i)).each do |i|
-          interval_event = base_interval_event.dup
-          interval_event[:datetime] = @interval_data[interval_start_point + (i - 1)][:datetime]
-          interval_events << interval_event
-          # Create flag details
-          flag ||= { quality_flag: nil, method_flag: nil, reason_code: nil }
-          unless interval_event[:quality_method].nil?
-            flag[:quality_flag] = interval_event[:quality_method][0]
-            flag[:method_flag] = interval_event[:quality_method][1, 2].to_i
-          end
-          flag[:reason_code] = interval_event[:reason_code] unless interval_event[:reason_code].nil?
-          # Update with flag details
-          @interval_data[interval_start_point + (i - 1)][:flag] = flag
-        end
-        @interval_events += interval_events
+      base_interval_event = { datetime: nil, quality_method: csv[3], reason_code: parsed_reason_code,
+                              reason_description: csv[5] }
+
+      # Interval Numbers are 1-indexed
+      ((csv[1].to_i)..(csv[2].to_i)).each do |i|
+        interval_event = base_interval_event.dup
+        interval_event[:datetime] = @interval_data[interval_start_point + (i - 1)][:datetime]
+        interval_events << interval_event
+
+        flag = AEMO::MeterData::Flag.from_quality_method_reason_code(quality_method: interval_event[:quality_method], reason_code: interval_event[:reason_code], validate: strict)
+
+        # Update with flag details
+        @interval_data[interval_start_point + (i - 1)][:flag] = flag
       end
+      @interval_events += interval_events
+
       interval_events
     end
 
@@ -361,20 +356,6 @@ module AEMO
     # @return [Hash] the line parsed into a hash of information
     def parse_nem12_900(_line, strict: true); end # rubocop:disable Naming/VariableNumber
 
-    # Turns the flag to a string
-    #
-    # @param [Hash] flag the object of a flag
-    # @return [nil, String] a hyphenated string for the flag or nil
-    def flag_to_s(flag)
-      flag_to_s = []
-      unless flag.nil?
-        flag_to_s << QUALITY_FLAGS[flag[:quality_flag]]                   unless QUALITY_FLAGS[flag[:quality_flag]].nil?
-        flag_to_s << METHOD_FLAGS[flag[:method_flag]][:short_descriptor]  unless METHOD_FLAGS[flag[:method_flag]].nil?
-        flag_to_s << REASON_CODES[flag[:reason_code]]                     unless REASON_CODES[flag[:reason_code]].nil?
-      end
-      flag_to_s.empty? ? nil : flag_to_s.join(' - ')
-    end
-
     # @return [Array] array of a NEM12 file a given Meter + Data Stream for easy reading
     def to_a
       @interval_data.map do |d|
@@ -384,7 +365,7 @@ module AEMO
           d[:data_details][:uom],
           d[:datetime],
           d[:value],
-          flag_to_s(d[:flag])
+          d[:flag]&.to_s
         ]
       end
     end
@@ -462,20 +443,36 @@ module AEMO
       end
       daily_datas.keys.sort.each do |key|
         daily_data = daily_datas[key].sort_by { |x| x[:datetime] }
-        has_flags = daily_data.map { |x| x[:flag]&.any? }.uniq.include?(true)
+
+        # Check if all intervals have identical flags
+        # If so, use that flag's quality method in the 300 record
+        # Otherwise use 'V' (variable data) and generate 400 records
+        first_flag = daily_data.first[:flag]
+        all_same_flag = daily_data.all? { |x| x[:flag] == first_flag }
+
+        if all_same_flag
+          # All intervals have the same flag - use it in the 300 record
+          quality_method = first_flag&.to_quality_method || ''
+          reason_code = first_flag&.reason_code || ''
+        else
+          # Intervals have different flags - use 'V' and generate 400 records
+          quality_method = 'V'
+          reason_code = ''
+        end
 
         lines << [
           '300',
           key,
           daily_data.map { |x| x[:value] },
-          has_flags ? 'V' : 'A',
-          '',
+          quality_method,
+          reason_code,
           '',
           daily_data.first[:updated_at] ? AEMO::Time.format_timestamp14(daily_data.first[:updated_at]) : nil,
           daily_data.first[:msats_load_at] ? AEMO::Time.format_timestamp14(daily_data.first[:msats_load_at]) : nil
         ].flatten.join(CSV_SEPARATOR)
 
-        next unless has_flags
+        # Generate 400 records only if we have variable data
+        next if all_same_flag
 
         lines << to_nem12_400_csv(daily_data:)
       end
@@ -504,12 +501,25 @@ module AEMO
       end
 
       nem12_400_rows.map do |row|
+        flag = row[:flag]
+        # Default to 'A' if flag is nil, otherwise use explicit quality flag
+        quality_flag = flag.nil? ? 'A' : flag.quality_flag
+        method_flag = flag&.method_flag
+        reason_code = flag&.reason_code
+
+        # Build quality method string (quality flag + optional method flag)
+        quality_method = if method_flag.nil?
+                           quality_flag
+                         else
+                           "#{quality_flag}#{format('%02d', method_flag)}"
+                         end
+
         [
           '400',
           row[:start_index],
           row[:finish_index],
-          row[:flag].nil? ? 'A' : "#{row[:flag][:quality_flag]}#{row[:flag][:method_flag]}",
-          row[:flag].nil? ? '' : row[:flag][:reason_code],
+          quality_method,
+          reason_code || '',
           ''
         ].join(CSV_SEPARATOR)
       end.join(CRLF)

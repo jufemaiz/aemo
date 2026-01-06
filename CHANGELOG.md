@@ -1,10 +1,10 @@
 # AEMO Gem Changelog
 
-## [v0.7.2] (2025-11-21)
+## [v0.8.0] (2026-01-06)
 
-### Changed
+### Added
 
-*   Updated dependencies.
+*   Added `AEMO::MeterData::Flag` class to represent and validate NEM12/NEM13 quality flags.
 
 
 ## [v0.7.1] (2025-05-15)
