@@ -80,7 +80,8 @@ describe AEMO::NEM12 do
           '200,NEM1201002,E1E2,E1,E1,N1,01002,KWH,30,',
           '300,20050318,315.15,313.8,296.55,298.5,295.2,298.95,300.75,322.95,330.45,350.7,345.75,346.95,345.9,348.6,300.15,337.5,336.75,345.9,330.45,327.15,334.8,345.75,335.85,320.1,325.5,325.2,326.4,330.6,332.7,332.25,321.0,316.5,299.85,302.4,301.05,263.85,255.45,142.05,138.3,138.3,136.8,138.3,136.05,135.75,135.75,136.65,136.05,130.8,A,,,20050319014041,',
           '200,NEM1201002,E1E2,E2,E2,N2,01002,KWH,30,',
-          '300,20050318,103.05,98.85,81.15,75.6,72.15,73.95,74.55,81.15,89.25,124.2,125.7,128.7,136.8,151.05,177.9,174.45,204.0,210.15,180.15,164.4,187.95,211.95,193.8,122.85,124.8,121.2,129.3,131.25,130.95,130.05,118.05,105.75,77.1,75.9,75.0,51.15,44.4,12.3,12.75,12.15,12.45,11.55,14.4,14.55,15.0,14.7,15.75,21.9,A,,,20050319014041,', '900',
+          '300,20050318,103.05,98.85,81.15,75.6,72.15,73.95,74.55,81.15,89.25,124.2,125.7,128.7,136.8,151.05,177.9,174.45,204.0,210.15,180.15,164.4,187.95,211.95,193.8,122.85,124.8,121.2,129.3,131.25,130.95,130.05,118.05,105.75,77.1,75.9,75.0,51.15,44.4,12.3,12.75,12.15,12.45,11.55,14.4,14.55,15.0,14.7,15.75,21.9,A,,,20050319014041,',
+          '900',
           ''
         ].join("\r\n")
       end
@@ -106,11 +107,9 @@ describe AEMO::NEM12 do
           '400,1,10,F52,71,',
           '400,11,48,E52,,',
           '200,NEM1204062,E1,E1,E1,N1,04062,KWH,30,20050503',
-          '300,20040528,0.68,0.653,0.62,0.623,0.618,0.625,0.613,0.623,0.618,0.615,0.613,0.76,0.665,0.638,0.61,0.648,0.65,0.645,0.895,0.668,0.645,0.648,0.655,0.73,0.695,0.67,0.638,0.643,0.64,0.723,0.653,0.645,0.633,0.71,0.683,0.648,0.625,0.63,0.625,0.63,0.638,0.635,0.633,0.638,0.673,0.765,0.65,0.628,V,,,20040609000001,',
-          '400,1,48,E52,,',
+          '300,20040528,0.68,0.653,0.62,0.623,0.618,0.625,0.613,0.623,0.618,0.615,0.613,0.76,0.665,0.638,0.61,0.648,0.65,0.645,0.895,0.668,0.645,0.648,0.655,0.73,0.695,0.67,0.638,0.643,0.64,0.723,0.653,0.645,0.633,0.71,0.683,0.648,0.625,0.63,0.625,0.63,0.638,0.635,0.633,0.638,0.673,0.765,0.65,0.628,E52,,,20040609000001,',
           '200,NEM1204062,E1,E1,E1,N1,04062,KWH,30,20050503',
-          '300,20040529,0.633,0.613,0.628,0.618,0.625,0.623,0.623,0.613,0.655,0.663,0.645,0.708,0.608,0.618,0.63,0.625,0.62,0.635,0.63,0.638,0.693,0.71,0.683,0.645,0.638,0.653,0.653,0.648,0.655,0.745,0.69,0.695,0.68,0.643,0.645,0.635,0.628,0.625,0.635,0.628,0.673,0.688,0.685,0.66,0.638,0.718,0.638,0.63,V,,,20040609000001,',
-          '400,1,48,E52,,',
+          '300,20040529,0.633,0.613,0.628,0.618,0.625,0.623,0.623,0.613,0.655,0.663,0.645,0.708,0.608,0.618,0.63,0.625,0.62,0.635,0.63,0.638,0.693,0.71,0.683,0.645,0.638,0.653,0.653,0.648,0.655,0.745,0.69,0.695,0.68,0.643,0.645,0.635,0.628,0.625,0.635,0.628,0.673,0.688,0.685,0.66,0.638,0.718,0.638,0.63,E52,,,20040609000001,',
           '900',
           ''
         ].join("\r\n")
@@ -136,9 +135,9 @@ describe AEMO::NEM12 do
       Dir.entries(File.join(File.dirname(__FILE__), '..', '..', 'fixtures', 'NEM12'))
          .reject { |f| %w[. .. .DS_Store].include?(f) }
          .each do |file|
-        described_class.parse_nem12_file(fixture(File.join('NEM12', file))).each do |nem12|
-          expect(nem12.nmi_identifier).to be_a String
-        end
+           described_class.parse_nem12_file(fixture(File.join('NEM12', file))).each do |nem12|
+             expect(nem12.nmi_identifier).to be_a String
+           end
       end
     end
   end
@@ -173,6 +172,31 @@ describe AEMO::NEM12 do
       nem12_empty_cells_300_record = fixture(File.join('NEM12-Errors', 'NEM12#EmptyCells300Record#CNRGYMDP#NEMMCO.csv'))
       expect { described_class.parse_nem12_file(nem12_empty_cells_300_record) }.to raise_error(ArgumentError)
     end
+
+    it 'parses actual data flags explicitly' do
+      nem12_filepath = fixture(File.join('NEM12', 'NEM12#000000000000001#CNRGYMDP#NEMMCO.csv'))
+      nem12s = described_class.parse_nem12_file(nem12_filepath)
+      expect(nem12s.first.interval_data.first[:flag].quality_flag).to eq('A')
+      expect(nem12s.first.interval_data.first[:flag].method_flag).to be_nil
+      expect(nem12s.first.interval_data.first[:flag].reason_code).to be_nil
+    end
+
+    it 'parses substituted data flags with method flags' do
+      nem12_filepath = fixture(File.join('NEM12', 'NEM12#000000000000004#CNRGYMDP#NEMMCO.csv'))
+      nem12s = described_class.parse_nem12_file(nem12_filepath)
+      # First 10 intervals have F52 flag
+      expect(nem12s.first.interval_data.first[:flag].quality_flag).to eq('F')
+      expect(nem12s.first.interval_data.first[:flag].method_flag).to eq(52)
+      expect(nem12s.first.interval_data.first[:flag].reason_code).to eq(71)
+    end
+
+    it 'parses estimated data flags' do
+      nem12_filepath = fixture(File.join('NEM12', 'NEM12#000000000000004#CNRGYMDP#NEMMCO.csv'))
+      nem12s = described_class.parse_nem12_file(nem12_filepath)
+      # Intervals 11-48 have E52 flag
+      expect(nem12s.first.interval_data[10][:flag].quality_flag).to eq('E')
+      expect(nem12s.first.interval_data[10][:flag].method_flag).to eq(52)
+    end
   end
 
   describe '#parse_nem12_400' do
@@ -180,14 +204,36 @@ describe AEMO::NEM12 do
       nem12_empty_cells_400_record = fixture(File.join('NEM12-Errors', 'NEM12#EmptyCells400Record#CNRGYMDP#NEMMCO.csv'))
       expect { described_class.parse_nem12_file(nem12_empty_cells_400_record) }.to raise_error(ArgumentError)
     end
+
+    it 'parses 400 records and updates interval flags' do
+      nem12_filepath = fixture(File.join('NEM12', 'NEM12#000000000000004#CNRGYMDP#NEMMCO.csv'))
+      nem12s = described_class.parse_nem12_file(nem12_filepath)
+      # Verify that 400 records override the V flag from 300 record
+      expect(nem12s.first.interval_data.first[:flag].quality_flag).to eq('F')
+      expect(nem12s.first.interval_data[10][:flag].quality_flag).to eq('E')
+    end
   end
 
-  describe '#flag_to_s' do
-    it 'converts the flags to a string' do
-      flag = { quality_flag: 'S', method_flag: 11, reason_code: 53 }
+  describe 'flag handling edge cases' do
+    it 'handles actual data with reason code' do
+      nem12_filepath = fixture(File.join('NEM12', 'NEM12.actual_with_reason_code.csv'))
+      nem12s = described_class.parse_nem12_file(nem12_filepath)
+      # Check that actual data with reason code is parsed correctly
+      interval_with_reason = nem12s.first.interval_data.find { |x| x[:flag].reason_code == 79 }
+      expect(interval_with_reason).not_to be_nil
+      expect(interval_with_reason[:flag].quality_flag).to eq('A')
+      expect(interval_with_reason[:flag].method_flag).to be_nil
+      expect(interval_with_reason[:flag].reason_code).to eq(79)
+    end
+
+    it 'maintains backward compatibility with nil flags' do
       nem12 = described_class.new('NEEE000010')
-      expect(nem12.flag_to_s(flag))
-        .to eq 'Substituted Data - Check - Bees/Wasp In Meter Box'
+      nem12.instance_variable_set(:@data_details, [{ interval_length: 30 }])
+      nem12.instance_variable_set(:@interval_data, [
+                                    { flag: nil, value: 1.0, datetime: Time.now, data_details: { interval_length: 30 } }
+                                  ])
+      # Should not raise error
+      expect { nem12.to_nem12_300_csv }.not_to raise_error
     end
   end
 
@@ -208,6 +254,106 @@ describe AEMO::NEM12 do
 
     it 'returns a correct NEM12 file' do
       expect(nem12.to_nem12_csv).to eq(expected)
+    end
+  end
+
+  describe '#to_nem12_300_csv with uniform flags' do
+    let(:nem12) { described_class.new('NEEE000010') }
+    let(:base_time) { Time.parse('2024-01-01 00:30:00 +1000') }
+
+    before do
+      nem12.instance_variable_set(:@data_details, [{ interval_length: 30 }])
+    end
+
+    it 'uses quality method from uniform actual data flags without 400 records' do
+      intervals = (0...48).map do |i|
+        {
+          flag: AEMO::MeterData::Flag.new(quality_flag: 'A', method_flag: nil, reason_code: nil),
+          value: 1.0 + i,
+          datetime: base_time + (i * 30 * 60),
+          data_details: { interval_length: 30 }
+        }
+      end
+      nem12.instance_variable_set(:@interval_data, intervals)
+
+      output = nem12.to_nem12_300_csv
+      expect(output).to include('300,20240101')
+      expect(output).to include(',A,,,')
+      expect(output).not_to include('400,')
+    end
+
+    it 'uses quality method from uniform estimated data flags without 400 records' do
+      intervals = (0...48).map do |i|
+        {
+          flag: AEMO::MeterData::Flag.new(quality_flag: 'E', method_flag: 52, reason_code: nil),
+          value: 1.0 + i,
+          datetime: base_time + (i * 30 * 60),
+          data_details: { interval_length: 30 }
+        }
+      end
+      nem12.instance_variable_set(:@interval_data, intervals)
+
+      output = nem12.to_nem12_300_csv
+      expect(output).to include('300,20240101')
+      expect(output).to include(',E52,,,')
+      expect(output).not_to include('400,')
+    end
+
+    it 'uses quality method from uniform substituted data flags with reason code' do
+      intervals = (0...48).map do |i|
+        {
+          flag: AEMO::MeterData::Flag.new(quality_flag: 'S', method_flag: 11, reason_code: 53),
+          value: 1.0 + i,
+          datetime: base_time + (i * 30 * 60),
+          data_details: { interval_length: 30 }
+        }
+      end
+      nem12.instance_variable_set(:@interval_data, intervals)
+
+      output = nem12.to_nem12_300_csv
+      expect(output).to include('300,20240101')
+      expect(output).to include(',S11,53,')
+      expect(output).not_to include('400,')
+    end
+
+    it 'uses V and generates 400 records when flags differ' do
+      intervals = (0...48).map do |i|
+        flag = if i < 10
+                 AEMO::MeterData::Flag.new(quality_flag: 'F', method_flag: 52, reason_code: 71)
+               else
+                 AEMO::MeterData::Flag.new(quality_flag: 'E', method_flag: 52, reason_code: nil)
+               end
+        {
+          flag:,
+          value: 1.0 + i,
+          datetime: base_time + (i * 30 * 60),
+          data_details: { interval_length: 30 }
+        }
+      end
+      nem12.instance_variable_set(:@interval_data, intervals)
+
+      output = nem12.to_nem12_300_csv
+      expect(output).to include('300,20240101')
+      expect(output).to include(',V,,,')
+      expect(output).to include('400,1,10,F52,71,')
+      expect(output).to include('400,11,48,E52,,')
+    end
+
+    it 'handles nil flags as nil data' do
+      intervals = (0...48).map do |i|
+        {
+          flag: nil,
+          value: 1.0 + i,
+          datetime: base_time + (i * 30 * 60),
+          data_details: { interval_length: 30 }
+        }
+      end
+      nem12.instance_variable_set(:@interval_data, intervals)
+
+      output = nem12.to_nem12_300_csv
+      expect(output).to include('300,20240101')
+      expect(output).to include(',,,,')
+      expect(output).not_to include('400,')
     end
   end
 end

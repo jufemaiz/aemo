@@ -28,7 +28,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'httparty', '~> 0.21', '>= 0.21.0'
   s.add_dependency 'json', '>= 1.7.5', '< 3'
   s.add_dependency 'multi_xml', '~> 0.6', '>= 0.5.0'
-  s.add_dependency 'nokogiri',  '~> 1.14', '>= 1.14.3'
+  s.add_dependency 'nokogiri',  '~> 1.19', '>= 1.19.0'
   s.add_dependency 'rexml', '~> 3.3', '>= 3.3.3'
 
   # Stay safe!
