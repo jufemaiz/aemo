@@ -1,5 +1,14 @@
 # AEMO Gem Changelog
 
+## [v0.9.0] (2026-05-11)
+
+### Security
+
+*   Bump required versions:
+    *   `activesupport`
+    *   `nokogiri`
+
+
 ## [v0.8.0] (2026-01-06)
 
 ### Added

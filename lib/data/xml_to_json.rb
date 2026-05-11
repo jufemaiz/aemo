@@ -40,39 +40,39 @@ end
 # Now to create the DLF and TNI output JSON files for use
 @files.select { |x| ['aemo-tni.xml', 'aemo-dlf.xml'].include?(x) }
       .each do |file|
-        output_file = file.gsub('.xml', '.json')
-        output_data = {}
-        open_file = File.open(File.join(@path, file))
-        xml = Nokogiri::XML(open_file) do |c|
-          c.options = Nokogiri::XML::ParseOptions::NOBLANKS
-        end
-        open_file.close
+  output_file = file.gsub('.xml', '.json')
+  output_data = {}
+  File.open(File.join(@path, file)) do |open_file|
+    Nokogiri::XML(open_file) do |c|
+      c.options = Nokogiri::XML::ParseOptions::NOBLANKS
+    end
+  end
 
-        xml.xpath('//Row').each do |row|
-          row_children = row.children
-          code = row_children.find { |x| x.name == 'Code' }.children.first.text
-          output_data[code] ||= []
-          output_data_instance = {}
-          row_children.each do |row_child|
-            output_data_instance[row_child.name] = row_child.children.first.text
-          end
-          if file =~ /tni/
-            puts "output_data_instance: #{output_data_instance.inspect}"
-            output_data_instance[:mlf_data] = {}
-            unless @mlf_data[code].nil?
-              output_data_instance[:mlf_data] = @mlf_data[code].deep_dup
-              output_data_instance[:mlf_data][:loss_factors].reject! do |x|
-                Time.parse(output_data_instance['ToDate']) < x[:start] ||
-                  Time.parse(output_data_instance['FromDate']) >= x[:finish]
-              end
-              puts 'output_data_instance[:mlf_data][:loss_factors]: ' \
-                   "#{output_data_instance[:mlf_data][:loss_factors].inspect}"
-            end
-          elsif file =~ /dlf/
-            output_data_instance[:nsp_code] = @dlf_data[code]
-          end
-          output_data[code] << output_data_instance
+  xml.xpath('//Row').each do |row|
+    row_children = row.children
+    code = row_children.find { |x| x.name == 'Code' }.children.first.text
+    output_data[code] ||= []
+    output_data_instance = {}
+    row_children.each do |row_child|
+      output_data_instance[row_child.name] = row_child.children.first.text
+    end
+    if file =~ /tni/
+      puts "output_data_instance: #{output_data_instance.inspect}"
+      output_data_instance[:mlf_data] = {}
+      unless @mlf_data[code].nil?
+        output_data_instance[:mlf_data] = @mlf_data[code].deep_dup
+        output_data_instance[:mlf_data][:loss_factors].reject! do |x|
+          Time.parse(output_data_instance['ToDate']) < x[:start] ||
+            Time.parse(output_data_instance['FromDate']) >= x[:finish]
         end
+        puts 'output_data_instance[:mlf_data][:loss_factors]: ' \
+             "#{output_data_instance[:mlf_data][:loss_factors].inspect}"
+      end
+    elsif file =~ /dlf/
+      output_data_instance[:nsp_code] = @dlf_data[code]
+    end
+    output_data[code] << output_data_instance
+  end
 
-        File.write(File.join(@path, output_file), output_data.to_json)
+  File.write(File.join(@path, output_file), output_data.to_json)
 end
