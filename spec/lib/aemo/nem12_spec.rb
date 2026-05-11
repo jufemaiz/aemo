@@ -135,9 +135,9 @@ describe AEMO::NEM12 do
       Dir.entries(File.join(File.dirname(__FILE__), '..', '..', 'fixtures', 'NEM12'))
          .reject { |f| %w[. .. .DS_Store].include?(f) }
          .each do |file|
-           described_class.parse_nem12_file(fixture(File.join('NEM12', file))).each do |nem12|
-             expect(nem12.nmi_identifier).to be_a String
-           end
+        described_class.parse_nem12_file(fixture(File.join('NEM12', file))).each do |nem12|
+          expect(nem12.nmi_identifier).to be_a String
+        end
       end
     end
   end
