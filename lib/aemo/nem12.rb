@@ -228,24 +228,24 @@ module AEMO
         raise ArgumentError, "Interval number #{i - 1} is not valid" if csv[i].nil? || csv[i].match(/\d+(\.\d+)?/).nil?
       end
 
-      raise ArgumentError, 'QualityMethod is not valid' unless csv[intervals_offset + 0].instance_of?(String)
-      raise ArgumentError, 'QualityMethod does not have valid length' unless [1, 3].include?(csv[intervals_offset + 0].length)
+      raise ArgumentError, 'QualityMethod is not valid' unless csv[intervals_offset].instance_of?(String)
+      raise ArgumentError, 'QualityMethod does not have valid length' unless [1, 3].include?(csv[intervals_offset].length)
 
-      unless QUALITY_FLAGS.keys.include?(csv[intervals_offset + 0][0])
+      unless QUALITY_FLAGS.keys.include?(csv[intervals_offset][0])
         raise ArgumentError,
               'QualityMethod does not have valid QualityFlag'
       end
 
-      unless %w[A N V].include?(csv[intervals_offset + 0][0])
-        raise ArgumentError, 'QualityMethod does not have valid length' unless csv[intervals_offset + 0].length == 3
+      unless %w[A N V].include?(csv[intervals_offset][0])
+        raise ArgumentError, 'QualityMethod does not have valid length' unless csv[intervals_offset].length == 3
 
-        unless METHOD_FLAGS.keys.include?(csv[intervals_offset + 0][1..2].to_i)
+        unless METHOD_FLAGS.keys.include?(csv[intervals_offset][1..2].to_i)
           raise ArgumentError,
                 'QualityMethod does not have valid MethodFlag'
         end
       end
 
-      raise ArgumentError, 'ReasonCode is not valid' if !%w[A N E].include?(csv[intervals_offset + 0][0]) && !REASON_CODES.keys.include?(csv[intervals_offset + 1].to_i)
+      raise ArgumentError, 'ReasonCode is not valid' if !%w[A N E].include?(csv[intervals_offset][0]) && !REASON_CODES.keys.include?(csv[intervals_offset + 1].to_i)
 
       if !csv[intervals_offset + 1].nil? && csv[intervals_offset + 1].to_i.zero? && !(csv[intervals_offset + 2].instance_of?(String) && !csv[intervals_offset + 2].empty?)
         raise ArgumentError,
@@ -265,7 +265,7 @@ module AEMO
       end
 
       # Deal with flags - explicitly set all flag values
-      flag = AEMO::MeterData::Flag.from_quality_method_reason_code(quality_method: csv[intervals_offset + 0], reason_code: csv[intervals_offset + 1], validate: strict)
+      flag = AEMO::MeterData::Flag.from_quality_method_reason_code(quality_method: csv[intervals_offset], reason_code: csv[intervals_offset + 1], validate: strict)
 
       # Deal with updated_at & msats_load_at
       updated_at = nil

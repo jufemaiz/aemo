@@ -1,50 +1,64 @@
 # AEMO Gem Changelog
 
+## [v0.9.1] (2026-07-15)
+
+### Security
+
+* Bump required versions for:
+  * `concurrent-ruby`
+  * `coveralls_reborn`
+  * `i18n`
+  * `json`
+  * `language_server-protocol`
+  * `nokogiri`
+  * `psych`
+  * `rubocop`
+  * `rubocop-ast`
+  * `rubocop-rspec`
+  * `tins`
+  * `yard`
+
 ## [v0.9.0] (2026-05-11)
 
 ### Security
 
-*   Bump required versions:
-    *   `activesupport`
-    *   `nokogiri`
-
+* Bump required versions:
+  * `activesupport`
+  * `nokogiri`
 
 ## [v0.8.0] (2026-01-06)
 
 ### Added
 
-*   Added `AEMO::MeterData::Flag` class to represent and validate NEM12/NEM13 quality flags.
-
+* Added `AEMO::MeterData::Flag` class to represent and validate NEM12/NEM13 quality flags.
 
 ## [v0.7.1] (2025-05-15)
 
 ### Changed
 
-*   Updated dependencies.
-
+* Updated dependencies.
 
 ## [v0.7.0] (2024-11-21)
 
 ### Added
 
-*   [NEM12 Method flags](./lib/aemo/nem12/quality_method.rb) 22, 23, 24, 25 as per [Metrology Procedure: Part B v7.8 @ 2024-11-04](https://aemo.com.au/-/media/files/electricity/nem/retail_and_metering/market_settlement_and_transfer_solutions/2024/metrology-procedure-part-b-v781-clean.pdf?la=en)
+* [NEM12 Method flags](./lib/aemo/nem12/quality_method.rb) 22, 23, 24, 25 as per [Metrology Procedure: Part B v7.8 @ 2024-11-04](https://aemo.com.au/-/media/files/electricity/nem/retail_and_metering/market_settlement_and_transfer_solutions/2024/metrology-procedure-part-b-v781-clean.pdf?la=en)
 
 ### Changed
 
-*   [NEM12 Method flags](./lib/aemo/nem12/quality_method.rb) 14, 15, 16, 20 as per [Metrology Procedure: Part B v7.8 @ 2024-11-04](https://aemo.com.au/-/media/files/electricity/nem/retail_and_metering/market_settlement_and_transfer_solutions/2024/metrology-procedure-part-b-v781-clean.pdf?la=en)
-
+* [NEM12 Method flags](./lib/aemo/nem12/quality_method.rb) 14, 15, 16, 20 as per [Metrology Procedure: Part B v7.8 @ 2024-11-04](https://aemo.com.au/-/media/files/electricity/nem/retail_and_metering/market_settlement_and_transfer_solutions/2024/metrology-procedure-part-b-v781-clean.pdf?la=en)
 
 ## [v0.6.0] (2023-12-20)
 
 ### Added
 
-*   Ability to output a valid NEM12 file from a single, or an array of, `AEMO::NEM12` with `to_nem12_csv`.
-*   `AEMO::Time` for customised formatting, parsing, and validating in `NEMTIME`.
-*   Github actions for tests and lints.
+* Ability to output a valid NEM12 file from a single, or an array of, `AEMO::NEM12` with `to_nem12_csv`.
+* `AEMO::Time` for customised formatting, parsing, and validating in `NEMTIME`.
+* Github actions for tests and lints.
 
 ### Changed
 
-*   Correctly set `AEMO::NEM12` header value set at parsing.
+* Correctly set `AEMO::NEM12` header value set at parsing.
 
 ## [v0.5.1] (2023-06-16)
 
@@ -53,12 +67,11 @@
 * bump `httparty` to `>= 0.21.0` to resolve security issue.
 * bump `nokogiri` to `>= 1.14.3` to resolve `libxml2` security issue.
 
-
 ## [v0.5.0] (2022-09-19)
 
 ### Added
 
-*   New method flags:
+* New method flags:
 
     | Type | `EST` and/or `SUB` | Descriptor |
     | --- | --- | --- |
@@ -71,18 +84,18 @@
 
 ### Fixed
 
-*   Typo in `meter_serial_number`.
+* Typo in `meter_serial_number`.
 
 ## [v0.4.0] (2021-12-22)
 
 ### Added
 
-*   Support for Ruby 3.
-*   [SonarCloud](https://sonarcloud.io/project/issues?id=jufemaiz_aemo) support.
+* Support for Ruby 3.
+* [SonarCloud](https://sonarcloud.io/project/issues?id=jufemaiz_aemo) support.
 
 ### Changed
 
-*   Migrated to [travis-ci.com](https://travis-ci.com/github/jufemaiz/aemo).
+* Migrated to [travis-ci.com](https://travis-ci.com/github/jufemaiz/aemo).
 
 ## [v0.3.6] (2020-03-11)
 
@@ -98,132 +111,131 @@
 
 ## [v0.3.5] (2019-08-20)
 
-*   Upgrade [nokogiri](https://rubygems.org/gems/nokogiri) to v1.10.4 to resolve
+* Upgrade [nokogiri](https://rubygems.org/gems/nokogiri) to v1.10.4 to resolve
     vulnerability:
-    *   [CVE-2019-5477](https://nvd.nist.gov/vuln/detail/CVE-2019-5477)
+  * [CVE-2019-5477](https://nvd.nist.gov/vuln/detail/CVE-2019-5477)
 
 ## [v0.3.4] (2019-07-04)
 
-*   Bump [yard](https://github.com/lsegal/yard) from 0.9.16 to 0.9.20
-*   Added support for ruby versions: 2.6.3, 2.6.2, 2.5.5, 2.5.4, 2.4.6
-*   Using [bundler](https://rubygems.com/gems/bundler) 2.0.2
-
+* Bump [yard](https://github.com/lsegal/yard) from 0.9.16 to 0.9.20
+* Added support for ruby versions: 2.6.3, 2.6.2, 2.5.5, 2.5.4, 2.4.6
+* Using [bundler](https://rubygems.com/gems/bundler) 2.0.2
 
 ## [v0.3.3] (2018-11-17)
 
-*   Upgrade [nokogiri](https://rubygems.org/gems/nokogiri) to v1.8.5 to resolve
+* Upgrade [nokogiri](https://rubygems.org/gems/nokogiri) to v1.8.5 to resolve
     vulnerabilities:
-    *   [CVE-2018-14404](https://nvd.nist.gov/vuln/detail/CVE-2018-14404)
-    *   [CVE-2018-14567](https://nvd.nist.gov/vuln/detail/CVE-2018-14567)
-*   Set [ffi](https://rubygems.org/gems/ffi) and
+  * [CVE-2018-14404](https://nvd.nist.gov/vuln/detail/CVE-2018-14404)
+  * [CVE-2018-14567](https://nvd.nist.gov/vuln/detail/CVE-2018-14567)
+* Set [ffi](https://rubygems.org/gems/ffi) and
     [rack](https://rubygems.org/gems/rack) versions to resolve vulnerabilities.
 
 ## [v0.3.2]
 
-*   Support JSON v2.x.y JSON (#46)
+* Support JSON v2.x.y JSON (#46)
 
 ## [v0.3.1]
 
-*   Catch invalid length  NEM12 records (300 and 400)
+* Catch invalid length  NEM12 records (300 and 400)
 
 ## [v0.3.0]
 
-*   Refactor NMI allocations
-*   Return an empty array on empty NEM12 file or string.
+* Refactor NMI allocations
+* Return an empty array on empty NEM12 file or string.
 
 ## [v0.2.1]
 
-*   Loss factors for FY18
+* Loss factors for FY18
 
 ## [v0.2.0]
 
-*   Default NEM12 parsing to use strict validation
-*   Only enforce validation of NMIConfiguration in strict mode
+* Default NEM12 parsing to use strict validation
+* Only enforce validation of NMIConfiguration in strict mode
 
 ## [v0.1.45]
 
-*   [Nokogiri vulnerability](https://rubysec.com/advisories/nokogiri-CVE-2017-15412)
+* [Nokogiri vulnerability](https://rubysec.com/advisories/nokogiri-CVE-2017-15412)
     update
 
 ## [v0.1.44]
 
-*   [YARD vulnerability](https://rubysec.com/advisories/yard-CVE-2017-17042)
+* [YARD vulnerability](https://rubysec.com/advisories/yard-CVE-2017-17042)
     update
 
 ## [v0.1.42]
 
-*   Dependency updates to support Rails 5.1
+* Dependency updates to support Rails 5.1
 
 ## [v0.1.41]
 
-*   Dependency updates
-*   Drop support for old versions of Ruby. Currently supported versions are:
-    *   ruby-head
-    *   2.4 (.0, .1, .2)
-    *   2.3 (.0, .1, .2, .3, .4, .5)
-    *   2.2 (.5, .6, .7, .8)
+* Dependency updates
+* Drop support for old versions of Ruby. Currently supported versions are:
+  * ruby-head
+  * 2.4 (.0, .1, .2)
+  * 2.3 (.0, .1, .2, .3, .4, .5)
+  * 2.2 (.5, .6, .7, .8)
 
 ## [v0.1.40]
 
-*   Remove ZIP
-*   Update loss factor data including finalised values according to FY18 data
+* Remove ZIP
+* Update loss factor data including finalised values according to FY18 data
     available at:
     <http://www.aemo.org.au/Electricity/National-Electricity-Market-NEM/Security-and-reliability/Loss-factor-and-regional-boundaries>
 
 ### (TNI/MLF errata 2017-10-18)
 
-*   NCAR FY17 listed as 1.0035 in the FY18 publication (we had 1.0016)
-*   NCB1 has disappeared in FY18
-*   NFNY FY17 listed as 1.0825 in the FY18 publication (we had 1.0157)
-*   NLTS FY17 listed as 0.9897 in the FY18 publication (we had 1.0142)
-*   NPH1 has disappeared in FY18
-*   NSHN FY17 listed as 0.9904 in the FY18 publication (we had 1.0001)
-*   SNPS has gone offline in FY18
-*   SPPS has gone offline in FY18
-*   A whole bunch of new generation added
+* NCAR FY17 listed as 1.0035 in the FY18 publication (we had 1.0016)
+* NCB1 has disappeared in FY18
+* NFNY FY17 listed as 1.0825 in the FY18 publication (we had 1.0157)
+* NLTS FY17 listed as 0.9897 in the FY18 publication (we had 1.0142)
+* NPH1 has disappeared in FY18
+* NSHN FY17 listed as 0.9904 in the FY18 publication (we had 1.0001)
+* SNPS has gone offline in FY18
+* SPPS has gone offline in FY18
+* A whole bunch of new generation added
 
 ## [v0.1.39]
 
-*   AEMO went and changed their data schema. Need to point historical requests
+* AEMO went and changed their data schema. Need to point historical requests
     at something like:
     <http://aemo.com.au/aemo/data/nem/priceanddemand/PRICE_AND_DEMAND_201601_QLD1.csv>
 
 ## [v0.1.38]
 
-*   `AEMO::NMI::DLF_CODES` updates for FY17.
+* `AEMO::NMI::DLF_CODES` updates for FY17.
 
 ## [v0.1.37]
 
-*   General Gem dependency updates.
+* General Gem dependency updates.
 
 ## [v0.1.36]
 
-*   Minor change to `AEMO::NMI::NMI_ALLOCATIONS` for a 'State' to be an instance
+* Minor change to `AEMO::NMI::NMI_ALLOCATIONS` for a 'State' to be an instance
     of `AEMO::Region`
 
 ## [v0.1.34]
 
-*   Added `AEMO::Market::Node` to deal with Region v Node differences
+* Added `AEMO::Market::Node` to deal with Region v Node differences
 
 ## [v0.1.33]
 
-*   [Rubocop](https://github.com/rubocop-hq/rubocop) lint bugfix
+* [Rubocop](https://github.com/rubocop-hq/rubocop) lint bugfix
     (`AEMO::NEM12.parse_nem12` not breaking up rows correctly)
-*   [Timecop](https://github.com/travisjeffery/timecop) added to deal with
+* [Timecop](https://github.com/travisjeffery/timecop) added to deal with
     [RSpec](https://rspec.info/) failures for unpublished `TNI` Data
-*   FY17 Marginal Loss Factors added from
+* FY17 Marginal Loss Factors added from
     <http://www.aemo.com.au/Electricity/Market-Operations/Loss-Factors-and-Regional-Boundaries/Distribution-Loss-Factors-for-the-2016_17-Financial-Year>
 
 ## [v0.1.32]
 
-*   [Nokogiri](https://github.com/sparklemotion/nokogiri) security flaw patched
+* [Nokogiri](https://github.com/sparklemotion/nokogiri) security flaw patched
     (Ref: [Issue #1374](https://github.com/sparklemotion/nokogiri/issues/1374))
 
 ## [v0.1.31]
 
-*   `AEMO::Market#historic_trading`
-*   `AEMO::Market#historic_trading_by_range`
+* `AEMO::Market#historic_trading`
+* `AEMO::Market#historic_trading_by_range`
 
 ## [v0.1.30]
 
-*   `AEMO::NMI#current_annual_load`
+* `AEMO::NMI#current_annual_load`
